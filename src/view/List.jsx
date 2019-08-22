@@ -34,8 +34,10 @@ export default List;
 
 const Box = styled.div`
   background: oldlace;
-  height: 85vh;
+  height: 65vh;
+  /* height: 85vh; */
   min-width: 56rem;
+
   border-radius: 0.4rem;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -51,23 +53,3 @@ const CardItem = styled.li`
   }
 `;
 
-/*
-  return (
-    <div className="cards-list">
-      <ul> {create_list_ui(filtered_list, update_selected_card)} </ul>
-    </div>
-  );
-*/
-
-/*
-const create_list_ui = (items, update_selected_card) =>
-  items.map(item => (
-    <li
-      key={item.id}
-      className="card-item"
-      onClick={() => update_selected_card(item)}
-    >
-      <Card {...item} />
-    </li>
-  ));
- */

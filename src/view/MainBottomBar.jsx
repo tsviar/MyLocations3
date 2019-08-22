@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     // margin: 20,
     // padding: 20,
     width: "100%", 
-    height: 60,
+    height: 40,
     fontSize: "120rem", 
     htmlFontSize: "1rem",
     fontfamily: "Yanone Kaffeesatz",

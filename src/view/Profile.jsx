@@ -59,7 +59,8 @@ const Profile = () => {
         <img
           src={
             avatar
-              ? avatar.replace(`size=80x80`, `size=300x300`)
+              // ? avatar.replace(`size=80x80`, `size=300x300`)
+              ? avatar.replace(`size=80x80`, `size=100x100`)
               : "https://robohash.org/eadoloresiste.jpg?size=80x80\u0026set=set1"
           }
           alt="avatr"
@@ -106,8 +107,10 @@ const ProfileImageBox = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  width: 30rem;
-  height: 30rem;
+  /* width: 30rem;
+  height: 30rem; */
+  width: 10rem;
+  height: 10rem;
 `;
 
 const ProfileDetailsBox = styled.div`
@@ -119,7 +122,8 @@ const ProfileDetailsBox = styled.div`
 `;
 
 const ProfileTitle = styled.h2`
-  font-size: 3.5rem;
+  font-size: 1.75rem;
+  /* font-size: 3.5rem; */
   font-weight: inherit;
   text-align: center;
 `;
@@ -143,14 +147,16 @@ const Line = styled.span`
 `;
 
 const ProfileDetail = styled.h5`
-  font-size: 2.2rem;
+  font-size: 1.1rem;
+  /* font-size: 2.2rem; */
   font-weight: inherit;
   color: darkslateblue;
 `;
 
 const ProfileDescription = styled.p`
   font-family: "Raleway";
-  font-size: 1.8rem;
+  /* font-size: 1.8rem; */
+  font-size: 1.0rem;
   max-width: 40rem;
 `;
 

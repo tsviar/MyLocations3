@@ -44,7 +44,8 @@ const Header = styled.div`
   left: 0;
   right: 0;
   border-radius: 0.4rem 0.4rem 0 0;
-  height: 9rem;
+  height: 5rem;
+  /* height: 9rem; */
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -53,12 +54,13 @@ const Title = styled.h4`
   font-family: "Expletus Sans";
   text-align: left;
   /* font-size: 2rem; */
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 400;
   color: darkred;
 `;
 const Input = styled.input`
-  height: 3.5rem;
+  height: 1.75rem;
+  /* height: 3.5rem; */
   width: 24rem;
   outline: none;
   border-radius: 0.5rem;

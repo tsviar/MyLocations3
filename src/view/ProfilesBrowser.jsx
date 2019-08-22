@@ -32,14 +32,19 @@ export default ProfilesBrowser;
 
 const Box = styled.div`
   background: Cornsilk;
-  padding: 8.5rem 1.5rem 1.5rem;
+
   border-radius: 0.4rem;
   display: flex;
   flex-direction: column;
   box-shadow: 0 0.4rem 1.5rem DimGrey;
   position: relative;
-  margin-top: 10rem;
-  font-size: 3rem;
+  padding: 7.0rem 1.5rem 1.5rem;
+  margin-top: 3rem;
+  font-size: 1.5rem;
+
+  /* padding: 8.5rem 1.5rem 1.5rem; */
+  /* margin-top: 10rem; */
+  /* font-size: 3rem; */
 `;
 
 const ContentBox = styled.div`

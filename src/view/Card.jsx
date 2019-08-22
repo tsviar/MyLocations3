@@ -69,7 +69,7 @@ const Title = styled.h1`
 `;
 const MsgText = styled.p`
   font-family: "Raleway";
-  font-size: 0.7rem;
+  font-size: 1.0rem;
   /* font-size: 1.4rem; */
   max-width: 35rem;
 `;

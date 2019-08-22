@@ -36,6 +36,7 @@ const App = () => (
 
       <MainBottomBar/>
 
+
       <GlobalStyles />
     </Box>
   </Router>
@@ -45,7 +46,7 @@ export default App;
 const Box = styled.div`
   /* background: lightskyblue; */
   /* padding: 3rem 7.5rem; */
-  padding: 1rem 10rem 4rem 10rem;
+  padding: 2rem 10rem 5rem 10rem;
   border-radius: 0.8rem;
   display: flex;
   flex-direction: column;
