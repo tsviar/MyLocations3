@@ -22,17 +22,17 @@ import MainBottomBar from "./MainBottomBar";
 const App = () => (
   <Router>
     <Box>
-      <TopBar>
-        {/* <Menu /> */}
-      </TopBar>
+      {/* <TopBar>
+        <Menu />
+      </TopBar> */}
 
       <Route exact path="/" component={HomePage} />
 
       <WrapperDataManager>
         <Route path="/locations" component={ProfilesBrowser} />
-      </WrapperDataManager>
 
       <Route path="/categories" component={AddLocation} />
+      </WrapperDataManager>
 
       <MainBottomBar/>
 
@@ -44,7 +44,8 @@ export default App;
 
 const Box = styled.div`
   /* background: lightskyblue; */
-  padding: 3rem 7.5rem;
+  /* padding: 3rem 7.5rem; */
+  padding: 1rem 10rem 4rem 10rem;
   border-radius: 0.8rem;
   display: flex;
   flex-direction: column;
