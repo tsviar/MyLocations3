@@ -8,7 +8,7 @@ import GlobalStyles from "./globalStyles";
 import { WrapperDataManager } from "../stateProvider/DataManager";
 import HomePage from "./HomePage";
 import ProfilesBrowser from "./ProfilesBrowser";
-import CreateProfile from "./CreateProfile";
+import AddLocation from "./Locations/AddLocation";
 
 // since Links is exported as default,
 // we can name it as we wish' hence, Menu
@@ -32,7 +32,7 @@ const App = () => (
         <Route path="/locations" component={ProfilesBrowser} />
       </WrapperDataManager>
 
-      <Route path="/categories" component={CreateProfile} />
+      <Route path="/categories" component={AddLocation} />
 
       <MainBottomBar/>
 
