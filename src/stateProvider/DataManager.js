@@ -11,26 +11,51 @@ const { Provider } = StateDataManager;
 const WrapperDataManager = ({ children }) => {
   console.log(`in WrapperDataManager`);
 
+  const [original_Locations_list, set_original_Locations_list] = useState([]);
+  const [filtered_Location_list, update_Location_filtered_list] = useState([]);
+  const [selected_location, update_selected_location] = useState({});
+ 
+  const [categories_list, set_categories_list] = useState([]);
+  const [selected_category, update_selected_category] = useState("");
+
+  const [loading_lists, set_loading_lists] = useState(true);
+  const [error_message, set_error_message] = useState(null);
+
   const [original_list, set_original_list] = useState([]);
   const [filtered_list, update_filtered_list] = useState([]);
   const [selected_card, update_selected_card] = useState({});
   const [loading_profiles, set_loading_profiles] = useState(true);
-  const [error_message, set_error_message] = useState(null);
+ 
 
   const states = {
+    original_Locations_list,
+    filtered_Location_list,
+    selected_location,
+    categories_list,
+    selected_category,
+    loading_lists,
+    error_message,
+
     original_list, //: robots_data,
     filtered_list, //: robots_data,
     selected_card, //: robots_data[0]
-    loading_profiles,
-    error_message
+    loading_profiles
   };
 
   const actions = {
+    set_original_Locations_list,
+    update_Location_filtered_list,
+    update_selected_location,
+    set_categories_list,
+    update_selected_category,
+    set_loading_lists,   
+    set_error_message,    
+    
     set_original_list,
     update_filtered_list,
     update_selected_card,
-    set_loading_profiles,
-    set_error_message
+    set_loading_profiles
+
   };
 
   // The effect hook called useEffect is used to fetch the data from the API

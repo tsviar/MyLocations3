@@ -1,10 +1,16 @@
-import React from "react";
-import Thumb from "../Thumb";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { makeStyles } from '@material-ui/core/styles';
+import marker from '@ajar/marker'; 
 
 const Category= ({ name }) => {
   // console.log('name:',name)
   //	console.log('props:',props)
+
+  const [name, set_name] = React.useState({
+        name: 'Cat in the Hat',
+    });   
+
   return (
     <Box>
       <TextsBox>

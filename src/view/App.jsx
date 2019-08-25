@@ -1,9 +1,16 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
+//customize
 import styled from "styled-components";
 //import "./styles.css";
 import GlobalStyles from "./globalStyles";
+// customize with material-ui
+import settings from '../settings';
+import colors from '../colors';
+
+// Material-UI
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import { WrapperDataManager } from "../stateProvider/DataManager";
 import HomePage from "./HomePage";
@@ -16,29 +23,41 @@ import Menu from "./MainMenu";
 import TopBar from "./TopBar";
 import MainBottomBar from "./MainBottomBar";
 
+
+let theme = createMuiTheme({
+  palette: {
+    primary: settings.theme.primaryColor.import,
+    secondary: settings.theme.secondaryColor.import,
+    type: settings.theme.type
+  }
+});
+
+
 //import ls from "local-storage";
 
 // exact path = "/"
 const App = () => (
   <Router>
-    <Box>
-      {/* <TopBar>
-        <Menu />
-      </TopBar> */}
+    <MuiThemeProvider theme={theme}>
+      <Box>
+        {/* <TopBar>
+          <Menu />
+        </TopBar> */}
 
-      <Route exact path="/" component={HomePage} />
+        <Route exact path="/" component={HomePage} />
 
-      <WrapperDataManager>
-        <Route path="/locations" component={ProfilesBrowser} />
+        <WrapperDataManager>
+          <Route path="/locations" component={ProfilesBrowser} />
 
-      <Route path="/categories" component={AddLocation} />
-      </WrapperDataManager>
+        <Route path="/categories" component={AddLocation} />
+        </WrapperDataManager>
 
-      <MainBottomBar/>
+        <MainBottomBar/>
 
 
-      <GlobalStyles />
-    </Box>
+        <GlobalStyles />
+      </Box>
+   </MuiThemeProvider>
   </Router>
 );
 export default App;

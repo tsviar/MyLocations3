@@ -3,14 +3,17 @@ import { StateDataManager } from "../stateProvider/DataManager";
 
 //import "../styles.css";
 import styled from "styled-components";
+import marker from "@ajar/marker";
+
 
 const Filter = () => {
-  const { original_list, update_filtered_list } = useContext(StateDataManager);
+  const { original_list, filtered_list, update_filtered_list } = useContext(StateDataManager);
 
   ///pay attention to [] !!!!
   const [num_elements, set_num_elements] = useState(0);
+  let  items_count = filtered_list.length || original_list.length;
 
-  console.log(`Filter num_elements 1 ${num_elements}`);
+  marker.green(`Filter num_elements 1 ${num_elements}`);
 
   const update_list = event => {
     const txt = event.target.value;
@@ -18,15 +21,20 @@ const Filter = () => {
     const filtered_list = original_list.filter(item =>
       item.first_name.toLowerCase().includes(txt.toLowerCase())
     );
+    
     update_filtered_list(filtered_list);
+    marker.green(`update_list: num_elements 2 ${num_elements}`);
     set_num_elements(filtered_list.length);
-    console.log(`update_list filtered_list.length ${filtered_list.length}`);
+    marker.green(`update_list num_elements 3 ${num_elements}`);
+
+    marker.magenta (`update_list filtered_list.length ${filtered_list.length}`);
   };
 
-  console.log(`Filter num_elements 2 ${num_elements}`);
+  marker.green(`Filter num_elements 4 ${num_elements}`);
 
-  const items_count = num_elements || original_list.length;
-  console.log(`items_count 3 ${items_count}`);
+  marker.blue(`items_count 1 ${items_count}`);
+  items_count = filtered_list.length;
+  marker.blue(`items_count 2 ${items_count}`);
 
   return (
     <Header>
