@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 //customize
 import styled from "styled-components";
 //import "./styles.css";
-import GlobalStyles from "./style.lib/globalStyles";
+import GlobalStyles from "../style.lib/globalStyles";
 // customize with material-ui
 import settings from '../style.lib/settings';
 import colors from '../style.lib/colors';
