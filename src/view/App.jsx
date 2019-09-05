@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 //customize
 import styled from "styled-components";
 //import "./styles.css";
-import GlobalStyles from "./globalStyles";
+import GlobalStyles from "./style.lib/globalStyles";
 // customize with material-ui
-import settings from '../settings';
-import colors from '../colors';
+import settings from '../style.lib/settings';
+import colors from '../style.lib/colors';
 
 // Material-UI
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
