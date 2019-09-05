@@ -11,7 +11,18 @@ const { Provider } = StateDataManager;
 const WrapperDataManager = ({ children }) => {
   console.log(`in WrapperDataManager`);
 
-  const [original_Locations_list, set_original_Locations_list] = useState([]);
+  // const [original_Locations_list, set_original_Locations_list] = useState([]);
+  const [original_Locations_list, set_original_Locations_list] = useState([
+    {
+      id: 1,
+      name: 'Demo Location',
+      address: 'ha nadiv 18, Tel Aviv',
+      // coordinates: {lat: -389.76, lng: 45.12},
+      coordinate_lat: -389.76, 
+      oordinate_lng: 45.12, 
+      category: 'Home',
+    }
+  ]);
   const [filtered_Location_list, update_Location_filtered_list] = useState([]);
   const [selected_location, update_selected_location] = useState({});
  

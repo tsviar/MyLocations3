@@ -2,7 +2,7 @@ import React from "react";
 import Thumb from "../Thumb";
 import styled from "styled-components";
 
-const Location= ({ name, address, coordinates, category }) => {
+const Location= ({ name, address, coordinates_lat, coordinates_lng, category }) => {
   // console.log('name:',name)
   //	console.log('props:',props)
   // coordinates = {
@@ -17,7 +17,7 @@ const Location= ({ name, address, coordinates, category }) => {
           {name} ( Category: {category} )
         </Title>
         <MsgText>Address: {address} </MsgText>
-        <MsgText>Coordinates: lat {coordinates.lat}, lng {coordinates.lng})</MsgText>
+        <MsgText>Coordinates: lat {coordinates_lat}, lng {coordinates_lng})</MsgText>
       </TextsBox>
     </Box>
   );
