@@ -26,7 +26,24 @@ const WrapperDataManager = ({ children }) => {
   const [filtered_Location_list, update_Location_filtered_list] = useState([]);
   const [selected_location, update_selected_location] = useState({});
  
-  const [categories_list, set_categories_list] = useState([]);
+  // const [categories_list, set_categories_list] = useState([]);
+  const [categories_list, set_categories_list] = useState([
+    {
+        name: 'Cat1',
+    },
+    {
+        name: 'Cat2',
+
+    },
+    {
+        name: 'Cat3',
+
+    },
+    {
+        name: 'Cat4',
+    },
+  ]);
+
   const [selected_category, update_selected_category] = useState("");
 
   const [loading_lists, set_loading_lists] = useState(true);

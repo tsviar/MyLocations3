@@ -21,43 +21,24 @@ import {
 import { StateDataManager } from "../../stateProvider/DataManager";
 import { wrap } from "module";
 
- 
-// const currencies = [
-//     {
-//       value: 'USD',
-//       label: '$',
-//     },
-//     {
-//       value: 'EUR',
-//       label: '€',
-//     },
-//     {
-//       value: 'BTC',
-//       label: '฿',
-//     },
-//     {
-//       value: 'JPY',
-//       label: '¥',
-//     },
-//   ];
   
  
-  const categories = [
-    {
-        name: 'Cat1',
-    },
-    {
-        name: 'Cat2',
+//   const categories = [
+//     {
+//         name: 'Cat1',
+//     },
+//     {
+//         name: 'Cat2',
 
-    },
-    {
-        name: 'Cat3',
+//     },
+//     {
+//         name: 'Cat3',
 
-    },
-    {
-        name: 'Cat4',
-    },
-  ];   
+//     },
+//     {
+//         name: 'Cat4',
+//     },
+//   ];   
 
   const MIN_COORDINATES = -5000.000000;
   const MAX_COORDINATES =  5000.000000;
@@ -87,7 +68,7 @@ const AddLocation = () => {
         // coordinates: {lat: -389.76, lng: 45.12},
         coordinates_lat: -389.76, 
         coordinates_lng: 45.12, 
-        category: categories[0].name,
+        category: categories_list[0].name,
       });   
 
     const [errors, set_errors] = useState({
@@ -400,8 +381,8 @@ const validateField = field => {
                 //     id: 'category-simple',
                 // }}
                 >
-                {categories.map(item => (
-                <MenuItem key={item.id} value={item.name}>
+                {categories_list.map(item => (
+                <MenuItem key={item.name} value={item.name}>
                     {item.name}
                 </MenuItem>
                 ))}
