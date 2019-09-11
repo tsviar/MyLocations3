@@ -1,6 +1,9 @@
 import React, { Component, useState, useEffect} from "react";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
-import {MAP} from 'react-google-maps/lib/constants';
+//import {MAP} from 'react-google-maps/lib/constants';
+
+import { makeStyles, styled } from '@material-ui/core/styles';
+import {  Box } from "@material-ui/core";
 
 import marker from '@ajar/marker'; 
 
@@ -167,7 +170,7 @@ const Map = withScriptjs( withGoogleMap( (props) => {
   }
 
 
-   // using React refsto create a reference object to the GoogleMap
+   // using React refs to create a reference object to the GoogleMap
 
   return( 
     <GoogleMap
@@ -201,10 +204,11 @@ class LocationsMap extends Component {
   
    shouldComponentUpdate(nextProps, nextState) {
     log("shouldComponentUpdate >>>>");
-    // log("this.props:", this.props);
-    // log("this.state:", this.state);
-    // log("nextState:", nextState);
-    // log("nextProps:", nextProps);
+    // log("LocationsMap shouldComponentUpdate this.props:", this.props);
+    // log("LocationsMap shouldComponentUpdate this.state:", this.state);
+    // log("LocationsMap shouldComponentUpdate nextState:", nextState);
+    // log("LocationsMap shouldComponentUpdate nextProps:", nextProps);
+    log("LocationsMap shouldComponentUpdate this._map:",  this._map);
     // log("<<<< shouldComponentUpdate");
     // this.map.setCenter({ lat: nextProps.lat, lng: nextProps.lng });
     // this.map.setZoom(nextProps.zoom);
@@ -214,7 +218,7 @@ class LocationsMap extends Component {
 
     // this.map.panTo({ lat: nextProps.lat, lng: nextProps.lng });
 
-    return false;
+    return true;
   }
 
 
@@ -227,8 +231,16 @@ class LocationsMap extends Component {
       zoom: zoom,
       setCoordinates,
     });
+
+    log("LocationsMap componentDidMount this._map:",  this._map);
   }
   
+  componentWillUnmount() {
+    const { lat, lng, zoom, setCoordinates } = this.props;
+    // console.log('LocationsMap componentWillUnmount this.props \n', this.props);
+    log("LocationsMap componentWillUnmount this._map:",  this._map);
+  }
+
   //==============================================================
   // get the GoogleMap instance
   //==============================================================
@@ -237,9 +249,16 @@ class LocationsMap extends Component {
          //(map) => map.context[MAP]  
     this._map = map;
 
-    marker.obj(this._map, 'LocationsMap onMapLoad this._map'  ); 
-    marker.obj(this._map.getCenter().toJSON(), `LocationsMap onMapLoad this._map.getCenter().toJSON() \n`); 
-    marker.green('LocationsMap onMapLoad this._map.getZoom' , this._map.getZoom());
+    console.log('LocationsMap onMapLoad this._map' ,this._map  ); 
+    if ( (this._map !== null) && (this._map !== 'undefined') ) {
+          const myCenter = this._map.getCenter();
+          console.log(myCenter, `LocationsMap onMapLoad myCenter`);
+      
+          // marker.obj(this._map.getCenter().toJSON(), `LocationsMap onMapLoad this._map.getCenter().toJSON() \n`); 
+          marker.green('LocationsMap onMapLoad this._map.getZoom' , this._map.getZoom());   
+    } else{
+      marker.red('LocationsMap onMapLoad this._map is null, s.t. happened ');
+    }
 
   }
 
@@ -248,11 +267,16 @@ class LocationsMap extends Component {
 
   //console.log(`google maps URL: ${GOOGLE_MAPS_URL}`);
 
-    return (
-      <div
-        // ref="myMap"
-        className="map-box">
+    if ( (this._map !== null) && (this._map !== 'undefined') ) {    
+      marker.green('LocationsMap render this._map' , this._map);   
+    } else{
+      marker.red('LocationsMap render this._map is null ');
+    }
 
+    return (  
+       <MapBox>
+         {/* <div ref="myMap" className="map-box" > */}
+        {/* <h1>Map should be here</h1> */}
         <Map
           // passing props to GoogleMap:
           ref="mapDiv"
@@ -266,24 +290,198 @@ class LocationsMap extends Component {
           onMapLoad = {this.onMapLoad}
 
           googleMapURL={GOOGLE_MAPS_URL}
-          loadingElement={ <div style={{ height: `100%` }} /> }
-          containerElement={ <div style={{ height: `400px` }} /> }
-          mapElement={<div id='googlemap' ref="myMap" style={{ height: `100%` }} />  }
+          loadingElement={ <LoadingElementBox
+            // style={{ height: `100%`, width:`80%` }} 
+            /> }
+          containerElement={ <ContainerElementBox 
+            // style={{ height: `30rem`, width:`20rem` }}
+             /> }
+          mapElement={<MapElementBox id='googlemap' ref="myMap" 
+          // style={{  height: `30rem`, width:`20rem` } }
+           />  }
 
           onDoubleClick={this.handleMapChange}
           onMapIdle={ ()=> { console.log('LocationsMap map is ready') } }
    
         />
 
-      </div>
-      // <div
-      //   ref="myMap"
-      //   className="map-box"
-      //   // onClick={() => this.getCoordinates(event)}
-      // />
+      </MapBox>
+
     );
   }
 }
 
 
-export default LocationsMap ;
+
+
+class GoogleMapContainer extends Component {
+  state = {
+    address:'',
+
+    // lat: -34.397,
+    // lng: 150.644,
+    lat: 31.776847698411576, 
+    lng: 35.20543098449707, 
+
+    //   zoom: 8,
+    //   zoom: 1, //World
+    //   zoom: 5, //Landmass/continent
+    //   zoom: 10, // City
+       zoom: 13, // City
+    //   zoom: 15, //Streets
+    //   zoom: 20, //Buildings
+   };
+
+
+
+  setUserPickedCoordinates = ({ lat, lng }) => {
+    this.setState({ lat: lat, lng: lng });
+  };
+
+  setUserPickedAddress = (str) => {
+    this.setState({ address: str });
+  };
+
+  render() {
+    log(this.state);
+    return (
+      <AppBox>
+      
+        {/* <LocationsGoogleMap */}
+        <MapTitleBox>
+          <MapTitle>Location map</MapTitle>
+        </MapTitleBox>
+
+        <LocationsMap
+          lat={this.state.lat}
+          lng={this.state.lng}
+          zoom={this.state.zoom}
+          setCoordinates={this.setUserPickedCoordinates}
+          setAddress={this.setUserPickedAddress}
+        />
+        <MapDetailsBox>
+          <MapDetails>lat:     {this.state.lat}</MapDetails>
+          <MapDetails>lng:     {this.state.lng}</MapDetails>
+          <MapDetails>Address: {this.state.address}</MapDetails>
+        </MapDetailsBox>
+      </AppBox>
+    );
+  }
+}
+
+export {GoogleMapContainer, LocationsMap} ;
+
+
+
+const AppBox = styled('div')({
+  height: '65vh',
+  /* height: 85vh; */
+  minWidth: '36rem',
+  maxWidth:'35rem',
+  
+  borderRadius: '0.4rem',
+  overflowX: 'hidden',
+  overflowY: 'scroll',
+  boxShadow: '0 0.2rem 0.8rem DimGrey',
+
+  borderradius: '0.8rem',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start', 
+  justifyContent: 'flex-start',   
+}); 
+
+const LoadingElementBox= styled('div')({
+  // height: `100%`, 
+  // width:`100%` , //80%
+   margin:0,
+   padding:0,
+
+   display: 'flex',     
+   flexdirection:'row',
+   flaxbasis: '100%', 
+   flexwrap: 'wrap', 
+   justifyContent: 'center',
+   alignitems: 'center',
+}); 
+
+const ContainerElementBox= styled('div')({
+//  height: `30rem`, 
+//  width:`27rem`, 
+  margin:0,
+  padding:0,
+   
+  display: 'flex',     
+  flexDirection:'row',
+  flexBasis: '100%', 
+  flexWrap: 'wrap', 
+  justifyContent: 'center',
+  alignItems: 'center',
+}); 
+
+const MapElementBox= styled('div')({
+  // height: `30rem`, 
+  // width:`25rem`,
+  height: `35rem`, 
+  width:`32rem`,
+  maxWidth:`32rem`,
+  margin:0,
+  padding:0,
+}); 
+
+//const MapBox = styled('div')({
+const MapBox = styled(Box)({
+    display: 'flex',
+    flexdirection:'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 0, //20
+    //padding: 20
+    padding: '1.5rem',
+    //paddingRight: 20, // '15px'
+  });
+
+const MapTitleBox = styled('div')({
+  marginLeft:'5rem',
+  paddingLeft: '1rem',
+      display: 'flex',
+    flexdirection:'column',
+  //width:`20rem`,
+  justifyContent: 'center',
+});  
+
+const MapTitle = styled('h2')({
+  //width:`20rem`,
+  //fontSize: '1.75rem',
+  fontWeight: 'inherit',
+  textAlign: 'center',  
+}); 
+
+const MapDetailsBox = styled('div')({
+ // width:`20rem`,
+  marginLeft:'10px',
+  paddingLeft: '20px',
+
+  display: 'flex',     
+  flexDirection:'column',
+ flexBasis: '100%', 
+  flexWrap: 'wrap', 
+  justifyContent: 'center',
+  //alignItems: 'center',
+  // fontFamily: 'Expletus Sans',
+ 
+  color: 'slategray',
+  fontWeight: 400,
+  
+}); 
+
+const MapDetails = styled('h5')({
+  fontSize: '1.1rem',
+  // font-size: '2.25rem', 
+  fontWeight: 'inherit',
+  color: 'darkslateblue',
+  textAlign: 'left',  
+}); 
+
+
+

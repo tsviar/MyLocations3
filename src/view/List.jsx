@@ -36,7 +36,9 @@ const Box = styled.div`
   background: oldlace;
   height: 65vh;
   /* height: 85vh; */
-  min-width: 56rem;
+  min-width: 60rem;
+  max-width: 56vw;
+  width: 56%;
 
   border-radius: 0.4rem;
   overflow-x: hidden;

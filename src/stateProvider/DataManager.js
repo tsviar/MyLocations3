@@ -45,6 +45,23 @@ const WrapperDataManager = ({ children }) => {
   ]);
 
   const [selected_category, update_selected_category] = useState("");
+  
+  const [selected_map_location, update_selected_map_location] = useState( {
+    address:'',
+
+    // lat: -34.397,
+    // lng: 150.644,
+    lat: 31.776847698411576, 
+    lng: 35.20543098449707, 
+
+    //   zoom: 8,
+    //   zoom: 1, //World
+    //   zoom: 5, //Landmass/continent
+    //   zoom: 10, // City
+       zoom: 13, // City
+    //   zoom: 15, //Streets
+    //   zoom: 20, //Buildings
+   });
 
   const [loading_lists, set_loading_lists] = useState(true);
   const [error_message, set_error_message] = useState(null);
@@ -59,6 +76,7 @@ const WrapperDataManager = ({ children }) => {
     original_Locations_list,
     filtered_Location_list,
     selected_location,
+    selected_map_location, 
     categories_list,
     selected_category,
     loading_lists,
@@ -74,6 +92,7 @@ const WrapperDataManager = ({ children }) => {
     set_original_Locations_list,
     update_Location_filtered_list,
     update_selected_location,
+    update_selected_map_location,
     set_categories_list,
     update_selected_category,
     set_loading_lists,   
@@ -93,21 +112,21 @@ const WrapperDataManager = ({ children }) => {
     try {
       const web_list = await api.fetchAllProfiles3(data_url);
 
-      console.log(`MANAGER fetchData web_list:`);
-      console.table(web_list);
+     // console.log(`MANAGER fetchData web_list:`);
+     // console.table(web_list);
 
-      console.log(`MANAGER fetchData calling setWebList:`);
+     // console.log(`MANAGER fetchData calling setWebList:`);
       if (web_list) {
         console.log(`MANAGER fetchData weblist valid:`);
-        console.table(web_list);
+       // console.table(web_list);
 
         set_original_list(web_list);
         update_filtered_list(web_list);
         update_selected_card(web_list[0]);
         set_loading_profiles(false);
 
-        console.log(`MANAGER fetchData web_list[0]:`);
-        console.log(web_list[0]);
+        //console.log(`MANAGER fetchData web_list[0]:`);
+        //console.log(web_list[0]);
       } else {
         console.log(`MANAGER fetchData weblist NOT valid:`);
         set_error_message(`MANAGER fetchData weblist NOT valid:`);

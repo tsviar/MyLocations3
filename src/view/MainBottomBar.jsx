@@ -23,7 +23,11 @@ const useStyles = makeStyles({
     justifyContent: "center",
     // margin: 20,
     // padding: 20,
-    width: "100%", 
+    
+    width: '100%', 
+    minWidth: '100%', 
+    maxWidth: '100%', 
+
     height: 40,
     fontSize: "120rem", 
     htmlFontSize: "1rem",

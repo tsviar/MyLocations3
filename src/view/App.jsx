@@ -15,6 +15,8 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { WrapperDataManager } from "../stateProvider/DataManager";
 import HomePage from "./HomePage";
 import ProfilesBrowser from "./ProfilesBrowser";
+
+import LocationsBrowser from "./Locations/LocationsBrowser";
 import AddLocation from "./Locations/AddLocation";
 
 // since Links is exported as default,
@@ -47,9 +49,11 @@ const App = () => (
         <Route exact path="/" component={HomePage} />
 
         <WrapperDataManager>
-          <Route path="/locations" component={ProfilesBrowser} />
+          {/* <Route path="/locations" component={ProfilesBrowser} /> */}
+          <Route path="/locations" component={LocationsBrowser} />
 
         <Route path="/categories" component={AddLocation} />
+
         </WrapperDataManager>
 
         <MainBottomBar/>
@@ -63,7 +67,8 @@ const App = () => (
 export default App;
 
 const Box = styled.div`
-  /* background: lightskyblue; */
+  max-width: 100vw;
+  /* background: lvwightskyblue; */
   /* padding: 3rem 7.5rem; */
   padding: 2rem 10rem 5rem 10rem;
   border-radius: 0.8rem;

@@ -55,9 +55,12 @@ const AddLocation = () => {
     const { 
         categories_list, 
         original_Locations_list, 
-        set_original_Locations_list
+        set_original_Locations_list,
+        selected_map_location, 
+        update_selected_map_location,
     } =  useContext(StateDataManager);
 
+   
     // Local state
 
     // Note: marker.obj prints in alphabetical order not actual order...
@@ -341,7 +344,7 @@ const validateField = field => {
                         {errors.coordinates_lat &&  <ErrorText>{errors.coordinates_lat}</ErrorText>}
 
                         <FormControl required margin="normal" width="50%">
-                        <InputLabel htmlFor="coordinates_lng" flexGrow="1">Longitude</InputLabel>
+                        <InputLabel htmlFor="coordinates_lng" >Longitude</InputLabel>
 
                         <CoordinatesInput 
                             id="coordinates_lng" 
