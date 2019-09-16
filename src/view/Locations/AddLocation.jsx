@@ -17,28 +17,9 @@ import {
     Box,
     Tooltip ,
   } from "@material-ui/core";
-
+  
 import { StateDataManager } from "../../stateProvider/DataManager";
 import { wrap } from "module";
-
-  
- 
-//   const categories = [
-//     {
-//         name: 'Cat1',
-//     },
-//     {
-//         name: 'Cat2',
-
-//     },
-//     {
-//         name: 'Cat3',
-
-//     },
-//     {
-//         name: 'Cat4',
-//     },
-//   ];   
 
   const MIN_COORDINATES = -5000.000000;
   const MAX_COORDINATES =  5000.000000;
