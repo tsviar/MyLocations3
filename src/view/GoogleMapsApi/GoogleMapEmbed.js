@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect} from "react";
+import React, { Component, useState, useEffect, useContext } from "react";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 //import {MAP} from 'react-google-maps/lib/constants';
 
@@ -7,6 +7,7 @@ import {  Box } from "@material-ui/core";
 
 import marker from '@ajar/marker'; 
 
+import { StateDataManager } from "../../stateProvider/DataManager";
 
 const log = (...args) => console.log.apply(null, ["GoogleMap -->", ...args]);
 // const url= 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCdtGPc2gg0Wh8UWRWDGDy8ChwLNyB5DnI';
@@ -42,7 +43,12 @@ const Map = withScriptjs( withGoogleMap( (props) => {
      lat, lng, zoom, setCoordinates, setAddress, onMapLoad
   } = props;
     
-  
+  //Gloobal context storage
+  const { 
+    selected_map_location, 
+    update_selected_map_location,
+  } =  useContext(StateDataManager);
+
   const google = window.google;
  // console.log('Map google ', google);
 
@@ -134,7 +140,10 @@ const Map = withScriptjs( withGoogleMap( (props) => {
     marker.magenta(current_location, `Map getCoordinates current_locationn\n` );
 
     setCoordinates({ lat: lat, lng: lng });
-    
+    update_selected_map_location( ( {...selected_map_location, lat: lat, lng: lng, } )  );   
+
+    marker.red(`Map getCoordinates selected_map_location: ${selected_map_location.address} ${selected_map_location.lat}  ${selected_map_location.lng}`);
+
     const place_details = event.xa.view.google.maps.places;//.getDetailes();
     marker.obj(place_details, `Map getCoordinates place_details\n`);
 
@@ -156,17 +165,25 @@ const Map = withScriptjs( withGoogleMap( (props) => {
       if (status === 'OK') {
         if (results[0]) {
           marker.red(`Map geocodeLatLng address: ` + results[0].formatted_address, );
-          setAddress(results[0].formatted_address);
+          const strAddress = results[0].formatted_address;
+          setAddress(strAddress);
+          update_selected_map_location( ( {...selected_map_location, address: strAddress, } )  );   
+         
         } else {
           marker.red('Map geocodeLatLng: No results found');
           setAddress('Address Not Found');
+          update_selected_map_location( ( {...selected_map_location,  address: 'Address Not Found', } )  );  
         }
       } else {
         marker.e('MapgeocodeLatLng Geocoder: failed due to: ' + status);           
         setAddress('Address ERROR: '+status);
+        update_selected_map_location( ( {...selected_map_location,  address: 'Address ERROR: '+status, } )  );  
+
      }
     });
 
+    
+    marker.red(`Map geocodeGetAddress selected_map_location: ${selected_map_location.address} ${selected_map_location.lat}  ${selected_map_location.lng}`);
   }
 
 
@@ -268,7 +285,7 @@ class LocationsMap extends Component {
   //console.log(`google maps URL: ${GOOGLE_MAPS_URL}`);
 
     if ( (this._map !== null) && (this._map !== 'undefined') ) {    
-      marker.green('LocationsMap render this._map' , this._map);   
+      console.log('LocationsMap render this._map' , this._map);   
     } else{
       marker.red('LocationsMap render this._map is null ');
     }
@@ -315,6 +332,9 @@ class LocationsMap extends Component {
 
 
 class GoogleMapContainer extends Component {
+     // Global context states
+
+
   state = {
     address:'',
 
@@ -349,7 +369,8 @@ class GoogleMapContainer extends Component {
       
         {/* <LocationsGoogleMap */}
         <MapTitleBox>
-          <MapTitle>Location map</MapTitle>
+          {/* <MapTitle>Location map</MapTitle> */}
+          <h1>Location map</h1>
         </MapTitleBox>
 
         <LocationsMap
@@ -374,11 +395,14 @@ export {GoogleMapContainer, LocationsMap} ;
 
 
 const AppBox = styled('div')({
-  height: '65vh',
+  height: '70vh',
   /* height: 85vh; */
-  minWidth: '36rem',
-  maxWidth:'35rem',
+  minWidth: '35rem',
+  maxWidth:'37rem',
   
+  //marginRight: 20,
+  //paddingRight: 20,
+
   borderRadius: '0.4rem',
   overflowX: 'hidden',
   overflowY: 'scroll',
@@ -443,9 +467,12 @@ const MapBox = styled(Box)({
 
 const MapTitleBox = styled('div')({
   marginLeft:'5rem',
-  paddingLeft: '1rem',
-      display: 'flex',
-    flexdirection:'column',
+  paddingLeft: 30, //'1rem',
+  marginTop: 20,
+  paddingTop: 20,
+
+  display: 'flex',
+  flexdirection:'column',
   //width:`20rem`,
   justifyContent: 'center',
 });  

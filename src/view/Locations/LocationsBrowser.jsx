@@ -69,7 +69,8 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
                 setAddress={setUserPickedAddress}
               /> */}
 
-            <List />
+            {/* <List /> */}
+            <AddLocation />
           </ContentBox>
         </div>
       ) : (
@@ -105,6 +106,7 @@ const ContentBox = styled.div`
   border-radius: 5px;
   display: flex;
 `;
+
 
 /*
   return (

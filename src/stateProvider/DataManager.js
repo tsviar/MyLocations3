@@ -24,8 +24,26 @@ const WrapperDataManager = ({ children }) => {
     }
   ]);
   const [filtered_Location_list, update_Location_filtered_list] = useState([]);
+  
   const [selected_location, update_selected_location] = useState({});
  
+  const [selected_map_location, update_selected_map_location] = useState( {
+    address:'',
+
+    // lat: -34.397,
+    // lng: 150.644,
+    lat: 31.776847698411576, 
+    lng: 35.20543098449707, 
+
+    //   zoom: 8,
+    //   zoom: 1, //World
+    //   zoom: 5, //Landmass/continent
+    //   zoom: 10, // City
+       zoom: 13, // City
+    //   zoom: 15, //Streets
+    //   zoom: 20, //Buildings
+   });
+
   // const [categories_list, set_categories_list] = useState([]);
   const [categories_list, set_categories_list] = useState([
     {
@@ -46,22 +64,6 @@ const WrapperDataManager = ({ children }) => {
 
   const [selected_category, update_selected_category] = useState("");
   
-  const [selected_map_location, update_selected_map_location] = useState( {
-    address:'',
-
-    // lat: -34.397,
-    // lng: 150.644,
-    lat: 31.776847698411576, 
-    lng: 35.20543098449707, 
-
-    //   zoom: 8,
-    //   zoom: 1, //World
-    //   zoom: 5, //Landmass/continent
-    //   zoom: 10, // City
-       zoom: 13, // City
-    //   zoom: 15, //Streets
-    //   zoom: 20, //Buildings
-   });
 
   const [loading_lists, set_loading_lists] = useState(true);
   const [error_message, set_error_message] = useState(null);

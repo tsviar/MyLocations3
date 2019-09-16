@@ -51,16 +51,18 @@ const AddLocation = () => {
     // general apearence rules
     const classes = useStyles();
  
-    // Global context states
+   // Global context states
     const { 
         categories_list, 
         original_Locations_list, 
         set_original_Locations_list,
         selected_map_location, 
-        update_selected_map_location,
+        //update_selected_map_location,
     } =  useContext(StateDataManager);
-
+ 
    
+    marker.yellow(`AddLocation: ${selected_map_location.address} ${selected_map_location.lat}  ${selected_map_location.lng}`);
+
     // Local state
 
     // Note: marker.obj prints in alphabetical order not actual order...
@@ -68,23 +70,28 @@ const AddLocation = () => {
         id: original_Locations_list.length+1,
         name: '',
         address: '',
-        // coordinates: {lat: -389.76, lng: 45.12},
-        coordinates_lat: -389.76, 
-        coordinates_lng: 45.12, 
+        lat: 31.776847698411576, 
+        lng: 35.20543098449707, 
         category: categories_list[0].name,
       });   
 
     const [errors, set_errors] = useState({
         name: '',
         address: '',
-        coordinates_lat: '',
-        coordinates_lng: '', 
-        category: '',        
+        lat: '',
+        lng: '', 
+        category: '',  
+        validation: '',      
       });   
 
-    const [validation_success, set_validation_success] = useState(true);
+    //const [validation_success, set_validation_success] = useState(true);
+   const [submitting, set_submitting] = useState('IDLE');
+   const [submit_text, set_submit_text] = useState('');
 
-   
+    let validation_success = true;
+   // let submitting = 'IDLE';
+    
+    
 
   /*
     
@@ -99,6 +106,22 @@ const AddLocation = () => {
 
     So, my unofficial suggestion is that, use onChange whenever you possible, use onBlur whenever you need.
   */
+
+  
+ 
+  useEffect(() => {
+
+    set_new_location( ( {...new_location, 
+      id: ((original_Locations_list.length) + 1),
+      address: selected_map_location.address, 
+      lat: selected_map_location.lat, 
+      lng: selected_map_location.lng, 
+    } )  );  
+
+    marker.red(`AddLocation selected_map_location: lng  ${selected_map_location.lng}`); 
+    marker.red(`AddLocation new_location.lng:  ${new_location.lng}`);
+  
+  }, [selected_map_location]);
 
 
   // Validating input after every change
@@ -133,6 +156,8 @@ const AddLocation = () => {
   //------------------------------------
   const handleBlur = event => {
 
+    marker.i(`AddLocationn handleBlur`);
+
     try{   
         let error_msg = '';
 
@@ -142,7 +167,7 @@ const AddLocation = () => {
         let validValue = ( (value !== ``) && (value !== 'undefined') && (value !== null) );  
         marker.magenta( `handleBlur 2 event.target ${name} ${value}` );
         
-        if( (name === 'coordinates_lat') || (name === 'coordinates_lng') ) {
+        if( (name === 'lat') || (name === 'lng') ) {
             marker.red(`handleBlur 3 field ${name} ${value} `);   
 
             if ( (value <= MIN_COORDINATES )  || (value >= MAX_COORDINATES ) ) {
@@ -217,14 +242,14 @@ const AddLocation = () => {
 
   };
 
-  
+ //-------------------------------- 
  //  Form validateion
  //--------------------------------   
  
 const validateField = field => {
     let validName = ( (new_location[field] !== ``) && (new_location[field] !== 'undefined') && (new_location[field] !== null) );
     
-    if( (field === 'coordinates_lat') || (field === 'coordinates_lng') ) {
+    if( (field === 'lat') || (field === 'lng') ) {
         validName = validName && (!Number.isNaN(new_location[field]) )
                     && (new_location[field] >= MIN_COORDINATES )
                     && (new_location[field] <= MAX_COORDINATES ) ;
@@ -243,8 +268,8 @@ const validateField = field => {
 
     const validName = validateField('name');
     const validAddress = validateField('address'); 
-    const validLat = validateField('coordinates_lat' );
-    const validLng  = validateField('coordinates_lng' );
+    const validLat = validateField('lat' );
+    const validLng  = validateField('lng' );
     const validCategory  = validateField('category' );
 
     marker.obj( errors , `validateForm errors 1` );
@@ -253,34 +278,113 @@ const validateField = field => {
         && !errors.name && !errors.address && !errors.coordinate_lat 
         && !errors.coordinate_lng && !errors.category) {
 
-            set_validation_success(true);
+            validation_success =true;// set_validation_success(true);
+            set_errors({...errors, validation:``}); 
+
             marker.green( `validateForm validation_success ${validation_success}` );
             marker.obj( new_location , `validateForm new_location` );
             marker.obj( errors , `validateForm errors 2` );                                             
     }  
 
     }catch(err){
+      validation_success = false; //set_validation_success(false);
+       set_errors({...errors, validation:`Validation Error.`}); 
         marker.red(`validateForm caugt exception: ${err.message}`);
     }
    marker.obj( new_location , `validateForm Updated new_location` );
+
   }
 
-  const handleSubmit = event  => {
+
+  marker.red(`AddLocation submitting ${submitting}  ${submit_text}`);
+
+//------------------------------------------------
+//          SUBMIT
+//------------------------------------------------
+
+  const handleSubmit = event  => {    
     event.preventDefault() ;// prevent form post
-
-    // handle add here
-    //----------------------------
-    //alert('A name was submitted: ' + this.state.value);
-
+   // submitting = 'START'; 
+    set_submitting('START');   
+     
+    marker.red('AddLocation handleSubmit start '+ submitting );
+    marker.green('AddLocation handleSubmit original_Locations_list.length '+ original_Locations_list.length );
+ 
     validateForm();
 
-    marker.obj( new_location , `handleSubmit Update new_locationr` );
-     set_original_Locations_list(...original_Locations_list, new_location);
+    if(true === validation_success) {
+      marker.obj( new_location , `handleSubmit Update new_location 1` );
+      marker.obj( original_Locations_list , `handleSubmit original_Locations_list 1` );
+
+      set_original_Locations_list( [...original_Locations_list, new_location]);
+
+      marker.obj( new_location , `handleSubmit Update new_location 2` );
+      marker.obj( original_Locations_list , `handleSubmit original_Locations_list 2` );
+
+     // alert(`Lcation ${new_location.name} was added succesfully`);
+     set_submitting('END');
+     marker.red('AddLocation handleSubmit completed '+ submitting );
+
+   
+      // original_Locations_list is in the prev state yet, so increment by 2
+      set_new_location( ( 
+        {...new_location, 
+           id: (original_Locations_list.length +2),
+          name: '', 
+          address: '', 
+          lat: 31.776847698411576, 
+          lng: 35.20543098449707, 
+        } )  );  
+
+    }
+    
+    setTimeout(() => {      
+      set_submitting('IDLE'); //set_submitting(false);
+      marker.red('AddLocation handleSubmit end '+ submitting );
+    }, 1000);
+
+  
   }
 
   marker.obj( new_location , `AddLocation current new_location` );
+  marker.obj(original_Locations_list, `AddLocation original_Locations_list `); 
   
+
+  //----------------------------------------------------------
+  // TODO: refine this one, doesnt show the Submitting new location..
+  //----------------------------------------------------------
+  useEffect(() => {
+
+    marker.green(`AddLocation new_location.lng:  ${new_location.lng}`);
+    if ( 'IDLE' === submitting) {
+      setTimeout(() => {  set_submit_text(''); 
+      marker.red(`AddLocation useEffect ${submit_text}`);
+    }, 300);          
+    }
+    if ( 'START' === submitting) {
+      set_submit_text('Submitting new location...');
+       setTimeout(() => {
+        set_submit_text('Added new location successfully...');
+        marker.red(`AddLocation useEffect end ${submit_text}`);
+      }, 20);     
+      marker.red(`AddLocation useEffect ${submit_text}`);
+    }
+    if ( 'END' === submitting) {  
+      set_submit_text('Added new location successfully...');  
+      setTimeout(() => {
+        set_submit_text('Added new location successfully...');
+        marker.red(`AddLocation useEffect end ${submit_text}`);
+      }, 20);
+    }
+    marker.red(`AddLocation useEffect submit_text  ${submit_text}`); 
+  
+  }, [submitting]);
+
+ 
+
+
     return (
+      <AppBox>
         <FormBox>
           {/* <form style={{ width: "50%" }} onSubmit={handleSubmit} > */}
           <NewLocationForm  onSubmit={handleSubmit} >
@@ -306,11 +410,13 @@ const validateField = field => {
                 id="address" 
                 name="address"
                 type="text" 
+                // disabled="true"
                 value={new_location.address} 
+                // value={selected_map_location.address}                 
                 placeholder="e.g: myStreet 3, New York"
                 onChange={handleChange}
                 onBlur={handleBlur}
-              />
+               />
             </FormControl>
             {errors.address &&  <ErrorText>{errors.address}</ErrorText>}
 
@@ -327,38 +433,41 @@ const validateField = field => {
                 <CoordinatesBoxLabel> Coordinates </CoordinatesBoxLabel>
                  <CoordinatesInnerBox> 
                 {/* <fieldset width="100%"> */}
+
                     <FormControl required margin="normal" width="50%">
-                        <InputLabel htmlFor="coordinates_lat">Latitude </InputLabel>
+                        <InputLabel htmlFor="lat">Latitude </InputLabel>
                         <CoordinatesInput 
-                            id="coordinates_lat" 
-                            name="coordinates_lat"
+                            id="lat" 
+                            name="lat"
                             type="number"  
                             min="MIN_COORDINATES"
                             max="MAX_COORDINATES"
-                            value={new_location.coordinates_lat} 
+                           value={new_location.lat} 
+                            // value={selected_map_location.lat}
                             placeholder="-345.1"
                             onChange={handleChange}
                             onBlur={handleBlur}
                             />
                         </FormControl>
-                        {errors.coordinates_lat &&  <ErrorText>{errors.coordinates_lat}</ErrorText>}
+                        {errors.lat &&  <ErrorText>{errors.lat}</ErrorText>}
 
                         <FormControl required margin="normal" width="50%">
-                        <InputLabel htmlFor="coordinates_lng" >Longitude</InputLabel>
+                        <InputLabel htmlFor="lng" >Longitude</InputLabel>
 
                         <CoordinatesInput 
-                            id="coordinates_lng" 
-                            name="coordinates_lng"
+                            id="lng" 
+                            name="lng"
                             type="number"  
                             min="MIN_COORDINATES"
                             max="MAX_COORDINATES"
-                            value={new_location.coordinates_lng} 
+                            value={new_location.lng} 
+                            // value={selected_map_location.lng} 
                             placeholder="156.76"
                             onChange={handleChange}
                             onBlur={handleBlur}
                             />
                     </FormControl>  
-                    {errors.coordinates_lng &&  <ErrorText>{errors.coordinates_lng}</ErrorText>}
+                    {errors.lng &&  <ErrorText>{errors.lng}</ErrorText>}
 
                 {/* </fieldset>       */}
                 </CoordinatesInnerBox>
@@ -398,13 +507,18 @@ const validateField = field => {
 
             {errors.category &&  <ErrorText>{errors.category}</ErrorText>}   
 
+            <SubmitText> {submit_text } </SubmitText>
 
            <SubmitBox>
                 <Button 
                 disabled={
-                    errors.name || errors.address || errors.coordinates_lat 
-                    || errors.ooordinates_lng || errors.category 
-                    || validation_success === false
+                    (
+                    errors.name === '' && errors.address=== '' && errors.lat=== '' 
+                    &&  errors.lng=== '' && errors.category === '' 
+                    &&  errors.validation === '' 
+                    &&  submitting === 'IDLE'
+                    && validation_success === true 
+                    ) ? false : true                  
                 } 
                 variant="contained" color="primary" size="medium" margin= "40px" type="submit"   >
                 Add
@@ -422,6 +536,7 @@ const validateField = field => {
             */}
           </NewLocationForm>
         </FormBox>
+        </AppBox>
       );
   
 }
@@ -471,12 +586,30 @@ const useStyles = makeStyles(theme => ({
       },
 }));
 
+const AppBox = styled('div')({
+  height: '70vh',
+  /* height: 85vh; */
+  minWidth: '60rem', //'35rem',
+  maxWidth: '60rem', //'35rem',
+  marginLeft: 15,
+
+  borderRadius: '0.4rem',
+  overflowX: 'hidden',
+  overflowY: 'scroll',
+  boxShadow: '0 0.2rem 0.8rem DimGrey',
+
+  borderradius: '0.8rem',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',   //'flex-start', 
+  justifyContent: 'center',   //'flex-start', 
+}); 
 
 const FormBox = styled(Box)({
     display: "flex",
     justifyContent: "center",
     margin: 20,
-    padding: 20
+    padding: 20,
 }); 
 
 const NewLocationForm = styled('form')({
@@ -489,7 +622,7 @@ const NewLocationForm = styled('form')({
 });
 
 const CoordinatesBoxLabel = styled(InputLabel)({
-    fontSize: 3,
+    //fontSize: 3,
     fontWeight: 'inherit',
     textAlign: 'center',
     color:'inherit',
@@ -500,7 +633,7 @@ const CoordinatesBox = styled(Box)({
     flexDirection: "column",
     alignItems: "flex-start",
 
-    marginTop: 21,    
+    marginTop: 13,//21,    
     paddingTop: 10,    
     paddingBottom: 3,
     width: "100%",
@@ -524,12 +657,12 @@ const CoordinatesInnerBox = styled(Box)({
     flexDirection: 'column',
     justifyContent: 'space-even',
 
-    marginTop: 12,
+    //marginTop: 12,
     marginLeft: 20,
 
     paddingleft: 20,
     paddingTop: 5,
-    paddingBottom: 3,
+    paddingBottom: 5,
 
     // width: "100%",
     width:[1, 1, 1/2],
@@ -543,9 +676,11 @@ const CoordinatesInnerBox = styled(Box)({
 });
 
 const CoordinatesInput = styled(Input)({
+  //marginTop: 20,
     marginRight: 10,
+    paddingTop:25,
     // paddingTop: 5,
-     paddingleft: 25,
+    paddingleft: 25,
     paddingRight: 25,
     //flexGrow:0,
     // flexBasis:['40%', '40%', '100%'],
@@ -557,6 +692,7 @@ const CoordinatesInput = styled(Input)({
     marginRight: 10,
     paddingRight: 15,
   });
+  
 
   const SubmitBox = styled('p')({
     display: 'flex',
@@ -566,13 +702,24 @@ const CoordinatesInput = styled(Input)({
     paddingTop: 15,
   });
 
-  const ErrorText = styled('h4')({
+  const ErrorText = styled('h5')({
     display: 'flex',
     justifyContent:"left",
     marginTop: 3,
     //marginLeft: 50,
     paddingTop: 5,
     color: 'red',
+    textAlign: 'left',
+  });
+
+  
+  const SubmitText = styled('h5')({
+    display: 'flex',
+    justifyContent:"left",
+    marginTop: 3,
+    //marginLeft: 50,
+    paddingTop: 5,
+    color: 'green',
     textAlign: 'left',
   });
 

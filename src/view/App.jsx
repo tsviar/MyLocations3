@@ -52,7 +52,7 @@ const App = () => (
           {/* <Route path="/locations" component={ProfilesBrowser} /> */}
           <Route path="/locations" component={LocationsBrowser} />
 
-        <Route path="/categories" component={AddLocation} />
+          <Route path="/categories" component={AddLocation} />
 
         </WrapperDataManager>
 
