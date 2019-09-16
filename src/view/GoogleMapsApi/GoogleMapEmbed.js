@@ -26,11 +26,6 @@ const GOOGLE_MAPS_URL=
 `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places,geocoding&key=${google_maps_api_key}`;
 
 
-// `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCdtGPc2gg0Wh8UWRWDGDy8ChwLNyB5DnI`;
-
-// `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${google_maps_api_key}`;
-
-
 //============================================================================
 // withScriptjs enables avoididing stating the Google API Key in the HTML
 // and hiding it in .env file
