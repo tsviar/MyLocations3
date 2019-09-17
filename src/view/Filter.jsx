@@ -23,18 +23,18 @@ const Filter = () => {
     );
     
     update_filtered_list(filtered_list);
-    marker.green(`update_list: num_elements 2 ${num_elements}`);
+    //marker.green(`update_list: num_elements 2 ${num_elements}`);
     set_num_elements(filtered_list.length);
-    marker.green(`update_list num_elements 3 ${num_elements}`);
+   // marker.green(`update_list num_elements 3 ${num_elements}`);
 
-    marker.magenta (`update_list filtered_list.length ${filtered_list.length}`);
+   // marker.magenta (`update_list filtered_list.length ${filtered_list.length}`);
   };
 
-  marker.green(`Filter num_elements 4 ${num_elements}`);
+  //marker.green(`Filter num_elements 4 ${num_elements}`);
 
-  marker.blue(`items_count 1 ${items_count}`);
+  //marker.blue(`items_count 1 ${items_count}`);
   items_count = filtered_list.length;
-  marker.blue(`items_count 2 ${items_count}`);
+ // marker.blue(`items_count 2 ${items_count}`);
 
   return (
     <Header>

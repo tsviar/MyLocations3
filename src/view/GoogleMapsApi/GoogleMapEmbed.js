@@ -39,9 +39,10 @@ const Map = withScriptjs( withGoogleMap( (props) => {
   } = props;
     
   //Gloobal context storage
-  const { 
-    selected_map_location, 
-    update_selected_map_location,
+ const { 
+    initial_location,
+    //selected_map_location, 
+   // update_selected_map_location,
   } =  useContext(StateDataManager);
 
   const google = window.google;
@@ -58,11 +59,11 @@ const Map = withScriptjs( withGoogleMap( (props) => {
 
   const [current_location, set_current_location] = useState(
     {
-      address: '',
+      address: initial_location.address ,
       // lat: -389.76, 
       // lng: 45.12, 
-      lat: 31.776847698411576, 
-      lng: 35.20543098449707, 
+      lat: initial_location.lat , 
+      lng: initial_location.lng , 
       //   zoom: 8,
       //   zoom: 1, //World
       //   zoom: 5, //Landmass/continent
@@ -82,17 +83,19 @@ const Map = withScriptjs( withGoogleMap( (props) => {
       lat, lng, zoom, setCoordinates
     } = props;
 
-    set_current_location(
-      {
-        address: '',
-        lat: lat, 
-        lng: lng, 
-        zoom: zoom,         
-       }
-    );    
+    console.log('Map useEffect ON MOUNT props:\n', props);
+
+    // set_current_location(
+    //   {
+    //     address: '',
+    //     lat: lat, 
+    //     lng: lng, 
+    //     zoom: zoom,         
+    //    }
+    // );    
     
-    console.log('Map useEffect current_location:\n', current_location);
-    console.log('Map useEffect props:\n', props);
+   // console.log('Map useEffect ON MOUNT current_location:\n', current_location);
+
  
     const geocoder = new google.maps.Geocoder();
     set_geocoder(geocoder);
@@ -110,10 +113,9 @@ const Map = withScriptjs( withGoogleMap( (props) => {
 
 
   const onPositionChanged = (lat, lng) => {
-    marker.magenta(`Map onPositionChange:${lat} ${lng}`);
+    marker.blue(`Map onPositionChange:${lat} ${lng}`);
     const newLocation = new window.google.maps.LatLng(lat, lng);
-    // [NOTE]: try using the panTo() from googleMaps to recenter the map ? but don't know how to call it.
-
+  
     return (
       <Marker
         position={newLocation}
@@ -123,63 +125,90 @@ const Map = withScriptjs( withGoogleMap( (props) => {
   }
 
 
-  const getCoordinates = (event, setCoordinates, setAddress, displayStr, geocoder) => {
+  const getCoordinates = (event, setCoordinates, displayStr, geocoder) => {
       // const userPickedPos = this.map.getPosition();
 
-    marker.magenta(`Map getCoordinates onclick event\n`, event);
+    marker.obj(event, `Map getCoordinates onclick event\n`);
     const lat = event.latLng.lat();
-    const lng = event.latLng.lng();
-    marker.magenta(`Map getCoordinates  ${displayStr} lat ${lat} lng ${lng}`);
+    const lng = event.latLng.lng();    
+    marker.blue(`Map getCoordinates  ${displayStr} lat ${lat} lng ${lng}`);
 
-    set_current_location( { lat: lat, lng: lng });
-    marker.magenta(current_location, `Map getCoordinates current_locationn\n` );
+    
+    const strAddress = geocodeGetAddress(event.latLng, setCoordinates, geocoder);
 
-    setCoordinates({ lat: lat, lng: lng });
-    update_selected_map_location( ( {...selected_map_location, lat: lat, lng: lng, } )  );   
+    
 
-    marker.red(`Map getCoordinates selected_map_location: ${selected_map_location.address} ${selected_map_location.lat}  ${selected_map_location.lng}`);
-
-    const place_details = event.xa.view.google.maps.places;//.getDetailes();
-    marker.obj(place_details, `Map getCoordinates place_details\n`);
-
+   // const place_details = event.xa.view.google.maps.places;//.getDetailes();
+   // marker.obj(place_details, `Map getCoordinates place_details\n`);
     // console.log(`Map getCoordinates event.xa.view.google.maps\n`, event.xa.view.google.maps);
-
     // marker.magenta(`Map getCoordinates event.xa.view.google.maps.Data.\n`, event.xa.view.google.maps.Data);
+   // marker.obj(event, `Map getCoordinates event\n`);
+    //marker.obj( geocoder, 'Map getCoordinates geocoder');
 
-    marker.obj(event, `Map getCoordinates event\n`);
-    marker.obj( geocoder, 'Map getCoordinates geocoder');
-
-    geocodeGetAddress(event.latLng, setAddress, geocoder);
 
   };
 
 
-  const geocodeGetAddress = (latlng, setAddress, geocoder) => {
+  const geocodeGetAddress = (latlng, setCoordinates,  geocoder) => {
 
-    geocoder.geocode({'location': latlng}, (results, status) =>{
-      if (status === 'OK') {
-        if (results[0]) {
-          marker.red(`Map geocodeLatLng address: ` + results[0].formatted_address, );
-          const strAddress = results[0].formatted_address;
-          setAddress(strAddress);
-          update_selected_map_location( ( {...selected_map_location, address: strAddress, } )  );   
-         
+    var strAddress ='';
+
+    const lat = latlng.lat();
+    const lng = latlng.lng();
+   
+    try {
+      geocoder.geocode({'location': latlng}, (results, status) =>{
+        if (status === 'OK') {
+  
+          if (results[0]) {
+            marker.blue(`Map geocodeLatLng address: ` + results[0].formatted_address, );
+            strAddress = results[0].formatted_address;
+            //setAddress(strAddress);
+            //update_selected_map_location( ( {...selected_map_location, address: strAddress, } )  );  
+          } else {
+            marker.blue('Map geocodeLatLng: No results found');
+            strAddress ='Address Not Found'
+            //setAddress('Address Not Found');
+            //update_selected_map_location( ( {...selected_map_location,  address: 'Address Not Found', } )  );  
+          }
         } else {
-          marker.red('Map geocodeLatLng: No results found');
-          setAddress('Address Not Found');
-          update_selected_map_location( ( {...selected_map_location,  address: 'Address Not Found', } )  );  
-        }
-      } else {
-        marker.e('MapgeocodeLatLng Geocoder: failed due to: ' + status);           
-        setAddress('Address ERROR: '+status);
-        update_selected_map_location( ( {...selected_map_location,  address: 'Address ERROR: '+status, } )  );  
+          marker.blue('MapgeocodeLatLng Geocoder: failed due to: ' + status);           
+          strAddress = 'Address ERROR: ' + status ;
+         // update_selected_map_location( ( {...selected_map_location,  address: 'Address ERROR: '+status, } )  );  
+       }
+         
 
-     }
-    });
+          setCoordinates({ address: strAddress, lat: lat, lng: lng });
+        // // setAddress(strAddress);
+  
+          marker.blue( `Map geocodeGetAddress  ${strAddress} ${lat} ${lng} \n` );
+  
+          set_current_location( { ...current_location, address: strAddress,  lat: lat, lng: lng });
+        
+      });
+    }
+    catch(err) {
+        marker.e(`geocodeGetAddress error occured ${err.message}`);
+        marker.obj(err, `geocodeGetAddress error occured `);
+        strAddress = `Address ERROR: An exception occured`;
 
+        
+        setCoordinates({ address: strAddress, lat: lat, lng: lng });
+        // // setAddress(strAddress);
+  
+          marker.blue( `Map geocodeGetAddress  ${strAddress} ${lat} ${lng} \n` );
+  
+          set_current_location( { ...current_location, address: strAddress,  lat: lat, lng: lng });
+    }
     
-    marker.red(`Map geocodeGetAddress selected_map_location: ${selected_map_location.address} ${selected_map_location.lat}  ${selected_map_location.lng}`);
+
+   
+
   }
+
+  marker.blue( `Map current_location  
+  ${current_location.address} ${current_location.lat} ${current_location.lng}` );
+
 
 
    // using React refs to create a reference object to the GoogleMap
@@ -194,8 +223,9 @@ const Map = withScriptjs( withGoogleMap( (props) => {
         
         onMapIdle={ ()=> { console.log('Map map is ready') } }
         onClick={ event => { 
-          console.log('Map click') ;
-          getCoordinates(event, setCoordinates, setAddress,"Click", geocoder);        
+          //console.log('Map click') ;
+          getCoordinates(event, setCoordinates, "Click", geocoder);       
+          //getCoordinates(event, setCoordinates, setAddress,"Click", geocoder);      
         } }  
               
       >
@@ -215,28 +245,13 @@ const Map = withScriptjs( withGoogleMap( (props) => {
 class LocationsMap extends Component {
   
    shouldComponentUpdate(nextProps, nextState) {
-    log("shouldComponentUpdate >>>>");
-    // log("LocationsMap shouldComponentUpdate this.props:", this.props);
-    // log("LocationsMap shouldComponentUpdate this.state:", this.state);
-    // log("LocationsMap shouldComponentUpdate nextState:", nextState);
-    // log("LocationsMap shouldComponentUpdate nextProps:", nextProps);
-    log("LocationsMap shouldComponentUpdate this._map:",  this._map);
-    // log("<<<< shouldComponentUpdate");
-    // this.map.setCenter({ lat: nextProps.lat, lng: nextProps.lng });
-    // this.map.setZoom(nextProps.zoom);
-
-    // this.marker.setMap(null);
-    // this.marker.setPosition({ lat: nextProps.lat, lng: nextProps.lng });
-
-    // this.map.panTo({ lat: nextProps.lat, lng: nextProps.lng });
-
+     log("LocationsMap shouldComponentUpdate this._map:",  this._map);
     return true;
   }
 
-
   componentDidMount() {
     const { lat, lng, zoom, setCoordinates } = this.props;
-    console.log('LocationsMap componentDidMount this.props \n', this.props);
+    //console.log('LocationsMap componentDidMount this.props \n', this.props);
 
     this.setState({
       center: { lat, lng },
@@ -247,14 +262,14 @@ class LocationsMap extends Component {
     log("LocationsMap componentDidMount this._map:",  this._map);
   }
   
-  componentWillUnmount() {
-    const { lat, lng, zoom, setCoordinates } = this.props;
-    // console.log('LocationsMap componentWillUnmount this.props \n', this.props);
-    log("LocationsMap componentWillUnmount this._map:",  this._map);
-  }
+  // componentWillUnmount() {
+  //   const { lat, lng, zoom, setCoordinates } = this.props;
+  //   console.log('LocationsMap componentWillUnmount this.props \n', this.props);
+  //   log("LocationsMap componentWillUnmount this._map:",  this._map);
+  // }
 
   //==============================================================
-  // get the GoogleMap instance
+  // get the GoogleMap ref
   //==============================================================
 
   onMapLoad = map => {
@@ -262,21 +277,25 @@ class LocationsMap extends Component {
     this._map = map;
 
     console.log('LocationsMap onMapLoad this._map' ,this._map  ); 
-    if ( (this._map !== null) && (this._map !== 'undefined') ) {
-          const myCenter = this._map.getCenter();
-          console.log(myCenter, `LocationsMap onMapLoad myCenter`);
+    // if ( (this._map !== null) && (this._map !== 'undefined') ) {
+    //       const myCenter = this._map.getCenter();
+    //       console.log(myCenter, `LocationsMap onMapLoad myCenter`);
       
-          // marker.obj(this._map.getCenter().toJSON(), `LocationsMap onMapLoad this._map.getCenter().toJSON() \n`); 
-          marker.green('LocationsMap onMapLoad this._map.getZoom' , this._map.getZoom());   
-    } else{
-      marker.red('LocationsMap onMapLoad this._map is null, s.t. happened ');
-    }
+    //       // marker.obj(this._map.getCenter().toJSON(), `LocationsMap onMapLoad this._map.getCenter().toJSON() \n`); 
+    //       marker.green('LocationsMap onMapLoad this._map.getZoom' , this._map.getZoom());   
+    // } else{
+    //   marker.red('LocationsMap onMapLoad this._map is null, s.t. happened ');
+    // }
 
   }
+
+
 
   //--------------------------------------------
   render() {
 
+    marker.red( `LocationsMap  ${this.props.address} ${this.props.lat} ${this.props.lng}` );
+  
   //console.log(`google maps URL: ${GOOGLE_MAPS_URL}`);
 
     if ( (this._map !== null) && (this._map !== 'undefined') ) {    
@@ -298,7 +317,7 @@ class LocationsMap extends Component {
           zoom={this.props.zoom}
 
           setCoordinates={this.props.setCoordinates}
-          setAddress={this.props.setAddress}
+          //setAddress={this.props.setAddress}
           onMapLoad = {this.onMapLoad}
 
           googleMapURL={GOOGLE_MAPS_URL}
@@ -324,70 +343,122 @@ class LocationsMap extends Component {
 }
 
 
+//==============================================================================================
 
+const GoogleMapContainer = () => {
+  // Global context states
 
-class GoogleMapContainer extends Component {
-     // Global context states
+  const {  
+    original_Locations_list, 
+    set_original_Locations_list,
+    selected_map_location, 
+    initial_location,
+    // update_initial_location,
+    update_selected_map_location,
+  } =  useContext(StateDataManager);
 
-
-  state = {
-    address:'',
-
-    // lat: -34.397,
-    // lng: 150.644,
-    lat: 31.776847698411576, 
-    lng: 35.20543098449707, 
-
+  const [location, set_location] = useState({
+    address: initial_location.address,
+    lat: initial_location.lat, 
+    lng: initial_location.lng, 
+    
     //   zoom: 8,
     //   zoom: 1, //World
     //   zoom: 5, //Landmass/continent
     //   zoom: 10, // City
-       zoom: 13, // City
+    zoom: 13, // City
     //   zoom: 15, //Streets
     //   zoom: 20, //Buildings
-   };
+  });   
 
 
 
-  setUserPickedCoordinates = ({ lat, lng }) => {
-    this.setState({ lat: lat, lng: lng });
+  const setUserPickedCoordinates = ({ address, lat, lng }) => {
+    marker.red(`GoogleMapContainer setUserPickedCoordinates:  lat ${lat} lng  ${lng}`); 
+
+    set_location({ ...location, address: address, lat: lat, lng: lng, });
+    update_selected_map_location({ ...selected_map_location, address: address, lat: lat, lng: lng ,});
   };
 
-  setUserPickedAddress = (str) => {
-    this.setState({ address: str });
+  const setUserPickedAddress = (str) => {
+    marker.red(`GoogleMapContainer setUserPickedAddress:  address ${str}`); 
+    set_location({ address: str , });
+    update_selected_map_location({  address: str, });
   };
 
-  render() {
-    log(this.state);
-    return (
-      <AppBox>
-      
-        {/* <LocationsGoogleMap */}
-        <MapTitleBox>
-          {/* <MapTitle>Location map</MapTitle> */}
-          <h1>Location map</h1>
-        </MapTitleBox>
+ // Update map according to selected_map_location changes
+  // useEffect(() => {
 
-        <LocationsMap
-          lat={this.state.lat}
-          lng={this.state.lng}
-          zoom={this.state.zoom}
-          setCoordinates={this.setUserPickedCoordinates}
-          setAddress={this.setUserPickedAddress}
-        />
-        <MapDetailsBox>
-          <MapDetails>lat:     {this.state.lat}</MapDetails>
-          <MapDetails>lng:     {this.state.lng}</MapDetails>
-          <MapDetails>Address: {this.state.address}</MapDetails>
-        </MapDetailsBox>
-      </AppBox>
-    );
-  }
+  //   set_location( ( {...location, 
+  //     address: selected_map_location.address, 
+  //     lat: selected_map_location.lat, 
+  //     lng: selected_map_location.lng, 
+  //   } )  );  
+
+  //   marker.red(`GoogleMapContainer useEffect location: lng  ${location.lng}`); 
+  //   marker.red(`GoogleMapContainer useEffect selected_map_location.lng:  ${location.lng}`);
+  
+  // }, [selected_map_location]);
+
+
+  // Equiv to On Mount
+  useEffect(() => {
+
+    set_location( ( {...location, 
+       address: selected_map_location.address, 
+       lat: selected_map_location.lat, 
+       lng: selected_map_location.lng, 
+     } )  );  
+  
+   }, []);
+
+
+   marker.red(`GoogleMapContainer location: 
+   address  ${location.address} lat  ${location.lat} lng  ${location.lng}`); 
+
+   marker.red(`GoogleMapContainer selected_map_location: 
+   address  ${selected_map_location.address} 
+   lat ${selected_map_location.lat} lng ${selected_map_location.lng}`);
+
+ 
+  return (
+    <AppBox>
+    
+      {
+      // <LocationsGoogleMap 
+      }
+      <MapTitleBox>
+        { 
+        //<MapTitle>Location map</MapTitle> 
+        }
+        <h1>Location map</h1>
+      </MapTitleBox>
+
+      <LocationsMap
+        lat={location.lat}
+        lng={location.lng}
+        zoom={location.zoom}
+        setCoordinates={setUserPickedCoordinates}
+        //setAddress={setUserPickedAddress}
+      />
+      <MapDetailsBox>
+        <MapDetails>lat:     {location.lat}</MapDetails>
+        <MapDetails>lng:     {location.lng}</MapDetails>
+        <MapDetails>Address: {location.address}</MapDetails>
+      </MapDetailsBox>
+    </AppBox>
+  );
+  
+
 }
+
 
 export {GoogleMapContainer, LocationsMap} ;
 
 
+//==============================================================================================
+//         Local styling
+//==============================================================================================
 
 const AppBox = styled('div')({
   height: '70vh',

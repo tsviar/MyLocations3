@@ -18,15 +18,18 @@ const WrapperDataManager = ({ children }) => {
       name: 'Demo Location',
       address: 'ha nadiv 18, Tel Aviv',
       // coordinates: {lat: -389.76, lng: 45.12},
-      coordinate_lat: -389.76, 
-      oordinate_lng: 45.12, 
-      category: 'Home',
+      lat: 31.776847698411576, 
+      lng: 35.20543098449707, 
+      category: 'Cat1',
     }
   ]);
+
   const [filtered_Location_list, update_Location_filtered_list] = useState([]);
-  
-  const [selected_location, update_selected_location] = useState({});
- 
+
+  const [selected_location, update_selected_location] = useState(original_Locations_list[0]);
+  //({});
+  const [initial_location, update_initial_location] = useState(original_Locations_list[0]);
+  //({});
   const [selected_map_location, update_selected_map_location] = useState( {
     address:'',
 
@@ -78,6 +81,7 @@ const WrapperDataManager = ({ children }) => {
     original_Locations_list,
     filtered_Location_list,
     selected_location,
+    initial_location,
     selected_map_location, 
     categories_list,
     selected_category,
@@ -94,6 +98,7 @@ const WrapperDataManager = ({ children }) => {
     set_original_Locations_list,
     update_Location_filtered_list,
     update_selected_location,
+    update_initial_location,
     update_selected_map_location,
     set_categories_list,
     update_selected_category,

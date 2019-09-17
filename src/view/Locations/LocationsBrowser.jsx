@@ -8,6 +8,7 @@ import {
 }from "../GoogleMapsApi/GoogleMapEmbed";
 
 import AddLocation from "./AddLocation"
+import EditLocation from "./EditLocation"
 
 import List from "../List";
 import Filter from "../Filter";
@@ -71,6 +72,7 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
 
             {/* <List /> */}
             <AddLocation />
+            {/* <EditLocation /> */}
           </ContentBox>
         </div>
       ) : (
