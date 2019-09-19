@@ -67,6 +67,7 @@ const WrapperDataManager = ({ children }) => {
 
   const [selected_category, update_selected_category] = useState("");
   
+  const [selected_action, update_selected_action] = useState("ADD");
 
   const [loading_lists, set_loading_lists] = useState(true);
   const [error_message, set_error_message] = useState(null);
@@ -85,6 +86,7 @@ const WrapperDataManager = ({ children }) => {
     selected_map_location, 
     categories_list,
     selected_category,
+    selected_action,
     loading_lists,
     error_message,
 
@@ -102,6 +104,8 @@ const WrapperDataManager = ({ children }) => {
     update_selected_map_location,
     set_categories_list,
     update_selected_category,
+    update_selected_action,
+
     set_loading_lists,   
     set_error_message,    
     

@@ -7,7 +7,8 @@ import {
   // LocationsMap ,
 }from "../GoogleMapsApi/GoogleMapEmbed";
 
-import AddLocation from "./AddLocation"
+import ManageLocation from "./ManageLocation"
+// import AddLocation from "./AddLocation"
 import EditLocation from "./EditLocation"
 
 import List from "../List";
@@ -60,7 +61,7 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
         <div>
           <Filter />
           <ContentBox>     
-            <ManageLocations>
+            <ManageLocationsBox>
                {/* <Profile/> */}
 
               <GoogleMapContainer />
@@ -74,9 +75,11 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
               /> */}
 
             {/* <List /> */}
-            <AddLocation />
+            <ManageLocation />
+            {/* <AddLocation /> */}
             {/* <EditLocation /> */}
-            </ManageLocations>
+            </ManageLocationsBox>
+              <List />
           </ContentBox>
         </div>
       ) : (
@@ -86,6 +89,10 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
   );
 };
 export default LocationsBrowser;
+
+//===============================================================
+// local styling
+//===============================================================
 
 const MainBox = styled('div')({
   minWidth: '100rem',
@@ -111,19 +118,23 @@ const ContentBox = styled('div')({
  
   //border:red solid 2px;
   borderRadius: '5px',
+
   display: 'flex',
-  
+  alignItems: 'center', 
+  // alignItems: 'space-between',   //
+  // alignItems: 'flex-start', 
+  justifyContent: 'space-around',   //'flex-start',
 }); 
 
 
-const ManageLocations = styled('div')({
+const ManageLocationsBox = styled('div')({
   // maxHeight: '80vh',
   // height: '65vh',
   // width: 'fit-content',
   // marginTop: 0,
   // paddingTop: 0,
 
-  width: '60rem',
+    width: '60rem',
     // borderRadius: '0.8rem',
    borderRadius: '0.4rem',
    overflowX: 'hidden',
@@ -133,7 +144,7 @@ const ManageLocations = styled('div')({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',   //'flex-start', 
-  justifyContent: 'center',   //'flex-start',
+  justifyContent: 'space-around',   //'flex-start',
  
   // alignItems: 'space-between',   //'flex-start', 
   // justifyContent: 'space-between',   //'flex-start',  

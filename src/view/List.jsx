@@ -1,7 +1,47 @@
 import React, { useContext } from "react";
 import { StateDataManager } from "../stateProvider/DataManager";
-import Card from "./Card";
-import styled from "styled-components";
+
+import Location from "./Locations/Location";
+// import Card from "./Card";
+// import styled from "styled-components";
+import { makeStyles, styled } from '@material-ui/core/styles';
+import marker from '@ajar/marker'; 
+
+
+//const List = ({ list_data, updateSelectedCard }) => {
+const List = () => {
+  // const { filtered_list, update_selected_card } = useContext(StateDataManager);
+  const { 
+    selected_location, update_selected_location,
+    original_Locations_list, set_original_Locations_list,
+  } = useContext(StateDataManager);
+  // Note:
+  //create_list_u now gets 2 inputs: list_data, updateSelectedCard
+
+  return (
+    <Box>
+       <ul> {create_list_ui(original_Locations_list, update_selected_location)} </ul>
+    </Box>
+  );
+};
+
+// Note
+//in order to pass parameters to the onClick called function,
+// we need to DEFINE (!!!) a new func, an arrow func is best,
+// which will get the item that was selected
+//It has to be on the DOM element, the li!!!
+
+const create_list_ui = (items, update_selected_location) =>
+  items.map(item => (
+    <CardItem key={item.id} onClick={() => update_selected_location(item)}>
+      <Location {...item} />
+    </CardItem>
+  ));
+
+export default List;
+
+
+/*
 
 //const List = ({ list_data, updateSelectedCard }) => {
 const List = () => {
@@ -32,26 +72,36 @@ const create_list_ui = (items, update_selected_card) =>
 
 export default List;
 
-const Box = styled.div`
-  background: oldlace;
-  height: 65vh;
-  /* height: 85vh; */
-  min-width: 60rem;
-  max-width: 56vw;
-  width: 56%;
+*/
+const Box = styled('div')({
+  background: 'oldlace',
+  height: '70vh',
+  // height: 85vh', 
+  // minWidth: '60rem',
+ // maxWidth: '56vw',
+ // width: '56%',
+   
+  minWidth: '30rem',
+  maxWidth: '40vw',
+  width: '35%',
 
-  border-radius: 0.4rem;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  box-shadow: 0 0.2rem 0.8rem DimGrey;
-`;
+  // marginLeft: '20',
+  //paddingLeft: '20',
 
-const CardItem = styled.li`
-  &:nth-child(even) {
-    background: honeydew;
+  borderRadius: '0.4rem',
+  overflowX: 'hidden',
+  overflowY: 'scroll',
+  boxShadow: '0 0.2rem 0.8rem DimGrey',
+});
+
+const CardItem = styled('li')({
+
+  '&:nth-child (even)': {
+    background: 'honeydew',
+  },
+  '&:nth-child (odd)': {
+    background: 'white',
   }
-  &:nth-child(odd) {
-    background: white;
-  }
-`;
+});
+
 

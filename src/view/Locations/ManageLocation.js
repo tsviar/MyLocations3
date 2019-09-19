@@ -27,7 +27,7 @@ import { wrap } from "module";
 //                       Add Location view
 //=================================================================================
 
-const AddLocation = () => {
+const ManageLocation = () => {
 
     // general apearence rules
     const classes = useStyles();
@@ -39,6 +39,9 @@ const AddLocation = () => {
         set_original_Locations_list,
         selected_map_location, 
         //update_selected_map_location,
+        selected_location,
+        // update_selected_location,
+        selected_action,
     } =  useContext(StateDataManager);
  
  
@@ -46,14 +49,25 @@ const AddLocation = () => {
     // Local state
 
     // Note: marker.obj prints in alphabetical order not actual order...
-    const [new_location, set_new_location] = useState({
-        id: original_Locations_list.length+1,
-        name: '',
-        address: '',
-        lat: 31.776847698411576, 
-        lng: 35.20543098449707, 
-        category: categories_list[0].name,
-      });   
+    const [new_location, set_new_location] = useState(
+        {
+        id:         selected_location.id, //original_Locations_list.length+1,
+        name:       selected_location.name , //'',
+        address:    selected_location.address, //'',
+        lat:        selected_location.lat , //31.776847698411576, 
+        lng:        selected_location.lng , //35.20543098449707, 
+        category:   selected_location.category, //categories_list[0].name,
+      }
+      );   
+
+    //   const [new_location, set_new_location] = useState({
+    //     id: original_Locations_list.length+1,
+    //     name: '',
+    //     address: '',
+    //     lat: 31.776847698411576, 
+    //     lng: 35.20543098449707, 
+    //     category: categories_list[0].name,
+    //   });   
 
     const [errors, set_errors] = useState({
         name: '',
@@ -72,6 +86,24 @@ const AddLocation = () => {
    // let submitting = 'IDLE';
     
     
+  marker.blue(`ManageLocation selected_location 
+  id  ${selected_location.id}
+  name  ${selected_location.name}
+  address  ${selected_location.address}
+  lat  ${selected_location.lat}
+  lng:  ${selected_location.lng}
+  category  ${selected_location.category}
+  `);
+
+  marker.blue(`ManageLocation new_location 
+  id  ${new_location.id}
+  name  ${new_location.name}
+  address  ${new_location.address}
+  lat  ${new_location.lat}
+  lng:  ${new_location.lng}
+  category  ${new_location.category}
+  `);
+
 
   /*
     
@@ -87,21 +119,51 @@ const AddLocation = () => {
     So, my unofficial suggestion is that, use onChange whenever you possible, use onBlur whenever you need.
   */
 
-  
- // Update upon selected_map_location change
 
- 
+  // On Mounting
+  
   useEffect(() => {
     
-    marker.green(`AddtLocation useEffect on selected_map_location before\n`);
+    marker.blue(`ManageLocation useEffect on mount before\n`);
 
-    marker.green(`AddLocation useEffect selected_map_location: 
+    marker.blue(`ManageLocation useEffect selected_map_location: 
       address  ${selected_map_location.address}
       lat  ${selected_map_location.lat}
       lng  ${selected_map_location.lng}    
     `); 
 
-    marker.green(`AddLocation useEffect new_location
+    marker.blue(`ManageLocation useEffect new_location
+    address  ${new_location.address}
+    lat  ${new_location.lat}
+    lng:  ${new_location.lng}`);  
+
+
+    set_new_location( ( { ...new_location, 
+        id:         selected_location.id, //original_Locations_list.length+1,
+        name:       selected_location.name , //'',
+        address:    selected_location.address, //'',
+        lat:        selected_location.lat , //31.776847698411576, 
+        lng:        selected_location.lng , //35.20543098449707, 
+        category:   selected_location.category,
+    } )  );  
+
+     
+  }, []);
+
+  
+ // Update upon selected_map_location change
+ 
+  useEffect(() => {
+    
+    marker.green(`ManageLocation useEffect on selected_map_location before\n`);
+
+    marker.green(`ManageLocation useEffect selected_map_location: 
+      address  ${selected_map_location.address}
+      lat  ${selected_map_location.lat}
+      lng  ${selected_map_location.lng}    
+    `); 
+
+    marker.green(`ManageLocation useEffect new_location
     address  ${new_location.address}
     lat  ${new_location.lat}
     lng:  ${new_location.lng}`);  
@@ -118,15 +180,54 @@ const AddLocation = () => {
   }, [selected_map_location]);
 
 
-  marker.green(`AddtLocation selected_map_location CURRENT\n`);
+  // Update upon selected_location change
+ 
+  useEffect(() => {
+    
+    marker.green(`ManageLocation useEffect on selected_map_location before\n`);
 
-  marker.green(`AddLocation selected_map_location: 
+    marker.green(`ManageLocation useEffect selected_map_location: 
+    id  ${selected_location.id}
+    name  ${selected_location.name}
+    address  ${selected_location.address}
+    lat  ${selected_location.lat}
+    lng:  ${selected_location.lng}
+    category  ${selected_location.category}
+    `); 
+
+    marker.green(`ManageLocation useEffect new_location
+    id  ${new_location.id}
+    name  ${new_location.name}
+    address  ${new_location.address}
+    lat  ${new_location.lat}
+    lng:  ${new_location.lng}
+    category  ${new_location.category}
+
+    `);  
+
+
+    set_new_location( ( {...new_location, 
+      id: selected_location.id,
+      name: selected_location.name ,
+      address: selected_location.address, 
+      lat: selected_location.lat, 
+      lng: selected_location.lng, 
+      category: selected_location.category,
+    } )  );  
+
+     
+  }, [selected_location]);
+
+
+  marker.green(`ManageLocation selected_map_location CURRENT\n`);
+
+  marker.green(`ManageLocation selected_map_location: 
     address  ${selected_map_location.address}
     lat  ${selected_map_location.lat}
     lng  ${selected_map_location.lng}    
   `); 
 
-  marker.green(`AddLocation new_location CURRENT
+  marker.green(`ManageLocation new_location CURRENT
   address  ${new_location.address}
   lat  ${new_location.lat}
   lng:  ${new_location.lng}`);
@@ -151,23 +252,12 @@ const AddLocation = () => {
   };
 
 
-  const findIfNameExists = (value) => {
-    marker.green(`findIfNameExists value= ${value}`);   
-    
-    const names_list = original_Locations_list.map( item => item.name );
-    marker.green( `handleBlur list: ${names_list}` );
-    const found1 =  names_list.includes(value); //('Demo Location');
-    
-    marker.green(`find result ${found1}`);
-    return found1;
-  };
-
-
+  
   //      Handle exit from field
   //------------------------------------
   const handleBlur = event => {
 
-    marker.i(`AddLocationn handleBlur`);
+    marker.i(`ManageLocation handleBlur`);
  
 
     try{   
@@ -277,8 +367,10 @@ const validateField = field => {
  
  const validateForm = () => {  
    try{
+    const nameFound = validateNameExists();
+    const validName = validateField('name') &&  !nameFound;
+    marker.red(`validateForm nameFound ${nameFound} validName ${validName}`);
 
-    const validName = validateField('name');
     const validAddress = validateField('address'); 
     const validLat = validateField('lat' );
     const validLng  = validateField('lng' );
@@ -295,8 +387,13 @@ const validateField = field => {
 
             marker.green( `validateForm validation_success ${validation_success}` );
             marker.obj( new_location , `validateForm new_location` );
-            marker.obj( errors , `validateForm errors 2` );                                             
+            marker.obj( errors , `validateForm errors 2` );                                            
     }  
+    else{
+        validation_success = false;
+        marker.red( `validateForm validation_success ${validation_success}` );
+        //set_errors({...errors, validation:`Validation Error`}); 
+    }
 
     }catch(err){
       validation_success = false; //set_validation_success(false);
@@ -307,8 +404,124 @@ const validateField = field => {
 
   }
 
+  //====================================================================
+  // Submitting Sub actions
+  //====================================================================
 
-  marker.red(`AddLocation submitting ${submitting}  ${submit_text}`);
+  const addLoaction = () => {
+    set_original_Locations_list( [...original_Locations_list, new_location]);
+
+    marker.obj( new_location , `handleSubmit Update new_location 2` );
+    marker.obj( original_Locations_list , `handleSubmit original_Locations_list 2` );
+
+    // alert(`Lcation ${new_location.name} was added succesfully`);
+    set_submitting('END');
+    marker.red('ManageLocation handleSubmit completed '+ submitting );
+
+
+    // original_Locations_list is in the prev state yet, so increment by 2
+    set_new_location( ( 
+    {...new_location, 
+        id: (original_Locations_list.length +2),
+        name: selected_location.name, //'', 
+        address: selected_location.address, // '', 
+        lat: selected_location.lat, //31.776847698411576, 
+        lng: selected_location.lng, //35.20543098449707, 
+    } )  ); 
+
+  }
+
+
+  const validateNameExists = () => {
+    
+    marker.i(`ManageLocation validateName`);
+    let found = false;
+    let validValue = false;
+    let error_msg = '';
+
+    try{           
+
+        const  value  = new_location.name; // destructure properties
+        
+        validValue = ( (value !== ``) && (value !== 'undefined') && (value !== null) );        
+    
+
+        marker.red(`validateName 1 found ${found} validValue ${validValue} `);   
+
+         // handlse name validation
+        if ( validValue  ) {
+            marker.magenta( `validateName 2  ${value} is valid, ` );           
+            
+            // find if name exists in locations list
+            marker.obj( original_Locations_list , `handleBlur original_Locations_list ` );
+
+            var exists = ( element) => {
+                marker.obj( element , `element ` );
+                marker.green( `value: ${value}` );
+                // checks whether an element is even
+                return element.name  === value;
+              };
+            
+            found =  original_Locations_list.some( exists);
+            marker.green( `validateName SOME nameFound: ${found}` );
+           
+            // found = findIfNameExists(value);
+            // marker.red(`handleBlur found after search ${found} `);   
+            
+            if (found ){
+                marker.red(`validateName Location name ${value} already exists. `);  
+
+                error_msg = `Location name ${value} already exists. `;
+                //set_errors({...errors, [ name ]: `Location name ${value} already exists`}); 
+                 set_new_location( ( {...new_location, name : '', } )  );
+            }     
+            else{
+                marker.red(`Location name ${value} does not exist. `);  
+                error_msg = '';              
+                //set_errors({name: ``});                
+            }
+        }
+
+        if ( !validValue  ) {
+            error_msg = 'Empty field or Invalid value. ';
+            marker.red(`error_msg ${error_msg} `);    
+       }
+
+        marker.red(`exists ${found} `);     
+        marker.red(`validateName 3  validValue ${validValue} `);   
+
+        if (!found && validValue) {
+            marker.green(`validateName 4 !found && validValue ${found} ${validValue}`);   
+            error_msg = '';   
+        }     
+        // marker.red(`set_errors error_msg ${error_msg} `);  
+        set_errors({...errors, name:  error_msg }); 
+     
+    }catch(err){
+        marker.red(`validateName 6 caugt exception: ${err.message}`);
+    }
+
+    marker.green(`validateName 5 found && validValue ${found} ${validValue}`); 
+    return (found );
+
+  };
+
+
+// const findIfNameExists = (value) => {
+//     marker.green(`findIfNameExists value= ${value}`);   
+    
+//     const names_list = original_Locations_list.map( item => item.name );
+//     marker.green( `handleBlur list: ${names_list}` );
+//     const found1 =  names_list.includes(value); //('Demo Location');
+    
+//     marker.green(`find result ${found1}`);
+//     return found1;
+//   };
+
+
+//==========================================================================
+
+  marker.red(`ManageLocation submitting ${submitting}  ${submit_text}`);
 
 //------------------------------------------------
 //          SUBMIT
@@ -319,8 +532,8 @@ const validateField = field => {
    // submitting = 'START'; 
     set_submitting('START');   
      
-    marker.red('AddLocation handleSubmit start '+ submitting );
-    marker.green('AddLocation handleSubmit original_Locations_list.length '+ original_Locations_list.length );
+    marker.red('ManageLocation handleSubmit start '+ submitting );
+    marker.green('ManageLocation handleSubmit original_Locations_list.length '+ original_Locations_list.length );
  
     validateForm();
 
@@ -328,38 +541,48 @@ const validateField = field => {
       marker.obj( new_location , `handleSubmit Update new_location 1` );
       marker.obj( original_Locations_list , `handleSubmit original_Locations_list 1` );
 
-      set_original_Locations_list( [...original_Locations_list, new_location]);
+      if ("ADD" === selected_action) {       
+        marker.red('ManageLocation handleSubmit ADD validName ' );
+        set_new_location( ( 
+            {...new_location, 
+                id: (original_Locations_list.length +2),
+            } )  ); 
 
-      marker.obj( new_location , `handleSubmit Update new_location 2` );
-      marker.obj( original_Locations_list , `handleSubmit original_Locations_list 2` );
+        addLoaction();
+      }
 
-     // alert(`Lcation ${new_location.name} was added succesfully`);
-     set_submitting('END');
-     marker.red('AddLocation handleSubmit completed '+ submitting );
+    //   set_original_Locations_list( [...original_Locations_list, new_location]);
+
+    //   marker.obj( new_location , `handleSubmit Update new_location 2` );
+    //   marker.obj( original_Locations_list , `handleSubmit original_Locations_list 2` );
+
+    //  // alert(`Lcation ${new_location.name} was added succesfully`);
+    //  set_submitting('END');
+    //  marker.red('ManageLocation handleSubmit completed '+ submitting );
 
    
-      // original_Locations_list is in the prev state yet, so increment by 2
-      set_new_location( ( 
-        {...new_location, 
-           id: (original_Locations_list.length +2),
-          name: '', 
-          address: '', 
-          lat: 31.776847698411576, 
-          lng: 35.20543098449707, 
-        } )  );  
+    //   // original_Locations_list is in the prev state yet, so increment by 2
+    //   set_new_location( ( 
+    //     {...new_location, 
+    //        id: (original_Locations_list.length +2),
+    //       name: '', 
+    //       address: '', 
+    //       lat: 31.776847698411576, 
+    //       lng: 35.20543098449707, 
+    //     } )  );  
 
     }
     
     setTimeout(() => {      
       set_submitting('IDLE'); //set_submitting(false);
-      marker.red('AddLocation handleSubmit end '+ submitting );
+      marker.red('ManageLocation handleSubmit end '+ submitting );
     }, 1000);
 
   
   }
 
-  marker.obj( new_location , `AddLocation current new_location` );
-  marker.obj(original_Locations_list, `AddLocation original_Locations_list `); 
+  marker.obj( new_location , `ManageLocation current new_location` );
+  marker.obj(original_Locations_list, `ManageLocation original_Locations_list `); 
   
 
   //----------------------------------------------------------
@@ -369,25 +592,25 @@ const validateField = field => {
 
     if ( 'IDLE' === submitting) {
       setTimeout(() => {  set_submit_text(''); 
-      marker.green(`AddLocation useEffect ${submit_text}`);
+      marker.green(`ManageLocation useEffect ${submit_text}`);
     }, 300);          
     }
     if ( 'START' === submitting) {
-      set_submit_text('Submitting new location...');
+      set_submit_text('Submitting location...');
        setTimeout(() => {
-        set_submit_text('Added new location successfully...');
-        marker.green(`AddLocation useEffect end ${submit_text}`);
+        set_submit_text('Submitting location...');
+        marker.green(`ManageLocation useEffect end ${submit_text}`);
       }, 20);     
-      marker.green(`AddLocation useEffect ${submit_text}`);
+      marker.green(`ManageLocation useEffect ${submit_text}`);
     }
     if ( 'END' === submitting) {  
-      set_submit_text('Added new location successfully...');  
+      set_submit_text('Submitted location successfully...');  
       setTimeout(() => {
-        set_submit_text('Added new location successfully...');
-        marker.green(`AddLocation useEffect end ${submit_text}`);
+        set_submit_text('Submitted location successfully...');
+        marker.green(`ManageLocation useEffect end ${submit_text}`);
       }, 20);
     }
-    marker.green(`AddLocation useEffect submit_text  ${submit_text}`); 
+    marker.green(`ManageLocation useEffect submit_text  ${submit_text}`); 
   
   }, [submitting]);
 
@@ -554,7 +777,7 @@ const validateField = field => {
 
 
 
-export default AddLocation;
+export default ManageLocation;
 
 //===============================================================
 // local styling
@@ -607,8 +830,9 @@ const MainBox = styled('div')({
   maxHeight: '70rem',
   minHeight: '70vh',
 
-  width: 'fit-content',
-  minWidth: '30rem', //'35rem',
+   width: 'fit-content',
+//   width: '35%',
+  minWidth: '32rem', //'35rem',
   maxWidth: '40vw', //'35rem',
   // minWidth: '30rem', //'35rem',
   // maxWidth: '30rem', //'35rem',
@@ -741,7 +965,7 @@ const CoordinatesInput = styled(Input)({
 
   const ErrorText = styled('h5')({
     display: 'flex',
-    justifyContent:"left",
+    justifyContent:'left',
     marginTop: 3,
     //marginLeft: 50,
     paddingTop: 5,
@@ -760,7 +984,7 @@ const CoordinatesInput = styled(Input)({
     textAlign: 'left',
   });
 
-//const AddLocation = () => <h1>Create a new Location</h1>;
+//const ManageLocation = () => <h1>Create a new Location</h1>;
 
 //const CreateBot = () => <h1 className="create">Create a new Bot!</h1>;
 //export default CreateBot;

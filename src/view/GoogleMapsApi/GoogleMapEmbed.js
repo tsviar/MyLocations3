@@ -40,7 +40,8 @@ const Map = withScriptjs( withGoogleMap( (props) => {
     
   //Gloobal context storage
  const { 
-    initial_location,
+    // initial_location,
+    selected_location,
     //selected_map_location, 
    // update_selected_map_location,
   } =  useContext(StateDataManager);
@@ -59,11 +60,11 @@ const Map = withScriptjs( withGoogleMap( (props) => {
 
   const [current_location, set_current_location] = useState(
     {
-      address: initial_location.address ,
+      address: selected_location.address ,
       // lat: -389.76, 
       // lng: 45.12, 
-      lat: initial_location.lat , 
-      lng: initial_location.lng , 
+      lat: selected_location.lat , 
+      lng: selected_location.lng , 
       //   zoom: 8,
       //   zoom: 1, //World
       //   zoom: 5, //Landmass/continent
@@ -85,16 +86,16 @@ const Map = withScriptjs( withGoogleMap( (props) => {
 
     console.log('Map useEffect ON MOUNT props:\n', props);
 
-    // set_current_location(
-    //   {
-    //     address: '',
-    //     lat: lat, 
-    //     lng: lng, 
-    //     zoom: zoom,         
-    //    }
-    // );    
+    set_current_location(
+      {
+        address: selected_location.address,
+        lat: selected_location.lat, 
+        lng: selected_location.lng, 
+        zoom: zoom,         
+       }
+    );    
     
-   // console.log('Map useEffect ON MOUNT current_location:\n', current_location);
+    console.log('Map useEffect ON MOUNT current_location:\n', current_location);
 
  
     const geocoder = new google.maps.Geocoder();
@@ -352,15 +353,15 @@ const GoogleMapContainer = () => {
     original_Locations_list, 
     set_original_Locations_list,
     selected_map_location, 
-    initial_location,
-    // update_initial_location,
+    selected_location,
+    // update_selected_location,
     update_selected_map_location,
   } =  useContext(StateDataManager);
 
   const [location, set_location] = useState({
-    address: initial_location.address,
-    lat: initial_location.lat, 
-    lng: initial_location.lng, 
+    address: selected_location.address,
+    lat: selected_location.lat, 
+    lng: selected_location.lng, 
     
     //   zoom: 8,
     //   zoom: 1, //World
@@ -460,19 +461,24 @@ export {GoogleMapContainer, LocationsMap} ;
 //         Local styling
 //=============================================================================================
 
-const MainBox = styled('div')({
+const MainBox = styled(Box)({
   height: '70vh',
   maxHeight: '70rem',
   minHeight: '70vh',
 
-  width: 'fit-content',
-  minWidth: '30rem', //'35rem',
-  maxWidth: '40vw', //'35rem',
+  
+  // minWidth: '30rem', //'35rem',
+  // maxWidth: '40vw', //'35rem',
+  minWidth: '32rem',
+  maxWidth: '35vw',
+  width: '30%',
+  // width: 'fit-content',
 
   // height: 'fit-content',
   // width: 'fit-content',
   //  width: '50%',
     
+  paddingLeft: 20,
   // borderRadius: '0.4rem',
   // borderRadius: '0.8rem',
   // overflowX: 'hidden',
@@ -483,17 +489,11 @@ const MainBox = styled('div')({
   flexDirection: 'column',    
   justifyContent: "center",
   alignItems: 'space-around',
-
+  // marginLeft: 10,
+  // paddingLeft: 20,
+  // paddingRight: 20,
 }); 
 
-const InnerBox= styled('div')({
-   display: 'flex',
-   flexDirection: 'column',
-   justifyContent: "center",
-
-  //  alignItems: 'flex_start',
-   alignItems: 'space-around',
-}); 
 
 const LoadingElementBox= styled('div')({
    display: 'flex',     
@@ -508,7 +508,8 @@ const ContainerElementBox= styled('div')({
   // minHeight: '30vh',
   // maxHeight: '60rem',
   height: 'fit-content',//'40%',
-  width: 'fit-content',
+  // width: 'fit-content',
+  width: '40%',
   
   margin: 20,
   padding: 20,
@@ -523,7 +524,8 @@ const ContainerElementBox= styled('div')({
 const MapElementBox= styled('div')({
   height: '35vh',
 
-  width:`28vw`,
+  // width:`28vw`,
+  width:`20vw`,
   maxWidth:`30rem`,
   minWidth:`48%`,
  

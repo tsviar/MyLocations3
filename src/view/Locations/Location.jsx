@@ -1,8 +1,10 @@
 import React from "react";
 import Thumb from "../Thumb";
-import styled from "styled-components";
+// import styled from "styled-components";
+import { makeStyles, styled } from '@material-ui/core/styles';
+import marker from '@ajar/marker'; 
 
-const Location= ({ name, address, coordinates_lat, coordinates_lng, category }) => {
+const Location= ({ id, name, address, lat, lng, category }) => {
   // console.log('name:',name)
   //	console.log('props:',props)
   // coordinates = {
@@ -13,11 +15,11 @@ const Location= ({ name, address, coordinates_lat, coordinates_lng, category }) 
   return (
     <Box>
       <TextsBox>
-        <Title>
-          {name} ( Category: {category} )
-        </Title>
-        <MsgText>Address: {address} </MsgText>
-        <MsgText>Coordinates: lat {coordinates_lat}, lng {coordinates_lng})</MsgText>
+        <Title>{name}</Title>
+        <Title2> Category: {category} </Title2>
+        <MsgText>{address} </MsgText>        
+        <MsgText><em>( lat ) </em> {lat} <em>( lng ) </em>  {lng}</MsgText>
+
       </TextsBox>
     </Box>
   );
@@ -25,45 +27,55 @@ const Location= ({ name, address, coordinates_lat, coordinates_lng, category }) 
 
 export default Location;
 
-const Box = styled.div`
-  padding: 2rem 2.8rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
 
-  &:hover {
-    background: paleturquoise;
-    ${Image} {
-      box-shadow: 0 0.4rem 1.5rem DimGrey;
-      margin-bottom: 3rem;
-      padding-bottom: 1rem;
-    }
-  }
+const Box = styled('div')({
+  padding: '2rem 0.8rem', //t+b, r+l
+  // padding: '2rem 2.8rem',
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
 
-  &:hover {
-    background: paleturquoise;
-  }
-  &:active {
-    background: skyblue;
-    color: white;
-  }
-`;
+  '&:hover': {
+    background: 'paleturquoise',
+  },
 
-const TextsBox = styled.div`
-  padding-left: 2.8rem;
-`;
+  '&:hover': {
+    background: 'paleturquoise',
+  },
+  '&:active': {
+    background: 'skyblue',
+    color: 'white',
+  },
+});
 
-const Title = styled.h1`
-  font-family: "Expletus Sans";
-  text-align: left;
-  /* font-size: 2.8rem; */
-  font-size: 1.4rem;
-`;
-const MsgText = styled.p`
-  font-family: "Raleway";
-  font-size: 1.0rem;
-  /* font-size: 1.4rem; */
-  max-width: 35rem;
-  
-`;
+const TextsBox = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent:'left',
+  alignItems: 'space-between',
+  paddingLeft: '2.8rem',
+});
+
+const Title = styled('h1')({
+  fontFamily: 'Expletus Sans',
+  textAlign: 'left',
+  // font-size: '2.8rem', 
+  fontSize: '1.4rem',
+});
+
+const Title2 = styled('h3')({
+  fontFamily: 'Expletus Sans',
+  textAlign: 'left',
+  // font-size: '2.8rem', 
+  fontSize: '1.1rem',
+});
+
+const MsgText = styled('p')({
+  color: 'darkslateblue',
+  textAlign: 'left', 
+  fontFamily: 'Raleway',
+  fontSize: '1.0rem',
+  // font-size: '1.4rem',
+   maxWidth: 'fit-content', //'45rem',
+});
 
