@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import styled from "styled-components/macro";
-import { makeStyles } from '@material-ui/core/styles';
+// import styled from "styled-components/macro";
+import { makeStyles, styled } from '@material-ui/core/styles';
 import marker from '@ajar/marker'; 
 
 
@@ -395,11 +395,11 @@ const validateField = field => {
 
 
     return (
-      <AppBox>
+      <MainBox>
         <FormBox>
           {/* <form style={{ width: "50%" }} onSubmit={handleSubmit} > */}
-          <NewLocationForm  onSubmit={handleSubmit} >
-            <h1>Add a new Location</h1>
+          <LocationForm  onSubmit={handleSubmit} >
+            {/* <h1>Manage Location</h1> */}
   
             <FormControl required margin="normal" fullWidth>
               <InputLabel htmlFor="name">Name</InputLabel>
@@ -532,7 +532,7 @@ const validateField = field => {
                     ) ? false : true                  
                 } 
                 variant="contained" color="primary" size="medium" margin= "40px" type="submit"   >
-                Add
+                Submit
                 </Button>
             </SubmitBox>
             {/* <button type="submit" >Add</button> */}
@@ -545,9 +545,9 @@ const validateField = field => {
                 size?: "small" | "medium" | "large";
                 variant?: "text" | "outlined" | "contained";
             */}
-          </NewLocationForm>
+          </LocationForm>
         </FormBox>
-        </AppBox>
+        </MainBox>
       );
   
 }
@@ -597,19 +597,29 @@ const useStyles = makeStyles(theme => ({
       },
 }));
 
-const AppBox = styled('div')({
+const MainBox = styled('div')({
+  // height: 'fit-content', 
+  // height: '60vh',
   height: '70vh',
-  /* height: 85vh; */
-  minWidth: '60rem', //'35rem',
-  maxWidth: '60rem', //'35rem',
-  marginLeft: 15,
+  maxHeight: '70rem',
+  minHeight: '70vh',
 
-  borderRadius: '0.4rem',
-  overflowX: 'hidden',
-  overflowY: 'scroll',
-  boxShadow: '0 0.2rem 0.8rem DimGrey',
+  width: 'fit-content',
+  minWidth: '30rem', //'35rem',
+  maxWidth: '40vw', //'35rem',
+  // minWidth: '30rem', //'35rem',
+  // maxWidth: '30rem', //'35rem',
 
-  borderradius: '0.8rem',
+  margin: 0,
+  padding:0,
+
+// borderRadius: '0.4rem',
+// borderRadius: '0.8rem',
+ // overflowX: 'hidden',
+ // overflowY: 'scroll',
+ // boxShadow: '0 0.2rem 0.8rem DimGrey',
+
+
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',   //'flex-start', 
@@ -619,18 +629,32 @@ const AppBox = styled('div')({
 const FormBox = styled(Box)({
     display: "flex",
     justifyContent: "center",
-    margin: 20,
-    padding: 20,
+
+    // height: 'fit-content', 
+    //margin: 20,
+    marginLeft: 0,
+    paddingLeft: 0,
+
+    height: '50vh',
+    maxHeight: '50vh',
+    minHeight: '50vh',
+
+    // height: '50%',
+    // maxHeight: '50vh',
+    // minHeight: '50rem',
+    
 }); 
 
-const NewLocationForm = styled('form')({
+const LocationForm = styled('form')({
     display: 'flex',
     flexDirection: 'column',
-    margin: 'auto',
-    width: 'fit-content',
-    // width: "50%",
 
-});
+    margin: 'auto',
+    paddingBottom: 20,
+    // marginTop: '1rem', //10,
+    // paddingTop: '1rem', //10,
+    // width: "50%",
+  });
 
 const CoordinatesBoxLabel = styled(InputLabel)({
     //fontSize: 3,

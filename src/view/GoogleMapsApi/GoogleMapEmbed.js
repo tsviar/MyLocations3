@@ -422,31 +422,31 @@ const GoogleMapContainer = () => {
 
  
   return (
-    <AppBox>
-    
-      {
-      // <LocationsGoogleMap 
-      }
-      <MapTitleBox>
-        { 
-        //<MapTitle>Location map</MapTitle> 
-        }
-        <h1>Location map</h1>
-      </MapTitleBox>
+    <MainBox>
+      
+          {
+          // <LocationsGoogleMap 
+          }
+          {
+        // <MapTitleBox>
+        //   <h1>Location map</h1>
+        // </MapTitleBox>
+          }
 
-      <LocationsMap
-        lat={location.lat}
-        lng={location.lng}
-        zoom={location.zoom}
-        setCoordinates={setUserPickedCoordinates}
-        //setAddress={setUserPickedAddress}
-      />
-      <MapDetailsBox>
-        <MapDetails>lat:     {location.lat}</MapDetails>
-        <MapDetails>lng:     {location.lng}</MapDetails>
-        <MapDetails>Address: {location.address}</MapDetails>
-      </MapDetailsBox>
-    </AppBox>
+          <LocationsMap
+            lat={location.lat}
+            lng={location.lng}
+            zoom={location.zoom}
+            setCoordinates={setUserPickedCoordinates}
+            //setAddress={setUserPickedAddress}
+          />
+          <MapDetailsBox>
+            <MapDetails>lat:     {location.lat}</MapDetails>
+            <MapDetails>lng:     {location.lng}</MapDetails>
+            <MapDetails>Address: {location.address}</MapDetails>
+          </MapDetailsBox>
+      
+    </MainBox>
   );
   
 
@@ -456,89 +456,108 @@ const GoogleMapContainer = () => {
 export {GoogleMapContainer, LocationsMap} ;
 
 
-//==============================================================================================
+//=============================================================================================
 //         Local styling
-//==============================================================================================
+//=============================================================================================
 
-const AppBox = styled('div')({
+const MainBox = styled('div')({
   height: '70vh',
-  /* height: 85vh; */
-  minWidth: '35rem',
-  maxWidth:'37rem',
+  maxHeight: '70rem',
+  minHeight: '70vh',
+
+  width: 'fit-content',
+  minWidth: '30rem', //'35rem',
+  maxWidth: '40vw', //'35rem',
+
+  // height: 'fit-content',
+  // width: 'fit-content',
+  //  width: '50%',
+    
+  // borderRadius: '0.4rem',
+  // borderRadius: '0.8rem',
+  // overflowX: 'hidden',
+  // overflowY: 'scroll',
+  // boxShadow: '0 0.2rem 0.8rem DimGrey',
   
-  //marginRight: 20,
-  //paddingRight: 20,
-
-  borderRadius: '0.4rem',
-  overflowX: 'hidden',
-  overflowY: 'scroll',
-  boxShadow: '0 0.2rem 0.8rem DimGrey',
-
-  borderradius: '0.8rem',
   display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start', 
-  justifyContent: 'flex-start',   
+  flexDirection: 'column',    
+  justifyContent: "center",
+  alignItems: 'space-around',
+
+}); 
+
+const InnerBox= styled('div')({
+   display: 'flex',
+   flexDirection: 'column',
+   justifyContent: "center",
+
+  //  alignItems: 'flex_start',
+   alignItems: 'space-around',
 }); 
 
 const LoadingElementBox= styled('div')({
-  // height: `100%`, 
-  // width:`100%` , //80%
-   margin:0,
-   padding:0,
-
    display: 'flex',     
-   flexdirection:'row',
-   flaxbasis: '100%', 
-   flexwrap: 'wrap', 
+   flexDirection:'column',
    justifyContent: 'center',
-   alignitems: 'center',
+   alignItems: 'center',
+  //  alignItems: 'space-around',
 }); 
 
 const ContainerElementBox= styled('div')({
-//  height: `30rem`, 
-//  width:`27rem`, 
-  margin:0,
-  padding:0,
-   
+ 
+  // minHeight: '30vh',
+  // maxHeight: '60rem',
+  height: 'fit-content',//'40%',
+  width: 'fit-content',
+  
+  margin: 20,
+  padding: 20,
+  paddingBottom: 0,
+  
   display: 'flex',     
-  flexDirection:'row',
-  flexBasis: '100%', 
-  flexWrap: 'wrap', 
-  justifyContent: 'center',
-  alignItems: 'center',
+  flexDirection:'column',
+  justifyContent: 'space-around',
+  alignItems: 'space-around',
 }); 
 
 const MapElementBox= styled('div')({
-  // height: `30rem`, 
-  // width:`25rem`,
-  height: `35rem`, 
-  width:`32rem`,
-  maxWidth:`32rem`,
+  height: '35vh',
+
+  width:`28vw`,
+  maxWidth:`30rem`,
+  minWidth:`48%`,
+ 
   margin:0,
   padding:0,
+
+  display: 'flex', 
+  
 }); 
 
 //const MapBox = styled('div')({
 const MapBox = styled(Box)({
-    display: 'flex',
-    flexdirection:'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 0, //20
-    //padding: 20
-    padding: '1.5rem',
-    //paddingRight: 20, // '15px'
+  margin: 0, //20
+
+  // height: 'fit-content',
+  // width: 'fit-content',
+
+  display: 'flex',
+  flexDirection:'column',
+  // justifyContent: 'space-around',
+  // alignItems: 'space-around',
+
+
   });
 
 const MapTitleBox = styled('div')({
-  marginLeft:'5rem',
-  paddingLeft: 30, //'1rem',
+  marginLeft:'3rem',
+  paddingLeft: 10, //'1rem',
+
   marginTop: 20,
   paddingTop: 20,
 
   display: 'flex',
-  flexdirection:'column',
+  flexDirection:'column',
   //width:`20rem`,
   justifyContent: 'center',
 });  
@@ -552,20 +571,22 @@ const MapTitle = styled('h2')({
 
 const MapDetailsBox = styled('div')({
  // width:`20rem`,
-  marginLeft:'10px',
-  paddingLeft: '20px',
+  // padding: 0,
+  padding: '1.5rem',
+  //margin:0,
+  marginTop: 4,
+  paddingTop: 0,
+  marginLeft:20, //'10px',
+  paddingLeft:20, // '20px',
 
   display: 'flex',     
   flexDirection:'column',
- flexBasis: '100%', 
-  flexWrap: 'wrap', 
   justifyContent: 'center',
   //alignItems: 'center',
   // fontFamily: 'Expletus Sans',
  
   color: 'slategray',
-  fontWeight: 400,
-  
+  fontWeight: 400,  
 }); 
 
 const MapDetails = styled('h5')({

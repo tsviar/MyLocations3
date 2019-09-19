@@ -15,9 +15,11 @@ import Filter from "../Filter";
 import Profile from "../Profile";
 
 //import "../styles.css";
-import styled from "styled-components";
+//import styled from "styled-components";
+import { makeStyles, styled } from '@material-ui/core/styles';
+//import marker from '@ajar/marker'; 
 
-import { makeStyles } from '@material-ui/core/styles';
+
 
 
 const LocationsBrowser = () => {
@@ -58,6 +60,7 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
         <div>
           <Filter />
           <ContentBox>     
+            <ManageLocations>
                {/* <Profile/> */}
 
               <GoogleMapContainer />
@@ -73,6 +76,7 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
             {/* <List /> */}
             <AddLocation />
             {/* <EditLocation /> */}
+            </ManageLocations>
           </ContentBox>
         </div>
       ) : (
@@ -83,32 +87,57 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
 };
 export default LocationsBrowser;
 
-const MainBox = styled.div`
-  min-width: 100rem;
-  max-width: 100vw;
-  width: 100%;
+const MainBox = styled('div')({
+  minWidth: '100rem',
+  maxWidth: '100vw',
+  width: '100%',
 
-  background: Cornsilk;
-  border-radius: 0.4rem;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0.4rem 1.5rem DimGrey;
-  position: relative;
-  padding: 7.0rem 1.5rem 1.5rem;
-  margin-top: 3rem;
-  font-size: 1.5rem;
+  background: 'Cornsilk',
+  borderRadius: '0.4rem',
+  display: 'flex',
+  flexDirection: 'column',
+  boxShadow: '0 0.4rem 1.5rem DimGrey',
+  position: 'relative',
+  padding: '7.0rem 1.5rem 1.5rem',
+  // marginTop: '3rem',
+  fontSize: '1.5rem',
 
-  /* padding: 8.5rem 1.5rem 1.5rem; */
-  /* margin-top: 10rem; */
-  /* font-size: 3rem; */
-`;
+  // padding: '8.5rem 1.5rem 1.5rem','
+  // margin-top: '10rem',' 
+  // font-size: '3rem',' 
+}); 
 
-const ContentBox = styled.div`
-  /*border:red solid 2px;*/
-  border-radius: 5px;
-  display: flex;
-`;
+const ContentBox = styled('div')({
+ 
+  //border:red solid 2px;
+  borderRadius: '5px',
+  display: 'flex',
+  
+}); 
 
+
+const ManageLocations = styled('div')({
+  // maxHeight: '80vh',
+  // height: '65vh',
+  // width: 'fit-content',
+  // marginTop: 0,
+  // paddingTop: 0,
+
+  width: '60rem',
+    // borderRadius: '0.8rem',
+   borderRadius: '0.4rem',
+   overflowX: 'hidden',
+   overflowY: 'scroll',
+   boxShadow: '0 0.2rem 0.8rem DimGrey',
+
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',   //'flex-start', 
+  justifyContent: 'center',   //'flex-start',
+ 
+  // alignItems: 'space-between',   //'flex-start', 
+  // justifyContent: 'space-between',   //'flex-start',  
+}); 
 
 /*
   return (
