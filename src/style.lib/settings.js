@@ -23,12 +23,26 @@ import brown from '@material-ui/core/colors/brown';
 import gray from '@material-ui/core/colors/grey';
 import blueGray from '@material-ui/core/colors/blueGrey';
 
-/* eslint-enable no-unused-vars */
+// eslint-enable no-unused-vars 
+
+// responsive prportions
+const values = {
+  xs: 0,
+  sm: 600,
+  md: 960,
+  lg: 1280,
+  xl: 1920,
+};
 
 const settings = {
   title: 'My Locations + React + Material-UI + local Storage ',
 
   theme: {
+    breakpoints: {
+      keys: ['xs', 'sm', 'md', 'lg', 'xl'],
+      up: key => `@media (min-width:${values[key]}px)`,
+    },
+
     primaryColor: {
       name: 'blue',
       import: blue
@@ -44,7 +58,7 @@ const settings = {
     firebase: {
       projectId: 'MyLocations3',
       storageBucket: 'https://github.com/tsviar/MyLocations3',
-      // apiKey: 'AIzaSyDYZOrZVpXkPQD6J31mb9t2eIIxmGEJK-Q',
+      // apiKey: '',
       // authDomain: 'react-material-ui-firebase.firebaseapp.com',
       // databaseURL: 'https://react-material-ui-firebase.firebaseio.com',
       // projectId: 'react-material-ui-firebase',

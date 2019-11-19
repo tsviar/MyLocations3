@@ -478,7 +478,7 @@ const MainBox = styled(Box)({
   // width: 'fit-content',
   //  width: '50%',
     
-  paddingLeft: 20,
+
   // borderRadius: '0.4rem',
   // borderRadius: '0.8rem',
   // overflowX: 'hidden',
@@ -489,9 +489,14 @@ const MainBox = styled(Box)({
   flexDirection: 'column',    
   justifyContent: "center",
   alignItems: 'space-around',
+
   // marginLeft: 10,
   // paddingLeft: 20,
-  // paddingRight: 20,
+  // paddingRight: 20,  
+    marginLeft: 0,
+    paddingLeft: 0,
+    marginRight: 30,
+    paddingRight: 20,
 }); 
 
 
@@ -513,6 +518,8 @@ const ContainerElementBox= styled('div')({
   
   margin: 20,
   padding: 20,
+  marginLeft: 0,
+  paddingLeft: 0,
   paddingBottom: 0,
   
   display: 'flex',     

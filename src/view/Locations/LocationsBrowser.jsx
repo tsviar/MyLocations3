@@ -8,7 +8,7 @@ import {
 }from "../GoogleMapsApi/GoogleMapEmbed";
 
 import ManageLocation from "./ManageLocation"
-// import AddLocation from "./AddLocation"
+import AddLocation from "./AddLocation"
 import EditLocation from "./EditLocation"
 
 import List from "../List";
@@ -56,15 +56,17 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
     //   </ContentBox>
     // </div>
 
-    <MainBox>
+    <MainBox >
       {loading_profiles === false ? (
         <div>
           <Filter />
           <ContentBox>     
             <ManageLocationsBox>
+            
+            <ModalBox>
                {/* <Profile/> */}
 
-              <GoogleMapContainer />
+              {/* <GoogleMapContainer /> */}
            
                 {/* <LocationsMap
                 lat={selected_map_location.lat}
@@ -74,12 +76,21 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
                 setAddress={setUserPickedAddress}
               /> */}
 
-            {/* <List /> */}
-            <ManageLocation />
-            {/* <AddLocation /> */}
-            {/* <EditLocation /> */}
+            
+              {/* <ManageLocation /> */}
+              <AddLocation />
+              {/* <EditLocation /> */}
+
+
+              <GoogleMapContainer /> 
+
+
+              </ModalBox>
+
             </ManageLocationsBox>
-              <List />
+
+            <List />
+
           </ContentBox>
         </div>
       ) : (
@@ -148,6 +159,32 @@ const ManageLocationsBox = styled('div')({
  
   // alignItems: 'space-between',   //'flex-start', 
   // justifyContent: 'space-between',   //'flex-start',  
+}); 
+
+
+const ModalBox = styled('div')({
+  position: "absolute",
+  background: "#fff",
+  top: 28,
+  left: "10%",
+  right: "10%",
+  padding: 15,
+ 
+  
+  width: '60rem',
+  height: '75vh',
+  // borderRadius: '0.8rem',
+  borderRadius: '0.4rem',
+  overflowX: 'hidden',
+  overflowY: 'scroll',
+  boxShadow: '0 0.2rem 0.8rem DimGrey',
+  //background: 'rgba(0, 0, 0, 0.15)',
+
+  display: 'flex',
+  flexDirection: 'row',
+  // alignItems: 'center',   
+  alignItems: 'flex-start', 
+  justifyContent: 'space-around',   //'flex-start',
 }); 
 
 /*
