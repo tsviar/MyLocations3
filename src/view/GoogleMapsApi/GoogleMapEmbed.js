@@ -490,9 +490,6 @@ const MainBox = styled(Box)({
   justifyContent: "center",
   alignItems: 'space-around',
 
-  // marginLeft: 10,
-  // paddingLeft: 20,
-  // paddingRight: 20,  
     marginLeft: 0,
     paddingLeft: 0,
     marginRight: 30,
