@@ -462,7 +462,8 @@ export {GoogleMapContainer, LocationsMap} ;
 //=============================================================================================
 
 const MainBox = styled(Box)({
-  height: '70vh',
+  // height: '70vh',
+  height: 'fit-content',
   maxHeight: '70rem',
   minHeight: '70vh',
 
@@ -493,7 +494,7 @@ const MainBox = styled(Box)({
     marginLeft: 10,
     paddingLeft: 10,
     marginRight: 30,
-    paddingRight: 20,
+    paddingRight: 30,
 }); 
 
 

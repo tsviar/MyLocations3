@@ -1,7 +1,7 @@
 {
   "name": "mylocations1-localstorage-materialui-router",
   "version": "1.0.0",
-  "description": "",
+  "description": "An application intended to manage my locations using browsers local-storage",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
@@ -13,10 +13,10 @@
     "formik": "^1.5.8",
     "google-maps-react": "^2.0.2",
     "prop-types": "15.7.2",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
+    "react": "latest",
+    "react-dom": "latest",
     "react-google-maps": "^9.4.5",
-    "react-router-dom": "5.0.1",
+    "react-router-dom": "latest",
     "react-scripts": "2.1.8",
     "styled-components": "4.2.0",
     "yup": "^0.27.0"

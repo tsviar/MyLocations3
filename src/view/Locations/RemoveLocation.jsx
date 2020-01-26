@@ -82,7 +82,7 @@ const EditLocation = () => {
     let validation_success = true;
    // let submitting = 'IDLE';
     
-   let history = useHistory();
+   let history = useHistory(); 
 
   /*
     
@@ -140,11 +140,12 @@ marker.red(`EditLocation selected_map_location: ${selected_map_location.address}
   useEffect(() => {
 
     set_new_location( ( {...new_location, 
+      // id: ((original_Locations_list.length) + 1),
       address: selected_map_location.address, 
       lat: selected_map_location.lat, 
       lng: selected_map_location.lng, 
     } )  );  
-    
+
     marker.green(`EditLocation useEffect on selected_map_location CHANGE\n`);
 
     marker.green(`EditLocation useEffect selected_map_location: 
@@ -159,44 +160,6 @@ marker.red(`EditLocation selected_map_location: ${selected_map_location.address}
     lng:  ${new_location.lng}`);
   
   }, [selected_map_location]);
-
-  // Update upon selected_location change
- 
-  useEffect(() => {
-    
-    marker.green(`EditLocation useEffect on selected_map_location before\n`);
-
-    marker.green(`EditLocation useEffect selected_map_location: 
-    id  ${selected_location.id}
-    name  ${selected_location.name}
-    address  ${selected_location.address}
-    lat  ${selected_location.lat}
-    lng:  ${selected_location.lng}
-    category  ${selected_location.category}
-    `); 
-
-    marker.green(`EditLocation useEffect new_location
-    id  ${new_location.id}
-    name  ${new_location.name}
-    address  ${new_location.address}
-    lat  ${new_location.lat}
-    lng:  ${new_location.lng}
-    category  ${new_location.category}
-
-    `);  
-
-
-    set_new_location( ( {...new_location, 
-      id: selected_location.id,
-      name: selected_location.name ,
-      address: selected_location.address, 
-      lat: selected_location.lat, 
-      lng: selected_location.lng, 
-      category: selected_location.category,
-    } )  );  
-
-     
-  }, [selected_location]);
 
 
   // Validating input after every change
@@ -391,12 +354,13 @@ const validateField = field => {
       marker.obj( new_location , `handleSubmit Update new_location 1` );
       marker.obj( original_Locations_list , `handleSubmit original_Locations_list 1` );
 
-     let new_list = original_Locations_list;
+     let new_list = original_Locations_list.splice(
+      (original_Locations_list.findIndex(el => el.id === new_location.id)),1);
      
      // Actually, the id is always index+1
      //new_list[new_location.id-1] = new_location;
 
-     new_list[new_list.findIndex(el => el.id === new_location.id)] = new_location;
+    //  new_list[original_Locations_list.findIndex(el => el.id === new_location.id)] = new_location;
 
     //  var foundIndex = new_list.findIndex(x => x.id === new_location.id);
     //  new_list[foundIndex] = new_location;
@@ -410,18 +374,6 @@ const validateField = field => {
      set_original_Locations_list( new_list);
         //// set_original_Locations_list( [...original_Locations_list, new_location]);
 
-
-    // original_Locations_list is in the prev state yet, so increment by 2
-    set_new_location( ( 
-      {...new_location, 
-          id: selected_location.id,
-          name: selected_location.name, //'', 
-          address: selected_location.address, // '', 
-          lat: selected_location.lat, //31.776847698411576, 
-          lng: selected_location.lng, //35.20543098449707, 
-      } )  ); 
-
-      update_selected_location(new_location);
 
     //  const filtered_list = new_list.filter(item =>
     //   item.first_name.toLowerCase().includes(txt.toLowerCase())  );   
@@ -456,7 +408,7 @@ const validateField = field => {
   //----------------------------------------------------------
   useEffect(() => {
 
-    marker.green(`EditLocation new_location.lng:  ${new_location.lng}`);
+    marker.green(`AddLocation new_location.lng:  ${new_location.lng}`);
     if ( 'IDLE' === submitting) {
       setTimeout(() => {  set_submit_text(''); 
       marker.red(`EditLocation useEffect ${submit_text}`);
@@ -522,7 +474,7 @@ const validateField = field => {
         <FormBox>
           {/* <form style={{ width: "50%" }} onSubmit={handleSubmit} > */}
           <LocationForm  onSubmit={handleSubmit} >
-            <h1>Edit Location</h1>
+            <h1>Remove Location</h1>
   
             <FormControl required margin="normal" fullWidth>
               <InputLabel htmlFor="name">Name</InputLabel>
@@ -632,10 +584,8 @@ const validateField = field => {
                     {item.name}
                 </MenuItem>
                 ))}
-
-                {/* <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem> */}
-                
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
                 </Select>
                 <FormHelperText>required</FormHelperText>
             </FormControl>                  
@@ -666,7 +616,7 @@ const validateField = field => {
                     ) ? false : true                  
                 } 
                 variant="contained" color="primary" size="medium" margin= "40px" type="submit"   >
-                 Edit
+                 Remove
                 </Button>
                
             </SubmitBox>
@@ -732,16 +682,13 @@ const useStyles = makeStyles(theme => ({
       },
 }));
 
+
 const MainBox = styled('div')({
-  // height: 'fit-content', 
-  //  height: '60vh',
-  // height: '70vh',
-  // maxHeight: '70rem',
-  // minHeight: '70vh',
-  
-  height: '70vh',
-  maxHeight: '60rem',
-  minHeight: '60vh',
+ 
+  // height: '50vh',
+  height: 'fit-content',
+  maxHeight: '50rem',
+  minHeight: '50vh',
 
    width: 'fit-content',
 //   width: '35%',
@@ -752,9 +699,9 @@ const MainBox = styled('div')({
 
   margin: 0,
   marginLeft: 30,
-  padding:10,
+  padding:0,
   paddingLeft:10,
- 
+
 // borderRadius: '0.4rem',
 // borderRadius: '0.8rem',
  // overflowX: 'hidden',
@@ -767,24 +714,24 @@ const MainBox = styled('div')({
   justifyContent: 'center',   //'flex-start', 
 }); 
 
-// const AppBox = styled('div')({
-//   height: '70vh',
-//   /* height: 85vh; */
-//   minWidth: '60rem', //'35rem',
-//   maxWidth: '60rem', //'35rem',
-//   marginLeft: 15,
+const AppBox = styled('div')({
+  height: '70vh',
+  /* height: 85vh; */
+  minWidth: '60rem', //'35rem',
+  maxWidth: '60rem', //'35rem',
+  marginLeft: 15,
 
-//   borderRadius: '0.4rem',
-//   overflowX: 'hidden',
-//   overflowY: 'scroll',
-//   boxShadow: '0 0.2rem 0.8rem DimGrey',
+  borderRadius: '0.4rem',
+  overflowX: 'hidden',
+  overflowY: 'scroll',
+  boxShadow: '0 0.2rem 0.8rem DimGrey',
 
-//   borderradius: '0.8rem',
-//   display: 'flex',
-//   flexDirection: 'column',
-//   alignItems: 'center',   //'flex-start', 
-//   justifyContent: 'center',   //'flex-start', 
-// }); 
+  borderradius: '0.8rem',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',   //'flex-start', 
+  justifyContent: 'center',   //'flex-start', 
+}); 
 
 const FormBox = styled(Box)({
     display: "flex",
@@ -852,7 +799,6 @@ const CoordinatesInnerBox = styled(Box)({
     textAlign: "left",
     color: "slategray",
     // fontWeight: 400,
-
     
 });
 

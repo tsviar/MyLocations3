@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { StateDataManager } from "../stateProvider/DataManager";
+import { StateDataManager } from "../../stateProvider/DataManager";
 
-import Location from "./Locations/Location";
+import Location from "./Location";
 // import Card from "./Card";
 // import styled from "styled-components";
 import { makeStyles, styled } from '@material-ui/core/styles';
@@ -9,7 +9,7 @@ import marker from '@ajar/marker';
 
 
 //const List = ({ list_data, updateSelectedCard }) => {
-const List = () => {
+const LocationsList = () => {
   // const { filtered_list, update_selected_card } = useContext(StateDataManager);
   const { 
     selected_location, update_selected_location,
@@ -38,7 +38,7 @@ const create_list_ui = (items, update_selected_location) =>
     </CardItem>
   ));
 
-export default List;
+export default LocationsList;
 
 
 /*

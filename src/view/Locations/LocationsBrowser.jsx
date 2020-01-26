@@ -1,19 +1,39 @@
 //import React, { Component } from "react";
 import React, { useContext } from "react";
+// import { Route, Switch } from "react-router";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Switch,
+  Route,
+  Link,
+  useHistory,
+  useLocation,
+  useParams
+} from "react-router-dom";
+
+import { createBrowserHistory } from "history";
+
 import { StateDataManager } from "../../stateProvider/DataManager";
+import marker from '@ajar/marker'; 
 
 import {
   GoogleMapContainer,
   // LocationsMap ,
 }from "../GoogleMapsApi/GoogleMapEmbed";
 
-import ManageLocation from "./ManageLocation"
-import AddLocation from "./AddLocation"
-import EditLocation from "./EditLocation"
+import ManageLocation from "./ManageLocation";
+import AddLocation from "./AddLocation";
+import EditLocation from "./EditLocation";
+import RemoveLocation from "./RemoveLocation";
+import ViewLocation from "./ViewLocation";
 
-import List from "../List";
+import LocationsMenu from "./LocationsMenu";
+import LocationsTopBar from "./LocationsTopBar";
+
+import List from "./LocationsList";
 import Filter from "../Filter";
-import Profile from "../Profile";
+//import Profile from "../Profile";
 
 //import "../styles.css";
 //import styled from "styled-components";
@@ -42,7 +62,13 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
     update_selected_map_location({ address: str });
   };
 
+  // const history = createBrowserHistory();
 
+  let location = useLocation();
+  marker.obj(location, `LocationsBrowser location `);
+
+  let history = useHistory();
+ 
   return (
     // <div >
     //   <ContentBox>
@@ -56,38 +82,93 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
     //   </ContentBox>
     // </div>
 
+    //  <Router  history={history}>
+
+    // <Router  history={history}>
     <MainBox >
       {loading_profiles === false ? (
         <div>
           <Filter />
-          <ContentBox>     
-            <ManageLocationsBox>
-            
-            <ModalBox>
-               {/* <Profile/> */}
+          <ContentBox>   
+          <MenuContentBox>
 
-              {/* <GoogleMapContainer /> */}
-           
-                {/* <LocationsMap
-                lat={selected_map_location.lat}
-                lng={selected_map_location.lng}
-                zoom={selected_map_location.zoom}
-                setCoordinates={setUserPickedCoordinates}
-                setAddress={setUserPickedAddress}
-              /> */}
+            <MenuBox>                                   
+              <LocationsTopBar>
+                      <LocationsMenu />
+               </LocationsTopBar>  
+            </MenuBox>   
+              
+                
+              {/* <Switch>
 
-            
-              {/* <ManageLocation /> */}
-              <AddLocation />
-              {/* <EditLocation /> */}
+ 
+                   
+                  <Route exact path="/locations"  children={  
+                    () => <ManageLocationsBox>
+                            <ViewLocation />  
+                            <GoogleMapContainer /> 
+                          </ManageLocationsBox> 
+                   } />  
+                  <Route exact path="/locations/view"  children={  
+                    () => <ManageLocationsBox>
+                            <ViewLocation />  
+                            <GoogleMapContainer /> 
+                          </ManageLocationsBox> 
+                   } />  
+                  <Route exact path="/locations/add" children={  
+                    () => <ManageLocationsBox>
+                            <AddLocation />  
+                            <GoogleMapContainer /> 
+                          </ManageLocationsBox> 
+                   } />   
+                  <Route exact path="/locations/edit"  children={  
+                    () => <ManageLocationsBox>
+                            <EditLocation />  
+                            <GoogleMapContainer /> 
+                          </ManageLocationsBox> 
+                   } />  
+                  <Route exact path="/locations/remove"  children={  
+                    () => <ManageLocationsBox>
+                            <RemoveLocation />  
+                            <GoogleMapContainer /> 
+                          </ManageLocationsBox> 
+                             
+                   } />                
 
 
-              <GoogleMapContainer /> 
+            </Switch> */}
+   
+           {/* <Route path="/locations" children={<AddLocation />} /> */}
 
+                {/* <ModalBox> */}
 
-              </ModalBox>
+                    {/* <Profile/> */}
+ 
 
-            </ManageLocationsBox>
+                {/* </ModalBox> */}
+
+             
+             
+                  
+                <ManageLocationsBox>   
+
+               {  
+                   ( "/locations/view" === location.pathname
+                   || "/locations" === location.pathname) ? <ViewLocation/> 
+                 : ( "/locations/add" === location.pathname ) ? <AddLocation/>
+                 : ( "/locations/edit" === location.pathname ) ? <EditLocation/>
+                 : ( "/locations/remove" === location.pathname ) ? <RemoveLocation/>
+                 : `location.pathname= ${location.pathname}`
+
+                } 
+               
+
+                {/* <ViewLocation/>                */}
+                <GoogleMapContainer /> 
+                
+
+              </ManageLocationsBox>
+            </MenuContentBox>
 
             <List />
 
@@ -96,7 +177,13 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
       ) : (
         <h1>... Loding ...</h1>
       )}
+     
     </MainBox>
+
+   
+    
+    // </Router>
+    
   );
 };
 export default LocationsBrowser;
@@ -138,14 +225,36 @@ const ContentBox = styled('div')({
 }); 
 
 
+
+const MenuBox = styled('div')({
+  width: '70rem',
+}); 
+
+
+const MenuContentBox = styled('div')({
+  height: '70vh',
+  // height: 'fit-content',
+  maxHeight: '70rem',
+  minHeight: '70vh',
+
+  width: '70rem',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',   //'flex-start', 
+  justifyContent: 'center',   //'space-around',   //'flex-start',
+}); 
+
 const ManageLocationsBox = styled('div')({
   // maxHeight: '80vh',
   // height: '65vh',
+  //height: 'fit-content',
   // width: 'fit-content',
   // marginTop: 0,
   // paddingTop: 0,
 
-    width: '60rem',
+     width: '70rem',
+    // width: '60rem',
+
     // borderRadius: '0.8rem',
    borderRadius: '0.4rem',
    overflowX: 'hidden',

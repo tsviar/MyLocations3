@@ -1,12 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  useHistory,
-  useLocation,
-  useParams
-} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-import styled from "styled-components/macro";
-import { makeStyles } from '@material-ui/core/styles';
+// import styled from "styled-components/macro";
+import { makeStyles, styled } from '@material-ui/core/styles';
 import marker from '@ajar/marker'; 
 
 
@@ -33,7 +29,11 @@ import { wrap } from "module";
 //                       Add Location view
 //=================================================================================
 
-const EditLocation = () => {
+const ViewLocation = ({ match, history }) => {
+  marker.blue(`ViewLocation 
+  match    ${match}
+  history  ${history}
+  `);
 
     // general apearence rules
     const classes = useStyles();
@@ -44,28 +44,37 @@ const EditLocation = () => {
         original_Locations_list, 
         set_original_Locations_list,
         selected_map_location, 
+        //update_selected_map_location,
         selected_location,
-        update_selected_location,
-        update_selected_map_location,
+        // update_selected_location,
+        selected_action,
     } =  useContext(StateDataManager);
  
-   
-    // Local state
-  marker.obj(selected_location, 'EditLocation selected_location: ');
+ 
 
+    // Local state
 
     // Note: marker.obj prints in alphabetical order not actual order...
-    const [new_location, set_new_location] = useState({
-        id: selected_location.id ,
-        name: selected_location.name ,
-        address: selected_location.address ,
-        lat: selected_location.lat , 
-        lng: selected_location.lng , 
-        category: selected_location.category ,
-      });   
+    const [new_location, set_new_location] = useState(
+        {
+        id:         selected_location.id, //original_Locations_list.length+1,
+        name:       selected_location.name , //'',
+        address:    selected_location.address, //'',
+        lat:        selected_location.lat , //31.776847698411576, 
+        lng:        selected_location.lng , //35.20543098449707, 
+        category:   selected_location.category, //categories_list[0].name,
+      }
+      );   
 
-      marker.obj(new_location, 'EditLocation new_location: ');
-      
+    //   const [new_location, set_new_location] = useState({
+    //     id: original_Locations_list.length+1,
+    //     name: '',
+    //     address: '',
+    //     lat: 31.776847698411576, 
+    //     lng: 35.20543098449707, 
+    //     category: categories_list[0].name,
+    //   });   
+
     const [errors, set_errors] = useState({
         name: '',
         address: '',
@@ -82,7 +91,25 @@ const EditLocation = () => {
     let validation_success = true;
    // let submitting = 'IDLE';
     
-   let history = useHistory();
+    
+  marker.blue(`ViewLocation selected_location 
+  id  ${selected_location.id}
+  name  ${selected_location.name}
+  address  ${selected_location.address}
+  lat  ${selected_location.lat}
+  lng:  ${selected_location.lng}
+  category  ${selected_location.category}
+  `);
+
+  marker.blue(`ViewLocation new_location 
+  id  ${new_location.id}
+  name  ${new_location.name}
+  address  ${new_location.address}
+  lat  ${new_location.lat}
+  lng:  ${new_location.lng}
+  category  ${new_location.category}
+  `);
+
 
   /*
     
@@ -98,75 +125,74 @@ const EditLocation = () => {
     So, my unofficial suggestion is that, use onChange whenever you possible, use onBlur whenever you need.
   */
 
+
+  // On Mounting
   
- useEffect(() => {
-
-  set_new_location({
-    id: selected_location.id ,
-    name: selected_location.name ,
-    address: selected_location.address ,
-    lat: selected_location.lat , 
-    lng: selected_location.lng , 
-    category: selected_location.category ,
-  });   
-
-  // update_selected_map_location({
-  //   address: selected_location.address ,
-  //   lat: selected_location.lat , 
-  //   lng: selected_location.lng , 
-  // });
-
-  marker.blue(`EditLocation ON Mount selected_map_location: 
-      address ${selected_map_location.address}
-      lat  ${selected_map_location.lat}
-      lng  ${selected_map_location.lng}      
-      `); 
-
-  marker.blue(`EditLocation ON Mount new_location.lng:  
-      id ${new_location.id}
-      name ${new_location.name}
-      address ${new_location.address}
-      lat  ${new_location.lat}
-      lng  ${new_location.lng}
-      category: ${new_location.category}
-  ` );
-
-}, []);
-
-  
-marker.red(`EditLocation selected_map_location: ${selected_map_location.address} ${selected_map_location.lat}  ${selected_map_location.lng}`);
-
- 
   useEffect(() => {
-
-    set_new_location( ( {...new_location, 
-      address: selected_map_location.address, 
-      lat: selected_map_location.lat, 
-      lng: selected_map_location.lng, 
-    } )  );  
     
-    marker.green(`EditLocation useEffect on selected_map_location CHANGE\n`);
+    marker.blue(`ViewLocation useEffect on mount before\n`);
 
-    marker.green(`EditLocation useEffect selected_map_location: 
+    marker.blue(`ViewLocation useEffect selected_map_location: 
       address  ${selected_map_location.address}
       lat  ${selected_map_location.lat}
       lng  ${selected_map_location.lng}    
     `); 
 
-    marker.green(`EditLocation useEffect new_location
+    marker.blue(`ViewLocation useEffect new_location
     address  ${new_location.address}
     lat  ${new_location.lat}
-    lng:  ${new_location.lng}`);
+    lng:  ${new_location.lng}`);  
+
+
+    set_new_location( ( { ...new_location, 
+        id:         selected_location.id, //original_Locations_list.length+1,
+        name:       selected_location.name , //'',
+        address:    selected_location.address, //'',
+        lat:        selected_location.lat , //31.776847698411576, 
+        lng:        selected_location.lng , //35.20543098449707, 
+        category:   selected_location.category,
+    } )  );  
+
+     
+  }, []);
+
   
+ // Update upon selected_map_location change
+ 
+  useEffect(() => {
+    
+    marker.green(`ViewLocation useEffect on selected_map_location before\n`);
+
+    marker.green(`ViewLocation useEffect selected_map_location: 
+      address  ${selected_map_location.address}
+      lat  ${selected_map_location.lat}
+      lng  ${selected_map_location.lng}    
+    `); 
+
+    marker.green(`ViewLocation useEffect new_location
+    address  ${new_location.address}
+    lat  ${new_location.lat}
+    lng:  ${new_location.lng}`);  
+
+
+    set_new_location( ( {...new_location, 
+      id: ((original_Locations_list.length) + 1),
+      address: selected_map_location.address, 
+      lat: selected_map_location.lat, 
+      lng: selected_map_location.lng, 
+    } )  );  
+
+     
   }, [selected_map_location]);
+
 
   // Update upon selected_location change
  
   useEffect(() => {
     
-    marker.green(`EditLocation useEffect on selected_map_location before\n`);
+    marker.green(`ViewLocation useEffect on selected_map_location before\n`);
 
-    marker.green(`EditLocation useEffect selected_map_location: 
+    marker.green(`ViewLocation useEffect selected_map_location: 
     id  ${selected_location.id}
     name  ${selected_location.name}
     address  ${selected_location.address}
@@ -175,7 +201,7 @@ marker.red(`EditLocation selected_map_location: ${selected_map_location.address}
     category  ${selected_location.category}
     `); 
 
-    marker.green(`EditLocation useEffect new_location
+    marker.green(`ViewLocation useEffect new_location
     id  ${new_location.id}
     name  ${new_location.name}
     address  ${new_location.address}
@@ -199,8 +225,24 @@ marker.red(`EditLocation selected_map_location: ${selected_map_location.address}
   }, [selected_location]);
 
 
+  marker.green(`ViewLocation selected_map_location CURRENT\n`);
+
+  marker.green(`ViewLocation selected_map_location: 
+    address  ${selected_map_location.address}
+    lat  ${selected_map_location.lat}
+    lng  ${selected_map_location.lng}    
+  `); 
+
+  marker.green(`ViewLocation new_location CURRENT
+  address  ${new_location.address}
+  lat  ${new_location.lat}
+  lng:  ${new_location.lng}`);
+
+  
+   
   // Validating input after every change
   const handleChange = event => {
+    
     try{   
     const { name, value } = event.target; // destructure properties
     marker.green( `handleChange event.target ${name} = ${value}` );
@@ -216,22 +258,13 @@ marker.red(`EditLocation selected_map_location: ${selected_map_location.address}
   };
 
 
-  const findIfNameExists = (value) => {
-    marker.blue(`findIfNameExists value= ${value}`);   
-    
-    const names_list = original_Locations_list.map( item => item.name );
-    marker.green( `handleBlur list: ${names_list}` );
-    const found1 =  names_list.includes(value); //('Demo Location');
-    
-    marker.blue(`find result ${found1}`);
-    return found1;
-  };
-
+  
   //      Handle exit from field
   //------------------------------------
   const handleBlur = event => {
 
-    marker.i(`EditLocation handleBlur`);
+    marker.i(`ViewLocation handleBlur`);
+ 
 
     try{   
         let error_msg = '';
@@ -340,8 +373,10 @@ const validateField = field => {
  
  const validateForm = () => {  
    try{
+    const nameFound = validateNameExists();
+    const validName = validateField('name') &&  !nameFound;
+    marker.red(`validateForm nameFound ${nameFound} validName ${validName}`);
 
-    const validName = validateField('name');
     const validAddress = validateField('address'); 
     const validLat = validateField('lat' );
     const validLng  = validateField('lng' );
@@ -358,8 +393,13 @@ const validateField = field => {
 
             marker.green( `validateForm validation_success ${validation_success}` );
             marker.obj( new_location , `validateForm new_location` );
-            marker.obj( errors , `validateForm errors 2` );                                             
+            marker.obj( errors , `validateForm errors 2` );                                            
     }  
+    else{
+        validation_success = false;
+        marker.red( `validateForm validation_success ${validation_success}` );
+        //set_errors({...errors, validation:`Validation Error`}); 
+    }
 
     }catch(err){
       validation_success = false; //set_validation_success(false);
@@ -370,8 +410,125 @@ const validateField = field => {
 
   }
 
+  //====================================================================
+  // Submitting Sub actions
+  //====================================================================
 
-  marker.red(`EditLocation submitting ${submitting}  ${submit_text}`);
+  //const addLoaction = ({ match, history }) => {
+  const addLoaction = () => {
+    set_original_Locations_list( [...original_Locations_list, new_location]);
+
+    marker.obj( new_location , `handleSubmit Update new_location 2` );
+    marker.obj( original_Locations_list , `handleSubmit original_Locations_list 2` );
+
+    // alert(`Lcation ${new_location.name} was added succesfully`);
+    set_submitting('END');
+    marker.red('ViewLocation handleSubmit completed '+ submitting );
+
+
+    // original_Locations_list is in the prev state yet, so increment by 2
+    set_new_location( ( 
+    {...new_location, 
+        id: (original_Locations_list.length +2),
+        name: selected_location.name, //'', 
+        address: selected_location.address, // '', 
+        lat: selected_location.lat, //31.776847698411576, 
+        lng: selected_location.lng, //35.20543098449707, 
+    } )  ); 
+
+  }
+
+
+  const validateNameExists = () => {
+    
+    marker.i(`ViewLocation validateName`);
+    let found = false;
+    let validValue = false;
+    let error_msg = '';
+
+    try{           
+
+        const  value  = new_location.name; // destructure properties
+        
+        validValue = ( (value !== ``) && (value !== 'undefined') && (value !== null) );        
+    
+
+        marker.red(`validateName 1 found ${found} validValue ${validValue} `);   
+
+         // handlse name validation
+        if ( validValue  ) {
+            marker.magenta( `validateName 2  ${value} is valid, ` );           
+            
+            // find if name exists in locations list
+            marker.obj( original_Locations_list , `handleBlur original_Locations_list ` );
+
+            var exists = ( element) => {
+                marker.obj( element , `element ` );
+                marker.green( `value: ${value}` );
+                // checks whether an element is even
+                return element.name  === value;
+              };
+            
+            found =  original_Locations_list.some( exists);
+            marker.green( `validateName SOME nameFound: ${found}` );
+           
+            // found = findIfNameExists(value);
+            // marker.red(`handleBlur found after search ${found} `);   
+            
+            if (found ){
+                marker.red(`validateName Location name ${value} already exists. `);  
+
+                error_msg = `Location name ${value} already exists. `;
+                //set_errors({...errors, [ name ]: `Location name ${value} already exists`}); 
+                 set_new_location( ( {...new_location, name : '', } )  );
+            }     
+            else{
+                marker.red(`Location name ${value} does not exist. `);  
+                error_msg = '';              
+                //set_errors({name: ``});                
+            }
+        }
+
+        if ( !validValue  ) {
+            error_msg = 'Empty field or Invalid value. ';
+            marker.red(`error_msg ${error_msg} `);    
+       }
+
+        marker.red(`exists ${found} `);     
+        marker.red(`validateName 3  validValue ${validValue} `);   
+
+        if (!found && validValue) {
+            marker.green(`validateName 4 !found && validValue ${found} ${validValue}`);   
+            error_msg = '';   
+        }     
+        // marker.red(`set_errors error_msg ${error_msg} `);  
+        set_errors({...errors, name:  error_msg }); 
+     
+    }catch(err){
+        marker.red(`validateName 6 caugt exception: ${err.message}`);
+    }
+
+    marker.green(`validateName 5 found && validValue ${found} ${validValue}`); 
+    return (found );
+
+  };
+
+
+// const findIfNameExists = (value) => {
+//     marker.green(`findIfNameExists value= ${value}`);   
+    
+//     const names_list = original_Locations_list.map( item => item.name );
+//     marker.green( `handleBlur list: ${names_list}` );
+//     const found1 =  names_list.includes(value); //('Demo Location');
+    
+//     marker.green(`find result ${found1}`);
+//     return found1;
+//   };
+
+
+//==========================================================================
+
+  marker.red(`ViewLocation submitting ${submitting}  ${submit_text}`);
 
 //------------------------------------------------
 //          SUBMIT
@@ -382,8 +539,8 @@ const validateField = field => {
    // submitting = 'START'; 
     set_submitting('START');   
      
-    marker.red('EditLocation handleSubmit start '+ submitting );
-    marker.green('EditLocation handleSubmit original_Locations_list.length '+ original_Locations_list.length );
+    marker.red('ViewLocation handleSubmit start '+ submitting );
+    marker.green('ViewLocation handleSubmit original_Locations_list.length '+ original_Locations_list.length );
  
     validateForm();
 
@@ -391,64 +548,51 @@ const validateField = field => {
       marker.obj( new_location , `handleSubmit Update new_location 1` );
       marker.obj( original_Locations_list , `handleSubmit original_Locations_list 1` );
 
-     let new_list = original_Locations_list;
-     
-     // Actually, the id is always index+1
-     //new_list[new_location.id-1] = new_location;
+            
+        marker.red('ViewLocation handleSubmit ADD validName ' );
+        set_new_location( ( 
+            {...new_location, 
+                id: (original_Locations_list.length +2),
+            } )  ); 
 
-     new_list[new_list.findIndex(el => el.id === new_location.id)] = new_location;
+        addLoaction();
+        event.stopPropagation();
+        //history.goBack(); //back to list view
+      
 
-    //  var foundIndex = new_list.findIndex(x => x.id === new_location.id);
-    //  new_list[foundIndex] = new_location;
-    
-    //  new_list[new_location.id-1].name=new_location.name;
-    //  new_list[new_location.id-1].address =new_location.address;
-    //  new_list[new_location.id-1].lat=new_location.lat;
-    //  new_list[new_location.id-1].lng=new_location.lng;
-    //  new_list[new_location.id-1].category=new_location.category;
+    //   set_original_Locations_list( [...original_Locations_list, new_location]);
 
-     set_original_Locations_list( new_list);
-        //// set_original_Locations_list( [...original_Locations_list, new_location]);
+    //   marker.obj( new_location , `handleSubmit Update new_location 2` );
+    //   marker.obj( original_Locations_list , `handleSubmit original_Locations_list 2` );
 
+    //  // alert(`Lcation ${new_location.name} was added succesfully`);
+    //  set_submitting('END');
+    //  marker.red('ViewLocation handleSubmit completed '+ submitting );
 
-    // original_Locations_list is in the prev state yet, so increment by 2
-    set_new_location( ( 
-      {...new_location, 
-          id: selected_location.id,
-          name: selected_location.name, //'', 
-          address: selected_location.address, // '', 
-          lat: selected_location.lat, //31.776847698411576, 
-          lng: selected_location.lng, //35.20543098449707, 
-      } )  ); 
+   
+    //   // original_Locations_list is in the prev state yet, so increment by 2
+    //   set_new_location( ( 
+    //     {...new_location, 
+    //        id: (original_Locations_list.length +2),
+    //       name: '', 
+    //       address: '', 
+    //       lat: 31.776847698411576, 
+    //       lng: 35.20543098449707, 
+    //     } )  );  
 
-      update_selected_location(new_location);
-
-    //  const filtered_list = new_list.filter(item =>
-    //   item.first_name.toLowerCase().includes(txt.toLowerCase())  );   
-
-      marker.obj( new_location , `handleSubmit Update new_location 2` );
-      marker.obj( new_location , `handleSubmit Update new_location 2` );
-      marker.obj( original_Locations_list , `handleSubmit original_Locations_list 2` );
-
-     // alert(`Lcation ${new_location.name} was added succesfully`);
-     set_submitting('END');
-     marker.red('EditLocation handleSubmit completed '+ submitting );
- 
     }
     
     setTimeout(() => {      
       set_submitting('IDLE'); //set_submitting(false);
-      marker.red('EditLocation handleSubmit end '+ submitting );
+      marker.red('ViewLocation handleSubmit end '+ submitting );
     }, 1000);
 
-    event.stopPropagation();
-    //history.goBack(); //back to list view
-    history.push("/locations");
   
   }
 
-  marker.obj( new_location , `EditLocation current new_location` );
-  marker.obj(original_Locations_list, `EditLocation original_Locations_list `); 
+
+  marker.obj( new_location , `ViewLocation current new_location` );
+  marker.obj(original_Locations_list, `ViewLocation original_Locations_list `); 
   
 
   //----------------------------------------------------------
@@ -456,74 +600,42 @@ const validateField = field => {
   //----------------------------------------------------------
   useEffect(() => {
 
-    marker.green(`EditLocation new_location.lng:  ${new_location.lng}`);
     if ( 'IDLE' === submitting) {
       setTimeout(() => {  set_submit_text(''); 
-      marker.red(`EditLocation useEffect ${submit_text}`);
+      marker.green(`ViewLocation useEffect ${submit_text}`);
     }, 300);          
     }
     if ( 'START' === submitting) {
-      set_submit_text('Submitting new location...');
+      set_submit_text('Submitting location...');
        setTimeout(() => {
-        set_submit_text('Added new location successfully...');
-        marker.red(`EditLocation useEffect end ${submit_text}`);
+        set_submit_text('Submitting location...');
+        marker.green(`ViewLocation useEffect end ${submit_text}`);
       }, 20);     
-      marker.red(`EditLocation useEffect ${submit_text}`);
+      marker.green(`ViewLocation useEffect ${submit_text}`);
     }
     if ( 'END' === submitting) {  
-      set_submit_text('Added new location successfully...');  
+      set_submit_text('Submitted location successfully...');  
       setTimeout(() => {
-        set_submit_text('Added new location successfully...');
-        marker.red(`EditLocation useEffect end ${submit_text}`);
+        set_submit_text('Submitted location successfully...');
+        marker.green(`ViewLocation useEffect end ${submit_text}`);
       }, 20);
     }
-    marker.red(`EditLocation useEffect submit_text  ${submit_text}`); 
+    marker.green(`ViewLocation useEffect submit_text  ${submit_text}`); 
   
   }, [submitting]);
 
  
-  const restoreOriginalValuses = event => {
-    
-      set_new_location({
-        id: selected_location.id ,
-        name: selected_location.name ,
-        address: selected_location.address ,
-        lat: selected_location.lat , 
-        lng: selected_location.lng , 
-        category: selected_location.category ,
-      });   
-
-      update_selected_map_location({
-        address: selected_location.address ,
-        lat: selected_location.lat , 
-        lng: selected_location.lng , 
-      });
-
-      marker.red(`restoreOriginalValuses  selected_map_location: 
-          address ${selected_map_location.address}
-          lat  ${selected_map_location.lat}
-          lng  ${selected_map_location.lng}      
-          `); 
-
-      marker.red(`restoreOriginalValuses  new_location.lng:  
-          id ${new_location.id}
-          name ${new_location.name}
-          address ${new_location.address}
-          lat  ${new_location.lat}
-          lng  ${new_location.lng}
-          category: ${new_location.category}
-      ` );
-
-  };
 
 
     return (
+      
       <MainBox>
         <FormBox>
           {/* <form style={{ width: "50%" }} onSubmit={handleSubmit} > */}
           <LocationForm  onSubmit={handleSubmit} >
-            <h1>Edit Location</h1>
-  
+            {/* <MainBoxLabel>Selected Location</MainBoxLabel> */}
+            <h1>Selected Location</h1>
+
             <FormControl required margin="normal" fullWidth>
               <InputLabel htmlFor="name">Name</InputLabel>
               <Input 
@@ -532,8 +644,8 @@ const validateField = field => {
                 type="text"  
                 value={new_location.name} 
                 placeholder="e.g: My New cool location 3"
-                onChange={handleChange} 
-                onBlur={handleBlur}
+                //onChange={handleChange} 
+                //onBlur={handleBlur}
               />
             </FormControl>
             {errors.name &&  <ErrorText>{errors.name}</ErrorText>}
@@ -548,8 +660,8 @@ const validateField = field => {
                 value={new_location.address} 
                 // value={selected_map_location.address}                 
                 placeholder="e.g: myStreet 3, New York"
-                onChange={handleChange}
-                onBlur={handleBlur}
+               // onChange={handleChange}
+                //onBlur={handleBlur}
                />
             </FormControl>
             {errors.address &&  <ErrorText>{errors.address}</ErrorText>}
@@ -576,11 +688,11 @@ const validateField = field => {
                             type="number"  
                             min="MIN_COORDINATES"
                             max="MAX_COORDINATES"
-                           value={new_location.lat} 
+                            value={new_location.lat} 
                             // value={selected_map_location.lat}
                             placeholder="-345.1"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
+                            //onChange={handleChange}
+                            //onBlur={handleBlur}
                             />
                         </FormControl>
                         {errors.lat &&  <ErrorText>{errors.lat}</ErrorText>}
@@ -597,8 +709,8 @@ const validateField = field => {
                             value={new_location.lng} 
                             // value={selected_map_location.lng} 
                             placeholder="156.76"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
+                            //onChange={handleChange}
+                           // onBlur={handleBlur}
                             />
                     </FormControl>  
                     {errors.lng &&  <ErrorText>{errors.lng}</ErrorText>}
@@ -620,7 +732,7 @@ const validateField = field => {
                 name= 'category'             
                 value={new_location.category}
                 placeholder="Pick a Category from the list"
-                onChange={handleChange}
+                //onChange={handleChange}
 
                 // inputProps={{
                 //     name: 'category',
@@ -643,55 +755,22 @@ const validateField = field => {
 
             {errors.category &&  <ErrorText>{errors.category}</ErrorText>}   
 
-            <SubmitText> {submit_text } </SubmitText>
-
-           <SubmitBox>
-
-                <Button 
-                variant="contained" color="primary" size="medium" margin= "40px" 
-                // type="submit"   
-                onClick = {restoreOriginalValuses}
-                >
-                 Restore
-                </Button>
-              
-                <Button 
-                disabled={
-                    (
-                    errors.name === '' && errors.address=== '' && errors.lat=== '' 
-                    &&  errors.lng=== '' && errors.category === '' 
-                    &&  errors.validation === '' 
-                    &&  submitting === 'IDLE'
-                    && validation_success === true 
-                    ) ? false : true                  
-                } 
-                variant="contained" color="primary" size="medium" margin= "40px" type="submit"   >
-                 Edit
-                </Button>
-               
-            </SubmitBox>
-            {/* <button type="submit" >Add</button> */}
-            {/* <button type="button"  onClick={reset}>  Clear Values   </button> */}
-            {/* props: {
-                color?: PropTypes.Color;
-                disableFocusRipple?: boolean;
-                fullWidth?: boolean;
-                href?: string;
-                size?: "small" | "medium" | "large";
-                variant?: "text" | "outlined" | "contained";
-            */}
           </LocationForm>
         </FormBox>
         </MainBox>
+        
       );
   
 }
 
 
 
-export default EditLocation;
+export default ViewLocation;
 
-////  Styling //////
+//===============================================================
+// local styling
+//===============================================================
+
 const toolTipText = `Select an existing category from the list`;
 
 const useStyles = makeStyles(theme => ({
@@ -732,14 +811,20 @@ const useStyles = makeStyles(theme => ({
       },
 }));
 
+
+const ModalBox = styled('div')({
+  position: "absolute",
+  background: "#fff",
+  top: 25,
+  left: "10%",
+  right: "10%",
+  padding: 15,
+}); 
+
+
 const MainBox = styled('div')({
-  // height: 'fit-content', 
-  //  height: '60vh',
-  // height: '70vh',
-  // maxHeight: '70rem',
-  // minHeight: '70vh',
-  
-  height: '70vh',
+ 
+  height: '60vh',
   maxHeight: '60rem',
   minHeight: '60vh',
 
@@ -754,7 +839,7 @@ const MainBox = styled('div')({
   marginLeft: 30,
   padding:10,
   paddingLeft:10,
- 
+
 // borderRadius: '0.4rem',
 // borderRadius: '0.8rem',
  // overflowX: 'hidden',
@@ -767,40 +852,41 @@ const MainBox = styled('div')({
   justifyContent: 'center',   //'flex-start', 
 }); 
 
-// const AppBox = styled('div')({
-//   height: '70vh',
-//   /* height: 85vh; */
-//   minWidth: '60rem', //'35rem',
-//   maxWidth: '60rem', //'35rem',
-//   marginLeft: 15,
-
-//   borderRadius: '0.4rem',
-//   overflowX: 'hidden',
-//   overflowY: 'scroll',
-//   boxShadow: '0 0.2rem 0.8rem DimGrey',
-
-//   borderradius: '0.8rem',
-//   display: 'flex',
-//   flexDirection: 'column',
-//   alignItems: 'center',   //'flex-start', 
-//   justifyContent: 'center',   //'flex-start', 
-// }); 
+const MainBoxLabel = styled('h1')({
+  display: 'flex',
+  margin: 0,
+  padding: 0,
+}); 
 
 const FormBox = styled(Box)({
     display: "flex",
     justifyContent: "center",
-    margin: 20,
-    padding: 20,
+
+    // height: 'fit-content', 
+    //margin: 20,
+    marginLeft: 20,
+    paddingLeft: 10,
+
+    height: '50vh',
+    maxHeight: '50vh',
+    minHeight: '50vh',
+   
+    // height: '50%',
+    // maxHeight: '50vh',
+    // minHeight: '50rem',
+    
 }); 
 
 const LocationForm = styled('form')({
     display: 'flex',
     flexDirection: 'column',
-    margin: 'auto',
-    width: 'fit-content',
-    // width: "50%",
 
-});
+    margin: 'auto',
+    paddingBottom: 5, //20
+    // marginTop: '1rem', //10,
+    // paddingTop: '1rem', //10,
+    // width: "50%",
+  });
 
 const CoordinatesBoxLabel = styled(InputLabel)({
     //fontSize: 3,
@@ -862,7 +948,7 @@ const CoordinatesInput = styled(Input)({
     paddingTop:25,
     // paddingTop: 5,
     paddingleft: 25,
-    paddingRight: 25,
+   // paddingRight: 25,
     //flexGrow:0,
     // flexBasis:['40%', '40%', '100%'],
     //width:[1/2, 1/2, 1],
@@ -877,21 +963,25 @@ const CoordinatesInput = styled(Input)({
 
   const SubmitBox = styled('p')({
     display: 'flex',
-    // justifyContent:"center",
-    justifyContent:"space-between",
-    marginTop: 30,
+    justifyContent:"center",
+    marginTop: 15, //30
     //marginLeft: 50,
     paddingTop: 15,
   });
 
   const ErrorText = styled('h5')({
     display: 'flex',
-    justifyContent:"left",
+    flexWrap: 'wrap',
+    
+    justifyContent:'left',
+    margin: 'auto',
+    padding: 'auto',
     marginTop: 3,
     //marginLeft: 50,
     paddingTop: 5,
     color: 'red',
     textAlign: 'left',
+    wordWrap: 'break-word',
   });
 
   
@@ -905,7 +995,7 @@ const CoordinatesInput = styled(Input)({
     textAlign: 'left',
   });
 
-//const EditLocation = () => <h1>Create a new Location</h1>;
+//const ViewLocation = () => <h1>Create a new Location</h1>;
 
 //const CreateBot = () => <h1 className="create">Create a new Bot!</h1>;
 //export default CreateBot;

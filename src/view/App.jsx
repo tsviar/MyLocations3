@@ -1,5 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import { createBrowserHistory } from "history";
 
 //customize
 // import styled from "styled-components";
@@ -19,7 +20,13 @@ import HomePage from "./HomePage";
 import ProfilesBrowser from "./ProfilesBrowser";
 
 import LocationsBrowser from "./Locations/LocationsBrowser";
+// import AddLocation from "./Locations/AddLocation";
+
 import AddLocation from "./Locations/AddLocation";
+import EditLocation from "./Locations/EditLocation";
+import RemoveLocation from "./Locations/RemoveLocation";
+import ViewLocation from "./Locations/ViewLocation";
+
 
 // since Links is exported as default,
 // we can name it as we wish' hence, Menu
@@ -37,11 +44,13 @@ let theme = createMuiTheme({
 });
 
 
+const history = createBrowserHistory();
+
 //import ls from "local-storage";
 
 // exact path = "/"
 const App = () => (
-  <Router>
+  <Router history={history}>
     <MuiThemeProvider theme={theme}>
       <AppBox>
         {/* <TopBar>
@@ -51,10 +60,31 @@ const App = () => (
         <Route exact path="/" component={HomePage} />
 
         <WrapperDataManager>
-          {/* <Route path="/locations" component={ProfilesBrowser} /> */}
-          <Route path="/locations" component={LocationsBrowser} />
 
-          <Route path="/categories" component={AddLocation} />
+            <Switch>
+
+          {/* <Route path="/locations" component={ProfilesBrowser} /> */}
+ 
+                 <Route exact path="/categories" children={< AddLocation />} />
+
+           
+
+                 <Route exact path="/locations"  children= {<LocationsBrowser />} />
+                 {/* component={LocationsBrowser} /> */}
+
+                  <Route exact path="/locations/view"  
+                        children={  () =>  <LocationsBrowser />  } />
+                  <Route exact path="/locations/add"  
+                        children={  () =>  <LocationsBrowser />  } />
+                  <Route exact path="/locations/edit"  
+                        children={  () =>  <LocationsBrowser />  } />
+                  <Route path="/locations/remove" 
+                        children={  () =>  <LocationsBrowser />  } />
+                  {/* <Route path="/locations" children={<AddLocation />} /> */}
+
+
+            </Switch>
+
 
         </WrapperDataManager>
 

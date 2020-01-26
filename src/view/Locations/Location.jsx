@@ -18,7 +18,8 @@ const Location= ({ id, name, address, lat, lng, category }) => {
         <Title>{name}</Title>
         <Title2> Category: {category} </Title2>
         <MsgText>{address} </MsgText>        
-        <MsgText><em>( lat ) </em> {lat} <em>( lng ) </em>  {lng}</MsgText>
+        <MsgText><em>( lat ) </em> {lat} </MsgText>
+        <MsgText><em>( lng ) </em> {lng} </MsgText>
 
       </TextsBox>
     </Box>

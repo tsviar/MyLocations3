@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import styled, { keyframes } from "styled-components/macro";
 
@@ -10,14 +11,19 @@ import marker from '@ajar/marker';
 
 
 // the children is the <Menu /> in App.js inside the  <TopBar> </TopBar>
-const TopBar = ({ children }) => (
-  <Box>
-    <Text>{children}</Text>
-    <Logo src="/icons/logo.svg" alt="logo" />
-  </Box>
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// DO NOT ENVELOPE WITH A  <router></router> 
+// THAT WILL OPEN A NEW ROUTER AND ALL 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+const LocationsTopBar = ({ children }) => (  
+    <Box>
+      <Text>{children}</Text>
+      <Logo src="/icons/logo.svg" alt="logo" />
+    </Box>
+ 
 );
 
-export default TopBar;
+export default LocationsTopBar;
 
 //================================================
 //  Styling
@@ -50,13 +56,13 @@ const Box = styled.div`
   ${palette}
   ${spacing}
   background: slategray;
-  width: 100%;
-  height: 70px;
+  /* width: 100%; */
+  height: 40px; //70px;
   padding: 20px;
   color: white;
-  position: fixed;
-  top: 0;
-  left: 0;
+  /* position: fixed;
+  top: 2;
+  left: 12; */
   display: flex;
   align-items: center;
   justify-content: space-around;

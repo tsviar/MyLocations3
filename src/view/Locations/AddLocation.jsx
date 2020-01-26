@@ -1,4 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
+import {
+  useHistory,
+  useLocation,
+  useParams
+} from "react-router-dom";
+
 // import styled from "styled-components/macro";
 import { makeStyles, styled } from '@material-ui/core/styles';
 import marker from '@ajar/marker'; 
@@ -27,7 +33,12 @@ import { wrap } from "module";
 //                       Add Location view
 //=================================================================================
 
-const AddLocation = ({ match, history }) => {
+const AddLocation = () => {
+// const AddLocation = ({ match, history }) => {
+  // marker.blue(`AddLocation 
+  // match    ${match}
+  // history  ${history}
+  // `);
 
     // general apearence rules
     const classes = useStyles();
@@ -85,6 +96,7 @@ const AddLocation = ({ match, history }) => {
     let validation_success = true;
    // let submitting = 'IDLE';
     
+   let history = useHistory();
     
   marker.blue(`AddLocation selected_location 
   id  ${selected_location.id}
@@ -408,7 +420,8 @@ const validateField = field => {
   // Submitting Sub actions
   //====================================================================
 
-  const addLoaction = ({ match, history }) => {
+  //const addLoaction = ({ match, history }) => {
+  const addLoaction = () => {
     set_original_Locations_list( [...original_Locations_list, new_location]);
 
     marker.obj( new_location , `handleSubmit Update new_location 2` );
@@ -541,7 +554,7 @@ const validateField = field => {
       marker.obj( new_location , `handleSubmit Update new_location 1` );
       marker.obj( original_Locations_list , `handleSubmit original_Locations_list 1` );
 
-      if ("ADD" === selected_action) {       
+            
         marker.red('AddLocation handleSubmit ADD validName ' );
         set_new_location( ( 
             {...new_location, 
@@ -549,9 +562,7 @@ const validateField = field => {
             } )  ); 
 
         addLoaction();
-        event.stopPropagation();
-        history.goBack(); //back to list view
-      }
+
 
     //   set_original_Locations_list( [...original_Locations_list, new_location]);
 
@@ -580,6 +591,11 @@ const validateField = field => {
       marker.red('AddLocation handleSubmit end '+ submitting );
     }, 1000);
 
+
+    event.stopPropagation();
+    //history.goBack(); //back to list view
+    history.push("/locations");
+  
   
   }
 
@@ -626,7 +642,8 @@ const validateField = field => {
         <FormBox>
           {/* <form style={{ width: "50%" }} onSubmit={handleSubmit} > */}
           <LocationForm  onSubmit={handleSubmit} >
-            <MainBoxLabel>Add Location</MainBoxLabel>
+            {/* <MainBoxLabel>Add Location</MainBoxLabel> */}
+            <h1>Add Location</h1>
   
             <FormControl required margin="normal" fullWidth>
               <InputLabel htmlFor="name">Name</InputLabel>
@@ -736,8 +753,10 @@ const validateField = field => {
                     {item.name}
                 </MenuItem>
                 ))}
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                
+                {/* <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem> */}
+
                 </Select>
                 <FormHelperText>required</FormHelperText>
             </FormControl>                  
@@ -791,60 +810,63 @@ export default AddLocation;
 const toolTipText = `Select an existing category from the list`;
 
 const useStyles = makeStyles(theme => ({
-    container: {
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    maxWidth: "sm",
+  },
+  tooltip:{
+      fontSize: 10,
+      lineHeight: 16,
+      heigt: 17,
+      // marginTop: 2,
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+  dense: {
+    marginTop: theme.spacing(2),
+  },
+  menu: {
+    width: 200,
+  },
+  form: {
       display: 'flex',
-      flexWrap: 'wrap',
-      maxWidth: "sm",
+      flexDirection: 'column',
+      margin: 'auto',
+      width: 'fit-content',
     },
-    tooltip:{
-        fontSize: 10,
-        lineHeight: 16,
-        heigt: 17,
-        // marginTop: 2,
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-    },
-    dense: {
+    formControl: {
       marginTop: theme.spacing(2),
+      minWidth: 120,
+     
     },
-    menu: {
-      width: 200,
+    formControlLabel: {
+      marginTop: theme.spacing(1),        
     },
-    form: {
-        display: 'flex',
-        flexDirection: 'column',
-        margin: 'auto',
-        width: 'fit-content',
-      },
-      formControl: {
-        marginTop: theme.spacing(2),
-        minWidth: 120,
-       
-      },
-      formControlLabel: {
-        marginTop: theme.spacing(1),        
-      },
 }));
 
-
-const ModalBox = styled('div')({
-  position: "absolute",
-  background: "#fff",
-  top: 25,
-  left: "10%",
-  right: "10%",
-  padding: 15,
-}); 
+// const ModalBox = styled('div')({
+//   position: "absolute",
+//   background: "#fff",
+//   top: 25,
+//   left: "10%",
+//   right: "10%",
+//   padding: 15,
+// }); 
 
 
 const MainBox = styled('div')({
   // height: 'fit-content', 
-  // height: '60vh',
+  //  height: '60vh',
+  // height: '70vh',
+  // maxHeight: '70rem',
+  // minHeight: '70vh',
+  
   height: '70vh',
-  maxHeight: '70rem',
-  minHeight: '70vh',
+  maxHeight: '60rem',
+  minHeight: '60vh',
 
    width: 'fit-content',
 //   width: '35%',
@@ -854,8 +876,10 @@ const MainBox = styled('div')({
   // maxWidth: '30rem', //'35rem',
 
   margin: 0,
-  padding:0,
-
+  marginLeft: 30,
+  padding:10,
+  paddingLeft:10,
+ 
 // borderRadius: '0.4rem',
 // borderRadius: '0.8rem',
  // overflowX: 'hidden',
@@ -874,24 +898,14 @@ const MainBoxLabel = styled('h1')({
   padding: 0,
 }); 
 
+
 const FormBox = styled(Box)({
-    display: "flex",
-    justifyContent: "center",
-
-    // height: 'fit-content', 
-    //margin: 20,
-    marginLeft: 0,
-    paddingLeft: 0,
-
-    height: '50vh',
-    maxHeight: '50vh',
-    minHeight: '50vh',
-   
-    // height: '50%',
-    // maxHeight: '50vh',
-    // minHeight: '50rem',
-    
+  display: "flex",
+  justifyContent: "center",
+  margin: 20,
+  padding: 20,
 }); 
+
 
 const LocationForm = styled('form')({
     display: 'flex',
@@ -987,12 +1001,17 @@ const CoordinatesInput = styled(Input)({
 
   const ErrorText = styled('h5')({
     display: 'flex',
+    flexWrap: 'wrap',
+    
     justifyContent:'left',
+    margin: 'auto',
+    padding: 'auto',
     marginTop: 3,
     //marginLeft: 50,
     paddingTop: 5,
     color: 'red',
     textAlign: 'left',
+    wordWrap: 'break-word',
   });
 
   
