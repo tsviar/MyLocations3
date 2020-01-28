@@ -42,7 +42,7 @@ const Map = withScriptjs( withGoogleMap( (props) => {
  const { 
     // initial_location,
     selected_location,
-    //selected_map_location, 
+    selected_map_location, 
    // update_selected_map_location,
   } =  useContext(StateDataManager);
 
@@ -95,6 +95,7 @@ const Map = withScriptjs( withGoogleMap( (props) => {
        }
     );    
     
+    
     console.log('Map useEffect ON MOUNT current_location:\n', current_location);
 
  
@@ -111,6 +112,32 @@ const Map = withScriptjs( withGoogleMap( (props) => {
     // but only for the mounting of the component.
     
   }, []);
+
+
+
+  useEffect(() => {
+    const { 
+      lat, lng, zoom, setCoordinates
+    } = props;
+
+    console.log('Map useEffect ON selected_map_location props:\n', props);
+
+    set_current_location(
+      {
+        address: selected_map_location.address,
+        lat: selected_map_location.lat, 
+        lng: selected_map_location.lng, 
+        zoom: zoom,         
+       }
+    );    
+    
+    
+    console.log('Map useEffect ON selected_map_location:\n', selected_map_location);
+
+    onPositionChanged(selected_map_location.lat, selected_map_location.lng);
+  
+  }, [selected_map_location]);
+
 
 
   const onPositionChanged = (lat, lng) => {
@@ -219,8 +246,10 @@ const Map = withScriptjs( withGoogleMap( (props) => {
         // Here you have access to google.maps.Map object:
         ref={onMapLoad}  
        
-        defaultZoom={zoom}
-        defaultCenter={{ lat: lat, lng: lng }}
+        // defaultZoom={zoom}
+        zoom={zoom}
+        // defaultCenter={{ lat: lat, lng: lng }}
+        center={{ lat: lat, lng: lng }}
         
         onMapIdle={ ()=> { console.log('Map map is ready') } }
         onClick={ event => { 
@@ -412,6 +441,19 @@ const GoogleMapContainer = () => {
      } )  );  
   
    }, []);
+
+   
+   // kepp being updated on user current selected location view
+  useEffect(() => {
+
+    set_location( ( {...location, 
+      // id: ((original_Locations_list.length) + 1),
+      address: selected_location.address, 
+      lat: selected_location.lat, 
+      lng: selected_location.lng, 
+    } )  );  
+      
+  }, [selected_location]);
 
 
    marker.red(`GoogleMapContainer location: 

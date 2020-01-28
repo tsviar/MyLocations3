@@ -33,7 +33,7 @@ import { wrap } from "module";
 //                       Add Location view
 //=================================================================================
 
-const EditLocation = () => {
+const RemoveLocation = () => {
 
     // general apearence rules
     const classes = useStyles();
@@ -51,7 +51,7 @@ const EditLocation = () => {
  
    
     // Local state
-  marker.obj(selected_location, 'EditLocation selected_location: ');
+  marker.obj(selected_location, 'RemoveLocation selected_location: ');
 
 
     // Note: marker.obj prints in alphabetical order not actual order...
@@ -64,7 +64,7 @@ const EditLocation = () => {
         category: selected_location.category ,
       });   
 
-      marker.obj(new_location, 'EditLocation new_location: ');
+      marker.obj(new_location, 'RemoveLocation new_location: ');
       
     const [errors, set_errors] = useState({
         name: '',
@@ -116,13 +116,13 @@ const EditLocation = () => {
   //   lng: selected_location.lng , 
   // });
 
-  marker.blue(`EditLocation ON Mount selected_map_location: 
+  marker.blue(`RemoveLocation ON Mount selected_map_location: 
       address ${selected_map_location.address}
       lat  ${selected_map_location.lat}
       lng  ${selected_map_location.lng}      
       `); 
 
-  marker.blue(`EditLocation ON Mount new_location.lng:  
+  marker.blue(`RemoveLocation ON Mount new_location.lng:  
       id ${new_location.id}
       name ${new_location.name}
       address ${new_location.address}
@@ -134,9 +134,11 @@ const EditLocation = () => {
 }, []);
 
   
-marker.red(`EditLocation selected_map_location: ${selected_map_location.address} ${selected_map_location.lat}  ${selected_map_location.lng}`);
+marker.red(`RemoveLocation selected_map_location: ${selected_map_location.address} ${selected_map_location.lat}  ${selected_map_location.lng}`);
 
- 
+
+// Update upon selected_map_location change
+
   useEffect(() => {
 
     set_new_location( ( {...new_location, 
@@ -146,20 +148,65 @@ marker.red(`EditLocation selected_map_location: ${selected_map_location.address}
       lng: selected_map_location.lng, 
     } )  );  
 
-    marker.green(`EditLocation useEffect on selected_map_location CHANGE\n`);
+    marker.green(`RemoveLocation useEffect on selected_map_location CHANGE\n`);
 
-    marker.green(`EditLocation useEffect selected_map_location: 
+    marker.green(`RemoveLocation useEffect selected_map_location: 
       address  ${selected_map_location.address}
       lat  ${selected_map_location.lat}
       lng  ${selected_map_location.lng}    
     `); 
 
-    marker.green(`EditLocation useEffect new_location
+    marker.green(`RemoveLocation useEffect new_location
     address  ${new_location.address}
     lat  ${new_location.lat}
     lng:  ${new_location.lng}`);
   
   }, [selected_map_location]);
+
+
+   // Update upon selected_location change
+ 
+   useEffect(() => {
+    
+    marker.green(`RemoveLocation useEffect on selected_map_location before\n`);
+
+    marker.green(`RemoveLocation useEffect selected_map_location: 
+    id  ${selected_location.id}
+    name  ${selected_location.name}
+    address  ${selected_location.address}
+    lat  ${selected_location.lat}
+    lng:  ${selected_location.lng}
+    category  ${selected_location.category}
+    `); 
+
+    marker.green(`RemoveLocation useEffect new_location
+    id  ${new_location.id}
+    name  ${new_location.name}
+    address  ${new_location.address}
+    lat  ${new_location.lat}
+    lng:  ${new_location.lng}
+    category  ${new_location.category}
+
+    `);  
+
+
+    set_new_location( ( {...new_location, 
+      id: selected_location.id,
+      name: selected_location.name ,
+      address: selected_location.address, 
+      lat: selected_location.lat, 
+      lng: selected_location.lng, 
+      category: selected_location.category,
+    } )  );  
+
+    update_selected_map_location( {
+      address: selected_location.address, 
+      lat: selected_location.lat, 
+      lng: selected_location.lng, 
+    } );
+
+  }, [selected_location]);
+
 
 
   // Validating input after every change
@@ -194,7 +241,7 @@ marker.red(`EditLocation selected_map_location: ${selected_map_location.address}
   //------------------------------------
   const handleBlur = event => {
 
-    marker.i(`EditLocation handleBlur`);
+    marker.i(`RemoveLocation handleBlur`);
 
     try{   
         let error_msg = '';
@@ -334,7 +381,7 @@ const validateField = field => {
   }
 
 
-  marker.red(`EditLocation submitting ${submitting}  ${submit_text}`);
+  marker.red(`RemoveLocation submitting ${submitting}  ${submit_text}`);
 
 //------------------------------------------------
 //          SUBMIT
@@ -345,8 +392,8 @@ const validateField = field => {
    // submitting = 'START'; 
     set_submitting('START');   
      
-    marker.red('EditLocation handleSubmit start '+ submitting );
-    marker.green('EditLocation handleSubmit original_Locations_list.length '+ original_Locations_list.length );
+    marker.red('RemoveLocation handleSubmit start '+ submitting );
+    marker.green('RemoveLocation handleSubmit original_Locations_list.length '+ original_Locations_list.length );
  
     validateForm();
 
@@ -354,43 +401,26 @@ const validateField = field => {
       marker.obj( new_location , `handleSubmit Update new_location 1` );
       marker.obj( original_Locations_list , `handleSubmit original_Locations_list 1` );
 
-     let new_list = original_Locations_list.splice(
-      (original_Locations_list.findIndex(el => el.id === new_location.id)),1);
+     let new_list = original_Locations_list;
+     new_list.splice( (new_list.findIndex(el => el.id === new_location.id)),1);
      
-     // Actually, the id is always index+1
-     //new_list[new_location.id-1] = new_location;
 
-    //  new_list[original_Locations_list.findIndex(el => el.id === new_location.id)] = new_location;
-
-    //  var foundIndex = new_list.findIndex(x => x.id === new_location.id);
-    //  new_list[foundIndex] = new_location;
-    
-    //  new_list[new_location.id-1].name=new_location.name;
-    //  new_list[new_location.id-1].address =new_location.address;
-    //  new_list[new_location.id-1].lat=new_location.lat;
-    //  new_list[new_location.id-1].lng=new_location.lng;
-    //  new_list[new_location.id-1].category=new_location.category;
 
      set_original_Locations_list( new_list);
-        //// set_original_Locations_list( [...original_Locations_list, new_location]);
-
-
-    //  const filtered_list = new_list.filter(item =>
-    //   item.first_name.toLowerCase().includes(txt.toLowerCase())  );   
-
+  
       marker.obj( new_location , `handleSubmit Update new_location 2` );
       marker.obj( new_location , `handleSubmit Update new_location 2` );
       marker.obj( original_Locations_list , `handleSubmit original_Locations_list 2` );
 
      // alert(`Lcation ${new_location.name} was added succesfully`);
      set_submitting('END');
-     marker.red('EditLocation handleSubmit completed '+ submitting );
+     marker.red('RemoveLocation handleSubmit completed '+ submitting );
  
     }
     
     setTimeout(() => {      
       set_submitting('IDLE'); //set_submitting(false);
-      marker.red('EditLocation handleSubmit end '+ submitting );
+      marker.red('RemoveLocation handleSubmit end '+ submitting );
     }, 1000);
 
     event.stopPropagation();
@@ -399,8 +429,8 @@ const validateField = field => {
   
   }
 
-  marker.obj( new_location , `EditLocation current new_location` );
-  marker.obj(original_Locations_list, `EditLocation original_Locations_list `); 
+  marker.obj( new_location , `RemoveLocation current new_location` );
+  marker.obj(original_Locations_list, `RemoveLocation original_Locations_list `); 
   
 
   //----------------------------------------------------------
@@ -411,25 +441,25 @@ const validateField = field => {
     marker.green(`AddLocation new_location.lng:  ${new_location.lng}`);
     if ( 'IDLE' === submitting) {
       setTimeout(() => {  set_submit_text(''); 
-      marker.red(`EditLocation useEffect ${submit_text}`);
+      marker.red(`RemoveLocation useEffect ${submit_text}`);
     }, 300);          
     }
     if ( 'START' === submitting) {
       set_submit_text('Submitting new location...');
        setTimeout(() => {
         set_submit_text('Added new location successfully...');
-        marker.red(`EditLocation useEffect end ${submit_text}`);
+        marker.red(`RemoveLocation useEffect end ${submit_text}`);
       }, 20);     
-      marker.red(`EditLocation useEffect ${submit_text}`);
+      marker.red(`RemoveLocation useEffect ${submit_text}`);
     }
     if ( 'END' === submitting) {  
       set_submit_text('Added new location successfully...');  
       setTimeout(() => {
         set_submit_text('Added new location successfully...');
-        marker.red(`EditLocation useEffect end ${submit_text}`);
+        marker.red(`RemoveLocation useEffect end ${submit_text}`);
       }, 20);
     }
-    marker.red(`EditLocation useEffect submit_text  ${submit_text}`); 
+    marker.red(`RemoveLocation useEffect submit_text  ${submit_text}`); 
   
   }, [submitting]);
 
@@ -584,8 +614,10 @@ const validateField = field => {
                     {item.name}
                 </MenuItem>
                 ))}
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+
+                {/* <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem> */}
+
                 </Select>
                 <FormHelperText>required</FormHelperText>
             </FormControl>                  
@@ -596,25 +628,7 @@ const validateField = field => {
             <SubmitText> {submit_text } </SubmitText>
 
            <SubmitBox>
-
                 <Button 
-                variant="contained" color="primary" size="medium" margin= "40px" 
-                // type="submit"   
-                onClick = {restoreOriginalValuses}
-                >
-                 Restore
-                </Button>
-              
-                <Button 
-                disabled={
-                    (
-                    errors.name === '' && errors.address=== '' && errors.lat=== '' 
-                    &&  errors.lng=== '' && errors.category === '' 
-                    &&  errors.validation === '' 
-                    &&  submitting === 'IDLE'
-                    && validation_success === true 
-                    ) ? false : true                  
-                } 
                 variant="contained" color="primary" size="medium" margin= "40px" type="submit"   >
                  Remove
                 </Button>
@@ -639,7 +653,7 @@ const validateField = field => {
 
 
 
-export default EditLocation;
+export default RemoveLocation;
 
 ////  Styling //////
 const toolTipText = `Select an existing category from the list`;
@@ -820,12 +834,11 @@ const CoordinatesInput = styled(Input)({
     paddingRight: 15,
   });
   
-
+  
   const SubmitBox = styled('p')({
     display: 'flex',
-    // justifyContent:"center",
-    justifyContent:"space-between",
-    marginTop: 30,
+    justifyContent:"center",
+    marginTop: 15, //30
     //marginLeft: 50,
     paddingTop: 15,
   });
@@ -851,7 +864,7 @@ const CoordinatesInput = styled(Input)({
     textAlign: 'left',
   });
 
-//const EditLocation = () => <h1>Create a new Location</h1>;
+//const RemoveLocation = () => <h1>Create a new Location</h1>;
 
 //const CreateBot = () => <h1 className="create">Create a new Bot!</h1>;
 //export default CreateBot;

@@ -44,7 +44,7 @@ const ViewLocation = ({ match, history }) => {
         original_Locations_list, 
         set_original_Locations_list,
         selected_map_location, 
-        //update_selected_map_location,
+        update_selected_map_location,
         selected_location,
         // update_selected_location,
         selected_action,
@@ -159,36 +159,36 @@ const ViewLocation = ({ match, history }) => {
   
  // Update upon selected_map_location change
  
-  useEffect(() => {
-    
-    marker.green(`ViewLocation useEffect on selected_map_location before\n`);
-
-    marker.green(`ViewLocation useEffect selected_map_location: 
-      address  ${selected_map_location.address}
-      lat  ${selected_map_location.lat}
-      lng  ${selected_map_location.lng}    
-    `); 
-
-    marker.green(`ViewLocation useEffect new_location
-    address  ${new_location.address}
-    lat  ${new_location.lat}
-    lng:  ${new_location.lng}`);  
-
-
-    set_new_location( ( {...new_location, 
-      id: ((original_Locations_list.length) + 1),
-      address: selected_map_location.address, 
-      lat: selected_map_location.lat, 
-      lng: selected_map_location.lng, 
-    } )  );  
-
-     
-  }, [selected_map_location]);
-
-
-  // Update upon selected_location change
  
-  useEffect(() => {
+ useEffect(() => {
+
+  set_new_location( ( {...new_location, 
+    // id: ((original_Locations_list.length) + 1),
+    address: selected_map_location.address, 
+    lat: selected_map_location.lat, 
+    lng: selected_map_location.lng, 
+  } )  );  
+
+  marker.green(`ViewLocation useEffect on selected_map_location CHANGE\n`);
+
+  marker.green(`ViewLocation useEffect selected_map_location: 
+    address  ${selected_map_location.address}
+    lat  ${selected_map_location.lat}
+    lng  ${selected_map_location.lng}    
+  `); 
+
+  marker.green(`ViewLocation useEffect new_location
+  address  ${new_location.address}
+  lat  ${new_location.lat}
+  lng:  ${new_location.lng}`);
+
+}, [selected_map_location]);
+
+
+
+   // Update upon selected_location change
+ 
+   useEffect(() => {
     
     marker.green(`ViewLocation useEffect on selected_map_location before\n`);
 
@@ -221,8 +221,15 @@ const ViewLocation = ({ match, history }) => {
       category: selected_location.category,
     } )  );  
 
-     
+    update_selected_map_location( {
+      address: selected_location.address, 
+      lat: selected_location.lat, 
+      lng: selected_location.lng, 
+    } );
+
   }, [selected_location]);
+
+
 
 
   marker.green(`ViewLocation selected_map_location CURRENT\n`);
