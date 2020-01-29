@@ -32,7 +32,7 @@ import LocationsMenu from "./LocationsMenu";
 import LocationsTopBar from "./LocationsTopBar";
 
 import List from "./LocationsList";
-import Filter from "../Filter";
+import Filter from "./FilterLocations";
 //import Profile from "../Profile";
 
 //import "../styles.css";
@@ -68,7 +68,16 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
   marker.obj(location, `LocationsBrowser location `);
 
   let history = useHistory();
- 
+  
+  /* 
+    Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+    in AddLocation (at LocationsBrowser.jsx:158)    
+
+    index.js:1437 Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+    in AddLocation (at LocationsBrowser.jsx:165)
+  */
+
+
   return (
     // <div >
     //   <ContentBox>
@@ -151,6 +160,7 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
              
                   
                 <ManageLocationsBox>   
+
 
                {  
                    ( "/locations/view" === location.pathname

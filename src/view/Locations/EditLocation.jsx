@@ -45,6 +45,8 @@ const EditLocation = () => {
         set_original_Locations_list,
         selected_map_location, 
         selected_location,
+        locations_edited_flag, 
+        set_locations_edited_flag,
         update_selected_location,
         update_selected_map_location,
     } =  useContext(StateDataManager);
@@ -422,6 +424,9 @@ const validateField = field => {
       } )  ); 
 
       update_selected_location(new_location);
+      
+      const new_flag = ( (locations_edited_flag + 1) % 2);
+      set_locations_edited_flag( new_flag );
 
     //  const filtered_list = new_list.filter(item =>
     //   item.first_name.toLowerCase().includes(txt.toLowerCase())  );   

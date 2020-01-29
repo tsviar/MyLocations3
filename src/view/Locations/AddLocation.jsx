@@ -219,7 +219,7 @@ const AddLocation = () => {
 
 
     set_new_location( ( {...new_location, 
-      id: selected_location.id,
+      id: ((original_Locations_list.length) + 1),
       name: selected_location.name ,
       address: selected_location.address, 
       lat: selected_location.lat, 

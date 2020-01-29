@@ -24,7 +24,9 @@ const WrapperDataManager = ({ children }) => {
     }
   ]);
 
-  const [filtered_Location_list, update_Location_filtered_list] = useState([]);
+  const [filtered_Locations_list, update_Locations_filtered_list] = useState(original_Locations_list);
+  const [locations_filter_text, set_locations_filter_text] = useState('');
+  const [locations_edited_flag, set_locations_edited_flag] = useState(0);
 
   const [selected_location, update_selected_location] = useState(original_Locations_list[0]);
   //({});
@@ -80,7 +82,9 @@ const WrapperDataManager = ({ children }) => {
 
   const states = {
     original_Locations_list,
-    filtered_Location_list,
+    filtered_Locations_list,
+    locations_filter_text, 
+    locations_edited_flag, 
     selected_location,
     initial_location,
     selected_map_location, 
@@ -98,7 +102,9 @@ const WrapperDataManager = ({ children }) => {
 
   const actions = {
     set_original_Locations_list,
-    update_Location_filtered_list,
+    update_Locations_filtered_list,
+    set_locations_filter_text,
+    set_locations_edited_flag,
     update_selected_location,
     update_initial_location,
     update_selected_map_location,

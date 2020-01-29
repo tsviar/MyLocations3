@@ -13,17 +13,25 @@ const LocationsList = () => {
   // const { filtered_list, update_selected_card } = useContext(StateDataManager);
   const { 
     selected_location, update_selected_location,
-    original_Locations_list, set_original_Locations_list,
+    original_Locations_list, 
+    filtered_Locations_list, 
+    update_Locations_filtered_list,
   } = useContext(StateDataManager);
-  // Note:
-  //create_list_u now gets 2 inputs: list_data, updateSelectedCard
+
+  //update_Locations_filtered_list(original_Locations_list);
+  console.log(`LocationsList original_Locations_list `, original_Locations_list);
+  console.log(`LocationsList filtered_Locations_list `, filtered_Locations_list);
 
   return (
     <Box>
-       <ul> {create_list_ui(original_Locations_list, update_selected_location)} </ul>
+       {/* <ul> {create_list_ui(original_Locations_list, update_selected_location)} </ul> */}
+       <ul> {create_list_ui(filtered_Locations_list, update_selected_location)} </ul>
     </Box>
   );
 };
+
+// Note:
+//create_list_ui now gets 2 inputs: list_data, update_selected_location
 
 // Note
 //in order to pass parameters to the onClick called function,
@@ -32,11 +40,12 @@ const LocationsList = () => {
 //It has to be on the DOM element, the li!!!
 
 const create_list_ui = (items, update_selected_location) =>
-  items.map(item => (
+   items.map(item => (
     <CardItem key={item.id} onClick={() => update_selected_location(item)}>
       <Location {...item} />
     </CardItem>
   ));
+
 
 export default LocationsList;
 
