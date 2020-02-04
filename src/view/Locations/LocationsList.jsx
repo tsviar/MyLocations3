@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { StateDataManager } from "../../stateProvider/DataManager";
 
 import Location from "./Location";
@@ -16,11 +16,27 @@ const LocationsList = () => {
     original_Locations_list, 
     filtered_Locations_list, 
     update_Locations_filtered_list,
+    locations_sort_order,
   } = useContext(StateDataManager);
 
   //update_Locations_filtered_list(original_Locations_list);
   console.log(`LocationsList original_Locations_list `, original_Locations_list);
   console.log(`LocationsList filtered_Locations_list `, filtered_Locations_list);
+
+
+  // Update upon original_Locations_list change
+ 
+  useEffect(() => {
+
+    const filtered_list = filtered_Locations_list;
+    update_Locations_filtered_list(filtered_list);
+
+    console.log(`LocationsList filtered_Locations_list changed `, filtered_list);
+    marker.blue(`LocationsList locations_sort_order ${locations_sort_order}\n`);
+
+  }, [locations_sort_order, filtered_Locations_list.length]);
+
+
 
   return (
     <Box>
