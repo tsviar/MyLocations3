@@ -24,19 +24,6 @@ const LocationsList = () => {
   console.log(`LocationsList filtered_Locations_list `, filtered_Locations_list);
 
 
-  // Update upon original_Locations_list change
- 
-  useEffect(() => {
-
-    const filtered_list = filtered_Locations_list;
-    update_Locations_filtered_list(filtered_list);
-
-    console.log(`LocationsList filtered_Locations_list changed `, filtered_list);
-    marker.blue(`LocationsList locations_sort_order ${locations_sort_order}\n`);
-
-  }, [locations_sort_order, filtered_Locations_list.length]);
-
-
 
   return (
     <Box>

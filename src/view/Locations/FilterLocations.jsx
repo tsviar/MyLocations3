@@ -27,7 +27,6 @@ const FilterLocations = () => {
   
   ///pay attention to [] !!!!
   const [num_elements, set_num_elements] = useState(0);
-  const [order, setOrder] = useState('asc');
   // const [filter_text, set_filter_text] = useState("");
 
   let  items_count = filtered_Locations_list.length || original_Locations_list.length;
@@ -39,87 +38,107 @@ const FilterLocations = () => {
   //------------------------------------------------------------------------------
 
   const handleRequestSort = event => {
-    sortList(filtered_Locations_list, true);
-    // const isAsc = locations_sort_order === 'asc';    
-    // set_locations_sort_order(isAsc ? 'desc' : 'asc');
+
+    const isAsc = ( 'asc' === locations_sort_order );  
+    marker.red(`handleRequestSort BEFORE
+                locations_sort_order = ${locations_sort_order} 
+                isAsc                = ${isAsc}\n`);
+   
+   
+    set_locations_sort_order(isAsc ? 'desc' : 'asc'); 
+   
+
+    // Note that here we have to impose the order, cause it wasn't updated yet.
+    sortList(filtered_Locations_list, (isAsc ? 'desc' : 'asc'));
+
   };
 
 
-  const sortList = (curr_filtered_Locations_list, changeOrder) => {
+  const sortList = (curr_filtered_Locations_list, new_order) => {
 
-    const isAsc = locations_sort_order === 'asc';   
+    const isAsc = ( 'asc' === new_order );  
+    marker.red(`sortList() BEFORE
+    locations_sort_order = ${locations_sort_order} 
+    new_order            = ${new_order}
+    isAsc                = ${isAsc}\n`);
 
-    console.log(`sortList() FilterLocations curr_filtered_Locations_list `, curr_filtered_Locations_list);
-    marker.red(`sortList() curr order = ${locations_sort_order} isAsc ${isAsc}\n`);
 
-    // const filtered_list = filtered_Locations_list.sort((a, b) => (a.name< b.name ? -1 : 1) * (isAsc ? 1 : -1));
+    console.log(`sortList() BEFORE FilterLocations list `, curr_filtered_Locations_list);
 
     let filtered_list = curr_filtered_Locations_list;
-    console.log(`sortLiat() FilterLocations SORTED filtered_list 1 `, filtered_list);
-
+  
+    // sort the temporary list
+    //-------------------------------------------------------------
     filtered_list.sort(
       (a, b) => {
         marker.red(`sortList() a.name "${a.name}" `);
         marker.red(`sortList() b.name "${b.name}" `);
         marker.red(`sortList() result ${((a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1))} `);
+     
+        //trim white spaces at satrt and end, it affects sort
+        // If compareFunc returns 0 then the elements are treated as equal
+        // If compareFunc returns 1 then b is sorted before a
+        // If compareFunc returns -1 then a is sorted before b
 
+        const keyA = a.name.trim().toLowerCase();  
+        const keyB = b.name.trim().toLowerCase();
+        if (keyA < keyB) return (-1 * (isAsc ? 1 : -1));
+        if (keyA > keyB) return (1 * (isAsc ? 1 : -1));
+        return 0;
+
+       // localCompare doesnt seem to work...
         // marker.red(`sortList() result ${(isAsc === 'asc'  ? (a.name.toLowerCase().localeCompare( b.name)) : -( a.name.toLowerCase().localeCompare( b.name))) }`);
 
         // return ( isAsc === 'asc'  ?  (a.name.toLowerCase().localeCompare( b.name)) : -( a.name.toLowerCase().localeCompare( b.name)) );
 
        // return ( (a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1) );
+
      
-       const keyA = a.name;
-       const keyB = b.name;
-       if (keyA < keyB) return (-1 * (isAsc ? 1 : -1));
-       if (keyA > keyB) return (1 * (isAsc ? 1 : -1));
-       return 0;
-     
-      } );  
+     } );  
      
     
      update_Locations_filtered_list(filtered_list);
-     if (changeOrder) {
-       setOrder(isAsc ? 'desc' : 'asc'); 
-       set_locations_sort_order(isAsc ? 'desc' : 'asc'); 
-     }
      
-     console.log(`sortLiat() FilterLocations SORTED filtered_list `, filtered_list);
-     console.log(`sortLiat() FilterLocations SORTED filtered_Locations_list `, filtered_Locations_list);
+     console.log(`sortLiat() AFTER FilterLocations filtered_list `, filtered_list);
+     console.log(`sortLiat() AFTER FilterLocations filtered_Locations_list `, filtered_Locations_list);
 
 
-     //===========================
-// let users = [
-//   {name: 'Scotty', age: '18'},
-//   {name: 'Tommy', age: '21'},
-//   {name: 'Sally', age: '71'},
-//   {name: 'Billy', age: '18'},
-//   {name: 'Timmy', age: '21'}
-// ];
+            //===========================
+            // a small example to show how sort works:
+            //---------------------------------------
+            // let users = [
+            //   {name: 'Scotty', age: '18'},
+            //   {name: 'Tommy', age: '21'},
+            //   {name: 'Sally', age: '71'},
+            //   {name: 'Billy', age: '18'},
+            //   {name: 'Timmy', age: '21'}
+            // ];
 
-// console.log(`sortLiat() users 1 `, users);
+            // console.log(`sortLiat() users 1 `, users);
 
-// users.sort((a, b) => {
-//   let keyA = a.age + a.name;
-//   let keyB = b.age + b.name;
-//   if (keyA < keyB) return (-1 * (isAsc ? 1 : -1));
-//   if (keyA > keyB) return (1 * (isAsc ? 1 : -1));
-//   return 0;
-// });
+            // users.sort((a, b) => {
+            //   let keyA = a.age + a.name;
+            //   let keyB = b.age + b.name;
+            //   if (keyA < keyB) return (-1 * (isAsc ? 1 : -1));
+            //   if (keyA > keyB) return (1 * (isAsc ? 1 : -1));
+            //   return 0;
+            // });
 
-// console.log(`sortLiat() users 2 `, users);
-//===========================
+            // console.log(`sortLiat() users 2 `, users);
+            //===========================
 
   };
-
-
  
-  marker.blue(`FilterLocations NEW order = ${locations_sort_order}\n`);
-  console.log(`FilterLocations filtered_Locations_list `, filtered_Locations_list);
+  marker.blue(`FilterLocations current order = ${locations_sort_order}\n`);
+  console.log(`FilterLocations current filtered_Locations_list \n`, filtered_Locations_list);
  
 
 
-  const update_list = event => {
+  //-----------------------------------------------------------------------------
+  //      Update the filtered list
+  //-----------------------------------------------------------------------------
+
+  const updateFilteredList = event => {
     const txt = event.target.value;
 
     // set_filter_text(txt);
@@ -127,19 +146,16 @@ const FilterLocations = () => {
 
     const filtered_list = original_Locations_list.filter(item =>
       item.name.toLowerCase().includes(txt.toLowerCase())
-
-    // const filtered_list = original_Locations_list.filter(item =>
-    //   item.first_name.toLowerCase().includes(txt.toLowerCase())
     );
 
-    sortList(filtered_list, false);
+    sortList(filtered_list, locations_sort_order);
 
    // update_Locations_filtered_list(filtered_list);
-    //marker.green(`update_list: num_elements 2 ${num_elements}`);
+    //marker.green(`updateList: num_elements 2 ${num_elements}`);
     set_num_elements(filtered_Locations_list.length);
-   // marker.green(`update_list num_elements 3 ${num_elements}`);
+   // marker.green(`updateList num_elements 3 ${num_elements}`);
 
-   // marker.magenta (`update_list filtered_list.length ${filtered_list.length}`);
+   // marker.magenta (`updateList filtered_list.length ${filtered_list.length}`);
   };
 
 
@@ -148,22 +164,18 @@ const FilterLocations = () => {
  
   useEffect(() => {
     
-    marker.red(`FilterLocations useEffect on original_Locations_list\n`);
-    console.log(`FilterLocations original_Locations_list `, original_Locations_list);
-    console.log(`FilterLocations filtered_Locations_list `, filtered_Locations_list);
+    marker.red(`FilterLocations useEffect() on original_Locations_list\n`);
+    console.log(`FilterLocations useEffect() original_Locations_list \n`, original_Locations_list);
+    console.log(`FilterLocations useEffect() filtered_Locations_list \n`, filtered_Locations_list);
 
     
     const filtered_list = original_Locations_list.filter(
       item =>  item.name.toLowerCase().includes(locations_filter_text.toLowerCase())
 
-    // const filtered_list = original_Locations_list.filter(item =>
-    //   item.first_name.toLowerCase().includes(txt.toLowerCase())
     );
     
-    sortList(filtered_list, false);
+    sortList(filtered_list, locations_sort_order);
 
-    // update_Locations_filtered_list(filtered_list);
-    //marker.green(`update_list: num_elements 2 ${num_elements}`);
     set_num_elements(filtered_Locations_list.length);
  
     console.log(`FilterLocations original_Locations_list  2 `, original_Locations_list);
@@ -176,9 +188,15 @@ const FilterLocations = () => {
  
   useEffect(() => {
     const filtered_list = filtered_Locations_list;
-    sortList(filtered_list, false);
-    console.log(`FilterLocations filtered_Locations_list changed `, filtered_Locations_list);
-    marker.blue(`order ${order} locations_sort_order ${locations_sort_order}\n`);
+
+    marker.green(`useEffect() locations_sort_order or order or filtered_Locations_list length changed\n`);
+    marker.green(`locations_sort_order           = ${locations_sort_order} 
+                  filtered_Locations_list.length = ${filtered_Locations_list.length}\n`);
+
+    sortList(filtered_list, locations_sort_order);
+
+    console.log(`useEffect() FilterLocations filtered_Locations_list changed `, filtered_Locations_list);
+     
   },  [locations_sort_order, filtered_Locations_list.length]);
 
 
@@ -191,7 +209,7 @@ const FilterLocations = () => {
   return (
     <Header>
       <Title>{items_count} items filtered</Title>
-      <Input onChange={update_list} />
+      <Input onChange={updateFilteredList} />
       {/* <TableSortLabel
               active={true}
               direction={order }
