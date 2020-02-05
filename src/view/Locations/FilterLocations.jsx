@@ -48,7 +48,7 @@ const FilterLocations = () => {
     set_locations_sort_order(isAsc ? 'desc' : 'asc'); 
    
 
-    // Note that here we have to impose the order, cause it wasn't updated yet.
+    // Note that here we have to force the new order, cause it wasn't updated yet.
     sortList(filtered_Locations_list, (isAsc ? 'desc' : 'asc'));
 
   };
@@ -196,7 +196,7 @@ const FilterLocations = () => {
     sortList(filtered_list, locations_sort_order);
 
     console.log(`useEffect() FilterLocations filtered_Locations_list changed `, filtered_Locations_list);
-     
+
   },  [locations_sort_order, filtered_Locations_list.length]);
 
 
