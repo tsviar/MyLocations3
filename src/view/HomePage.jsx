@@ -4,7 +4,7 @@ import styled from "styled-components/macro";
 const HomePage = () => {
   return (
     <Box>
-      <Title>Welcome profile seekers!</Title>
+      <Title>Welcome location seekers!</Title>
       <Image src="https://robohash.org/etaperiamqui.jpg?size=300x300&set=set1" />
     </Box>
   );

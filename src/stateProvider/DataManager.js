@@ -28,6 +28,7 @@ const WrapperDataManager = ({ children }) => {
   const [locations_filter_text, set_locations_filter_text] = useState('');
   const [locations_edited_flag, set_locations_edited_flag] = useState(0);
   const [locations_sort_order, set_locations_sort_order] = useState('asc');
+  const [locations_sort_by_category, set_locations_sort_by_category] = useState(false);
 
 
 
@@ -89,6 +90,7 @@ const WrapperDataManager = ({ children }) => {
     locations_filter_text, 
     locations_edited_flag, 
     locations_sort_order,
+    locations_sort_by_category, 
     selected_location,
     initial_location,
     selected_map_location, 
@@ -111,6 +113,7 @@ const WrapperDataManager = ({ children }) => {
     set_locations_filter_text,
     set_locations_edited_flag,
     set_locations_sort_order,
+    set_locations_sort_by_category,
     update_selected_location,
     update_initial_location,
     update_selected_map_location,
