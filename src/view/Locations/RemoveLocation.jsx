@@ -25,7 +25,8 @@ import {
   } from "@material-ui/core";
   
 import { StateDataManager } from "../../stateProvider/DataManager";
-import { wrap } from "module";
+import * as api from "../../services/StorageService";
+// import { wrap } from "module";
 
   const MIN_COORDINATES = -5000.000000;
   const MAX_COORDINATES =  5000.000000;
@@ -45,8 +46,8 @@ const RemoveLocation = () => {
         set_original_Locations_list,
         selected_map_location, 
         selected_location,
-        update_selected_location,
         update_selected_map_location,
+        set_error_message, 
     } =  useContext(StateDataManager);
  
    
@@ -386,6 +387,14 @@ const validateField = field => {
 //------------------------------------------------
 //          SUBMIT
 //------------------------------------------------
+  const storeData = async (list_name, list) => {
+      try {
+        await api.storeListLS(list_name, list);
+      
+    } catch (err) {
+      set_error_message(err.message);
+    }
+  }
 
   const handleSubmit = event  => {    
     event.preventDefault() ;// prevent form post
@@ -407,6 +416,7 @@ const validateField = field => {
 
 
      set_original_Locations_list( new_list);
+     storeData('original_Locations_list', new_list);
   
       marker.obj( new_location , `handleSubmit Update new_location 2` );
       marker.obj( new_location , `handleSubmit Update new_location 2` );

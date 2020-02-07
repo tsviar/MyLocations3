@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 //import robots_data from "../robots-data.json";
 
-import * as api from "../services/ProfileSevice";
+import * as api from "../services/StorageService";
+import marker from '@ajar/marker'; 
+
 
 const data_url = "https://api.myjson.com/bins/yt3d9";
 
@@ -132,6 +134,61 @@ const WrapperDataManager = ({ children }) => {
 
   };
 
+  //================================================================================
+  //    Use local storage
+  //================================================================================
+
+  const fetchDataFromLocalStorage = async () => {
+
+    const lists_loaded_counter=0;
+
+    try {
+      const ls_selected_map_location = await api.fetchListLS('selected_map_location');
+      update_selected_map_location(ls_selected_map_location);
+      
+      console.log(`DataManager fetchDataFromLocalStorage ls_selected_map_location`, ls_selected_map_location);
+      } catch (err) {
+        set_error_message(err.message);
+      }   
+  
+    try {
+      const ls_original_Locations_list = await api.fetchListLS('original_Locations_list');
+      set_original_Locations_list(ls_original_Locations_list);
+      lists_loaded_counter +=1;
+  
+      console.log(`DataManager fetchDataFromLocalStorage ls_original_Locations_list`, ls_original_Locations_list);
+    } catch (err) {
+      set_error_message(err.message);
+    }   
+  
+    try {
+      const ls_filtered_Locations_list = await api.fetchListLS('filtered_Locations_list');
+      update_Locations_filtered_list(ls_filtered_Locations_list);
+      lists_loaded_counter +=1;
+  
+      console.log(`DataManager fetchDataFromLocalStorage ls_filtered_Locations_list`, ls_filtered_Locations_list);
+    } catch (err) {
+      set_error_message(err.message);
+    }  
+
+    try {
+      const ls_categories_list = await api.fetchListLS('categories_list');     
+      set_categories_list(ls_categories_list);
+      lists_loaded_counter +=1;
+  
+      console.log(`DataManager fetchDataFromLocalStorage ls_categories_list`, ls_categories_list);
+
+    } catch (err) {
+        set_error_message(err.message);
+    }            
+      
+    
+  
+    set_loading_lists(false);
+
+  };
+
+
   // The effect hook called useEffect is used to fetch the data from the API
   // The promise resolving happens with async/await.
 
@@ -150,6 +207,7 @@ const WrapperDataManager = ({ children }) => {
         set_original_list(web_list);
         update_filtered_list(web_list);
         update_selected_card(web_list[0]);
+
         set_loading_profiles(false);
 
         //console.log(`MANAGER fetchData web_list[0]:`);
@@ -170,7 +228,11 @@ const WrapperDataManager = ({ children }) => {
   }
 
   useEffect(() => {
-    console.log(`useEffect calling fetchData`);
+    console.log(`useEffect calling fetchDataFromLocalStorage`);
+    fetchDataFromLocalStorage();
+    //fetchData(data_url);
+
+   console.log(`useEffect calling fetchData`);
     fetchData(data_url);
 
     // We only want to fetch data when the component mounts.

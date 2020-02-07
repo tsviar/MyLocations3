@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect} from "react";
 import { StateDataManager } from "../../stateProvider/DataManager";
+import * as api from "../../services/StorageService";
 
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 
@@ -16,6 +17,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 //import "../styles.css";
 // import styled from "styled-components";
+
 import marker from "@ajar/marker";
 
 
@@ -24,9 +26,10 @@ const FilterLocations = () => {
   const { original_list, filtered_list, update_filtered_list } = useContext(StateDataManager);
   const { 
     filtered_Locations_list, update_Locations_filtered_list,
-    original_Locations_list, set_original_Locations_list,
+    original_Locations_list, 
     locations_filter_text, set_locations_filter_text,
-    locations_edited_flag, set_locations_edited_flag,
+    locations_edited_flag, 
+    set_error_message, 
     locations_sort_order, set_locations_sort_order,
     locations_sort_by_category, set_locations_sort_by_category
   } = useContext(StateDataManager);
@@ -81,6 +84,16 @@ const FilterLocations = () => {
 
   };
   
+
+  
+  const storeData = async (list_name, list) => {
+      try {
+        await api.storeListLS(list_name, list);
+      
+    } catch (err) {
+      set_error_message(err.message);
+    }
+  }
 
   //------------------------------------------------------------------------------
   //          Sort asc or desc, by category or not
@@ -140,6 +153,7 @@ const FilterLocations = () => {
      
     
      update_Locations_filtered_list(filtered_list);
+     storeData('filtered_Locations_list', filtered_list);
      
      console.log(`sortLiat() AFTER FilterLocations filtered_list `, filtered_list);
      console.log(`sortLiat() AFTER FilterLocations filtered_Locations_list `, filtered_Locations_list);

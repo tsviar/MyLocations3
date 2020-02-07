@@ -15,6 +15,7 @@ import {
 import { createBrowserHistory } from "history";
 
 import { StateDataManager } from "../../stateProvider/DataManager";
+import * as api from "../../services/StorageService";
 import marker from '@ajar/marker'; 
 
 import {
@@ -44,7 +45,7 @@ import { makeStyles, styled } from '@material-ui/core/styles';
 
 
 const LocationsBrowser = () => {
-  const { loading_profiles } = useContext(StateDataManager);
+  const { loading_lists } = useContext(StateDataManager);
 
   const { 
     selected_map_location, 
@@ -95,7 +96,7 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
 
     // <Router  history={history}>
     <MainBox >
-      {loading_profiles === false ? (
+      {loading_lists === false ? (
         <div>
           <Filter />
           <ContentBox>   
