@@ -23,7 +23,7 @@ import marker from "@ajar/marker";
 
 const FilterLocations = () => {
 
-  const { original_list, filtered_list, update_filtered_list } = useContext(StateDataManager);
+  // const { original_list, filtered_list, update_filtered_list } = useContext(StateDataManager);
   const { 
     filtered_Locations_list, update_Locations_filtered_list,
     original_Locations_list, 
@@ -85,15 +85,6 @@ const FilterLocations = () => {
   };
   
 
-  
-  const storeData = async (list_name, list) => {
-      try {
-        await api.storeListLS(list_name, list);
-      
-    } catch (err) {
-      set_error_message(err.message);
-    }
-  }
 
   //------------------------------------------------------------------------------
   //          Sort asc or desc, by category or not
@@ -153,7 +144,6 @@ const FilterLocations = () => {
      
     
      update_Locations_filtered_list(filtered_list);
-     storeData('filtered_Locations_list', filtered_list);
      
      console.log(`sortLiat() AFTER FilterLocations filtered_list `, filtered_list);
      console.log(`sortLiat() AFTER FilterLocations filtered_Locations_list `, filtered_Locations_list);
@@ -223,6 +213,7 @@ const FilterLocations = () => {
     marker.red(`FilterLocations useEffect() on original_Locations_list\n`);
     console.log(`FilterLocations useEffect() original_Locations_list \n`, original_Locations_list);
     console.log(`FilterLocations useEffect() filtered_Locations_list \n`, filtered_Locations_list);
+    marker.red(`FilterLocations useEffect() locations_filter_text ${locations_filter_text}\n`);
 
     
     const filtered_list = original_Locations_list.filter(

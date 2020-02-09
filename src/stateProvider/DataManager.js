@@ -73,17 +73,15 @@ const WrapperDataManager = ({ children }) => {
     },
   ]);
 
-  const [selected_category, update_selected_category] = useState("");
+  const [selected_category, update_selected_category] = useState("Cat3");
   
-  const [selected_action, update_selected_action] = useState("ADD");
-
   const [loading_lists, set_loading_lists] = useState(true);
   const [error_message, set_error_message] = useState(null);
 
-  const [original_list, set_original_list] = useState([]);
-  const [filtered_list, update_filtered_list] = useState([]);
-  const [selected_card, update_selected_card] = useState({});
-  const [loading_profiles, set_loading_profiles] = useState(true);
+  // const [original_list, set_original_list] = useState([]);
+  // const [filtered_list, update_filtered_list] = useState([]);
+  // const [selected_card, update_selected_card] = useState({});
+  // const [loading_profiles, set_loading_profiles] = useState(true);
  
 
   const states = {
@@ -94,19 +92,13 @@ const WrapperDataManager = ({ children }) => {
     locations_sort_order,
     locations_sort_by_category, 
     selected_location,
-    initial_location,
     selected_map_location, 
     categories_list,
     selected_category,
 
-    selected_action,
     loading_lists,
     error_message,
 
-    original_list, //: robots_data,
-    filtered_list, //: robots_data,
-    selected_card, //: robots_data[0]
-    loading_profiles
   };
 
   const actions = {
@@ -117,21 +109,13 @@ const WrapperDataManager = ({ children }) => {
     set_locations_sort_order,
     set_locations_sort_by_category,
     update_selected_location,
-    update_initial_location,
     update_selected_map_location,
     set_categories_list,
     update_selected_category,
 
-    update_selected_action,
-
     set_loading_lists,   
     set_error_message,    
-    
-    set_original_list,
-    update_filtered_list,
-    update_selected_card,
-    set_loading_profiles
-
+  
   };
 
   //================================================================================
@@ -154,36 +138,48 @@ const WrapperDataManager = ({ children }) => {
     try {
       const ls_original_Locations_list = await api.fetchListLS('original_Locations_list');
       set_original_Locations_list(ls_original_Locations_list);
-      lists_loaded_counter +=1;
+      update_selected_location(ls_original_Locations_list[0]);
+      update_Locations_filtered_list( ls_original_Locations_list);
   
-      console.log(`DataManager fetchDataFromLocalStorage ls_original_Locations_list`, ls_original_Locations_list);
+      marker.obj(original_Locations_list, `DataManager fetchDataFromLocalStorage 1 original_Locations_list`); 
+      marker.obj(filtered_Locations_list, `DataManager fetchDataFromLocalStorage 1 filtered_Locations_list`);
+
+
     } catch (err) {
       set_error_message(err.message);
     }   
   
-    try {
-      const ls_filtered_Locations_list = await api.fetchListLS('filtered_Locations_list');
-      update_Locations_filtered_list(ls_filtered_Locations_list);
-      lists_loaded_counter +=1;
+    // try {
+    //   const ls_filtered_Locations_list = await api.fetchListLS('filtered_Locations_list');
+    //   update_Locations_filtered_list(ls_filtered_Locations_list);
+    //   lists_loaded_counter +=1;
   
-      console.log(`DataManager fetchDataFromLocalStorage ls_filtered_Locations_list`, ls_filtered_Locations_list);
-    } catch (err) {
-      set_error_message(err.message);
-    }  
+    //   console.log(`DataManager fetchDataFromLocalStorage ls_filtered_Locations_list`, ls_filtered_Locations_list);
+    // } catch (err) {
+    //   set_error_message(err.message);
+    // }  
 
     try {
       const ls_categories_list = await api.fetchListLS('categories_list');     
-      set_categories_list(ls_categories_list);
-      lists_loaded_counter +=1;
+      set_categories_list(ls_categories_list);      
+      update_selected_category(ls_categories_list[0]);
   
-      console.log(`DataManager fetchDataFromLocalStorage ls_categories_list`, ls_categories_list);
+      marker.obj( ls_categories_list, `DataManager fetchDataFromLocalStorage 1 ls_categories_list`);
+
 
     } catch (err) {
         set_error_message(err.message);
     }            
-      
     
+                  
+    // update_selected_location(original_Locations_list[0]);
+    // update_Locations_filtered_list( original_Locations_list);
+    // update_selected_category(categories_list[0]);
   
+    marker.obj(original_Locations_list, `DataManager fetchDataFromLocalStorage 2 original_Locations_list`); 
+    marker.obj(filtered_Locations_list, `DataManager fetchDataFromLocalStorage 2 filtered_Locations_list`);
+    marker.obj( categories_list, `DataManager fetchDataFromLocalStorage 2 categories_list`);
+
     set_loading_lists(false);
 
   };
@@ -204,11 +200,14 @@ const WrapperDataManager = ({ children }) => {
         console.log(`MANAGER fetchData weblist valid:`);
        // console.table(web_list);
 
-        set_original_list(web_list);
-        update_filtered_list(web_list);
-        update_selected_card(web_list[0]);
+       // Theses no longer exixt:
+       //-----------------------------------
+        //set_original_list(web_list);
+        //update_filtered_list(web_list);
+       // update_selected_card(web_list[0]);
 
-        set_loading_profiles(false);
+       // set_loading_profiles(false);
+       //------------------------------------
 
         //console.log(`MANAGER fetchData web_list[0]:`);
         //console.log(web_list[0]);
@@ -227,20 +226,27 @@ const WrapperDataManager = ({ children }) => {
     }
   }
 
+
+  // We only want to fetch data when the component mounts.
+  // That’s why you can provide an empty array as second argument
+  // to the effect hook
+  // to avoid activating it on component updates
+  // but only for the mounting of the component.
+
   useEffect(() => {
     console.log(`useEffect calling fetchDataFromLocalStorage`);
     fetchDataFromLocalStorage();
-    //fetchData(data_url);
 
-   console.log(`useEffect calling fetchData`);
-    fetchData(data_url);
+    
+    marker.obj(original_Locations_list, `DataManager fetchDataFromLocalStorage 3 original_Locations_list`); 
+    marker.obj(filtered_Locations_list, `DataManager fetchDataFromLocalStorage 3 filtered_Locations_list`);
+    marker.obj( categories_list, `DataManager fetchDataFromLocalStorage 3 categories_list`);
 
-    // We only want to fetch data when the component mounts.
-    // That’s why you can provide an empty array as second argument
-    // to the effect hook
-    // to avoid activating it on component updates
-    // but only for the mounting of the component.
-  }, []);
+  //fetchData(data_url);
+  //  console.log(`useEffect calling fetchData`);
+  //   fetchData(data_url);
+
+}, []);
 
   // WrapperDataManager adds a top Provider layer to ProfilesBrowser and all the tree ({children})
   return <Provider value={{ ...states, ...actions }}>{children}</Provider>;

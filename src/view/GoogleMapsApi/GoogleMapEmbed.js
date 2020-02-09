@@ -40,10 +40,8 @@ const Map = withScriptjs( withGoogleMap( (props) => {
     
   //Gloobal context storage
  const { 
-    // initial_location,
     selected_location,
     selected_map_location, 
-   // update_selected_map_location,
   } =  useContext(StateDataManager);
 
   const google = window.google;
@@ -416,21 +414,7 @@ const GoogleMapContainer = () => {
     update_selected_map_location({  address: str, });
   };
 
- // Update map according to selected_map_location changes
-  // useEffect(() => {
-
-  //   set_location( ( {...location, 
-  //     address: selected_map_location.address, 
-  //     lat: selected_map_location.lat, 
-  //     lng: selected_map_location.lng, 
-  //   } )  );  
-
-  //   marker.red(`GoogleMapContainer useEffect location: lng  ${location.lng}`); 
-  //   marker.red(`GoogleMapContainer useEffect selected_map_location.lng:  ${location.lng}`);
-  
-  // }, [selected_map_location]);
-
-
+ 
   // Equiv to On Mount
   useEffect(() => {
 
