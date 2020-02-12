@@ -4,7 +4,7 @@ import * as api from "../../services/StorageService";
 
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 
-import { makeStyles, styled } from '@material-ui/core/styles';
+import { makeStyles, styled, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 // import SortByAlphaTwoTone from '@material-ui/icons/SortByAlphaTwoTone';
@@ -191,7 +191,7 @@ const FilterLocations = () => {
     set_locations_filter_text(txt);
 
     const filtered_list = original_Locations_list.filter(item =>
-      item.name.toLowerCase().includes(txt.toLowerCase())
+      item.category.toLowerCase().includes(txt.toLowerCase())
     );
 
     sortList(filtered_list, locations_sort_order, locations_sort_by_category);
@@ -217,7 +217,7 @@ const FilterLocations = () => {
 
     
     const filtered_list = original_Locations_list.filter(
-      item =>  item.name.toLowerCase().includes(locations_filter_text.toLowerCase())
+      item =>  item.category.toLowerCase().includes(locations_filter_text.toLowerCase())
 
     );
     
@@ -254,6 +254,7 @@ const FilterLocations = () => {
  // marker.blue(`items_count 2 ${items_count}`);
 
   return (
+    <MuiThemeProvider theme={filterLocatios_theme}>
     <Header>
       <Title>{items_count} items filtered</Title>
       <Input onChange={updateFilteredList} />
@@ -268,8 +269,9 @@ const FilterLocations = () => {
         <Tooltip title="Sort list alphabetically">
             <IconButton 
                 variant="contained" 
-                className={classes.button}
-                color="darkred"  
+                // className={classes.button}
+                // color="darkred" 
+                color= "primary"
                 aria-label="sort list"
                 onClick={event => handleRequestSort(event)}
                 size = "small"          
@@ -282,8 +284,9 @@ const FilterLocations = () => {
           <Tooltip title="Sort list by Category">
             <IconButton 
                 variant="contained" 
-                className={classes.button}
-                color="darkred" 
+                // className={classes.button}
+                // color="darkred" 
+                color= "primary"
                 aria-label="By Category"
                 onClick={event => handleRequestGroupByCategory(event)}
                 size = "small"          
@@ -295,6 +298,7 @@ const FilterLocations = () => {
           </Tooltip>
       </ActionsBar>
     </Header>
+    </MuiThemeProvider>
   );
 };
 export default FilterLocations;
@@ -307,9 +311,21 @@ export default FilterLocations;
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
-    color: "darkred"
+    color: 'darkred',
   },
 }));
+
+const filterLocatios_theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#8b0000', //'darkred', //'#4caf50',
+    },
+    secondary: {
+      main: '#ff9100',
+    },
+  },
+
+});
 
 const Header = styled('div')({
   background: 'lightsalmon',

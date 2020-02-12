@@ -23,7 +23,6 @@ import {
   // LocationsMap ,
 }from "../GoogleMapsApi/GoogleMapEmbed";
 
-import ManageLocation from "./ManageLocation";
 import AddLocation from "./AddLocation";
 import EditLocation from "./EditLocation";
 import RemoveLocation from "./RemoveLocation";
@@ -71,6 +70,7 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
   let history = useHistory();
   
   /* 
+   TBD:
     Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
     in AddLocation (at LocationsBrowser.jsx:158)    
 
@@ -92,27 +92,24 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
     //   </ContentBox>
     // </div>
 
-    //  <Router  history={history}>
 
-    // <Router  history={history}>
     <MainBox >
       {loading_lists === false ? (
         <div>
           <Filter />
-          <ContentBox>   
-          <MenuContentBox>
 
-            <MenuBox>                                   
-              <LocationsTopBar>
-                      <LocationsMenu />
-               </LocationsTopBar>  
-            </MenuBox>   
+          <ContentBox>   
+
+            <MenuContentBox>
+
+              <MenuBox>                                   
+                <LocationsTopBar>
+                        <LocationsMenu />
+                </LocationsTopBar>  
+              </MenuBox>   
               
                 
-              {/* <Switch>
-
- 
-                   
+              {/* <Switch>                    
                   <Route exact path="/locations"  children={  
                     () => <ManageLocationsBox>
                             <ViewLocation />  
@@ -143,25 +140,16 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
                             <GoogleMapContainer /> 
                           </ManageLocationsBox> 
                              
-                   } />                
-
-
-            </Switch> */}
+                   } />              
+                 </Switch> */}
    
-           {/* <Route path="/locations" children={<AddLocation />} /> */}
 
                 {/* <ModalBox> */}
-
                     {/* <Profile/> */}
- 
-
-                {/* </ModalBox> */}
-
-             
+                {/* </ModalBox> */}            
              
                   
-                <ManageLocationsBox>   
-
+            <ManageLocationsBox>   
 
                {  
                    ( "/locations/view" === location.pathname
@@ -173,13 +161,12 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
 
                 } 
                
-
-                {/* <ViewLocation/>                */}
                 <GoogleMapContainer /> 
                 
 
-              </ManageLocationsBox>
-            </MenuContentBox>
+            </ManageLocationsBox>
+
+          </MenuContentBox>
 
             <List />
 

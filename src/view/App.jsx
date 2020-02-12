@@ -17,11 +17,12 @@ import marker from '@ajar/marker';
 
 import { WrapperDataManager } from "../stateProvider/DataManager";
 import HomePage from "./HomePage";
-import ProfilesBrowser from "./ProfilesBrowser";
+// import ProfilesBrowser from "./ProfilesBrowser";
+
+
+import CategoriesBrowser from "./Categories/CategoriesBrowser";
 
 import LocationsBrowser from "./Locations/LocationsBrowser";
-// import AddLocation from "./Locations/AddLocation";
-
 import AddLocation from "./Locations/AddLocation";
 import EditLocation from "./Locations/EditLocation";
 import RemoveLocation from "./Locations/RemoveLocation";
@@ -65,8 +66,9 @@ const App = () => (
 
           {/* <Route path="/locations" component={ProfilesBrowser} /> */}
  
-                 <Route exact path="/categories" children={< AddLocation />} />
-
+                 {/* <Route exact path="/categories" children={< AddLocation />} /> */}
+                 <Route exact path="/categories" children={< CategoriesBrowser />} />
+                 
            
 
                  <Route exact path="/locations"  children= {<LocationsBrowser />} />
