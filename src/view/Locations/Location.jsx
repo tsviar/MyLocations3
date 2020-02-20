@@ -39,10 +39,6 @@ const Box = styled('div')({
   '&:hover': {
     background: 'paleturquoise',
   },
-
-  '&:hover': {
-    background: 'paleturquoise',
-  },
   '&:active': {
     background: 'skyblue',
     color: 'white',

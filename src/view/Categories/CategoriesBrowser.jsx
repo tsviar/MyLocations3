@@ -4,54 +4,54 @@ import React,
 { 
   useContext, 
   useState, 
+  useEffect,
   useCallback, 
- // using React.memo to turn a componenet t into a memoized component. 
+  useMemo,
+
+ // using React.memo to turn a componenet into a memoized component. 
  //This will force React to never re-render it, unless some of its properties change
-  memo ,
-  setState,
+ // memo ,
+
+  forwardRef,
 } from "react";
 
 // import { Route, Switch } from "react-router";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Switch,
-  Route,
-  Link,
-  useHistory,
-  useLocation,
-  useParams
-} from "react-router-dom";
+// import {
+//   useHistory,
+//   useLocation,
+//   useParams,
+// } from "react-router-dom";
 
-import { createBrowserHistory } from "history";
+// import { createBrowserHistory } from "history";
 
 import { StateDataManager } from "../../stateProvider/DataManager";
 import * as api from "../../services/StorageService";
 import marker from '@ajar/marker'; 
 
 
-// import {
-//   GoogleMapContainer,
-//   // LocationsMap ,
-// }from "../GoogleMapsApi/GoogleMapEmbed";
-
-// import AddLocation from "./AddLocation";
-// import EditLocation from "./EditLocation";
-// import RemoveLocation from "./RemoveLocation";
-// import ViewLocation from "./ViewLocation";
-
-// import LocationsMenu from "./LocationsMenu";
-// import LocationsTopBar from "./LocationsTopBar";
-
-// import List from "./LocationsList";
-// import Filter from "./FilterCategories";
-//import Profile from "../Profile";
-
 //import "../styles.css";
 //import styled from "styled-components";
-import { makeStyles, styled } from '@material-ui/core/styles';
-import MaterialTable from 'material-table';
-import { useEffect } from "react";
+import main_palete_theme from '../../style.lib/PalleteStyles';
+// import Image from '../../style.lib/images/table_background_1.jpg';
+import Image from '../../style.lib/images/table_background_3.jpg';
+
+// Material-UI
+import { makeStyles, styled, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+import AddLocationRoundedIcon from '@material-ui/icons/AddLocationRounded';
+// import AddIcon from "@material-ui/icons/Add";
+// import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
+// import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
+// import AddBoxRoundedIcon from '@material-ui/icons/AddBoxRounded';
+
+import { Tooltip, Fab } from '@material-ui/core';
+
+import MaterialTable, {MTableToolbar, } from 'material-table';
+
+
+  // 2 ways to update the table:
+  // 1) using useStateful,useSetState and the setting of columns and data is in the table
+  // 2) using useState( [.. here is the setting of columns and data])
 
   //-------------------------------------------------
   //  modify hooks to use a callback like setState
@@ -59,29 +59,56 @@ import { useEffect } from "react";
   //-------------------------------------------------
  
   const useStateful = initial => {
-    const [value, setValue] = useState(initial);
+    const [value, setValue] = useState(initial);    
+   // console.log(`useStateful CALLED BY SURPRIZE value`, value);
     return {
       value,
       setValue
     };
   };
   
+  // Creates an statfull object
+  // having state and setState 
+  // 
+  // setState is a callBack with no dependencies, 
+  // which calls setValue with oldValue
+  // which is actually the new updated value
+  // since we pass v as ()=>resolve()
+  // resolve is called with the new value
+  // and tries to replace it with v (new value)
+  // or the result of the v function
+  
   const useSetState = initialValue => {
     const { value, setValue } = useStateful(initialValue);
-    marker.green(`====== CategoriesBrowser useSetState value ${value} ==========\n`);
-    marker.obj(value,`useSetState value\n`);
-    marker.obj(setValue,`useSetState setValue\n`);
+
     return {
       setState: useCallback(v => {
-        marker.green(`====== CategoriesBrowser useSetState setState  ==========\n`);
+        return setValue(oldValue => ({
+         // ...oldValue, /// this works badly on delete, 
+                        /// and without it, edit updates local_categories_list a bit longer
+          ...(typeof v === 'function' ? v(oldValue) : v)
+        }));
+      }, []),
+      state: value
+    };
+  };
 
-        console.log(`====== CategoriesBrowser useSetState setState  setValue v ==========\n`,v);
-        marker.obj(v,`setState setValue v\n`);
+
+
+  /*
+  const useSetState = initialValue => {
+    const { value, setValue } = useStateful(initialValue);
+    console.log(`====== CategoriesBrowser useSetState  value ==========\n`,value);
+    console.log(`====== CategoriesBrowser useSetState  setValue ==========\n`,setValue);
+
+    return {
+      setState: useCallback(v => {
+        console.log(`====== CategoriesBrowser useSetState setState useCallback v ==========\n`,v);
 
         return setValue((oldValue) => {
 
-          console.log(`====== CategoriesBrowser useSetState setState setValue oldValue ==========\n`,oldValue);
-          console.log(`====== CategoriesBrowser useSetState setState  setValue v ==========\n`,v);
+          console.log(`====== CategoriesBrowser useSetState setValue F oldValue ==========\n`,oldValue);
+          console.log(`====== CategoriesBrowser useSetState setValue F  v ==========\n`,v);
          return(
             {
           ...oldValue,
@@ -92,7 +119,8 @@ import { useEffect } from "react";
       state: value,
     };
   };
- 
+ */
+
 /*
 CategoriesBrowser categories_list  index.js:103 
 Array(4)0: {name: "Cat1"}1: {name: "Cat2"}2: {name: "Cat3"}3: {name: "Cat4"}length: 4
@@ -108,15 +136,7 @@ __proto__: Array(0)__proto__: Object
 
 //====== CategoriesBrowser useSetState setState  ==========
 
-setState setValue v 
-Object
-list: Array(4)
-0: {name: "Cat1"}
-1: {name: "Cat2"}
-2: {name: "Cat3"}
-3: {name: "Cat4"}
--1: {name: "cat333333", surname: "Baran", birthYear: 1987, birthCity: 63}
-length: 4                                                                                                  
+                                                                                            
 CategoriesBrowser onRowUpdate oldData  
 Object
   name: "Mehmet"
@@ -141,48 +161,106 @@ birthCity: 63__proto__: Object
 
 //========================================================================
 //          CategoriesBrowser
+//          using MaterialTable: 
+//          URL: https://material-table.com/#/docs/features/editable
 //========================================================================
 
 const CategoriesBrowser = () => {
   const { loading_lists,
-    categories_list, set_categories_list, 
+    categories_list, set_categories_list,  
+    set_error_message,
   } = useContext(StateDataManager);
 
-  //const [local_categories_list, update_local_categories_list] = useState(categories_list);
-  const local_categories_list = useSetState(categories_list);
+  // using useState:
+  //-----------------------------------------------------------------------
+  const [local_categories_list, update_local_categories_list] = useState(
+  {
+    columns: [
+      { 
+        title: 'Category',                    
+        field: 'name', type: 'string',
+        cellStyle: {
+          //backgroundColor: '#039be5',
+          //color: '#FFF',
+          fontSize:`1.1rem`,
+          
+        }, 
+      },
 
+      // { title: 'Surname', field: 'surname' },
+      // { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
+      // {
+      //   title: 'Birth Place',
+      //   field: 'birthCity',
+      //   lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
+      // },
+    ],
+
+    data: categories_list ,
+
+  });
+
+  // using useStateful,useSetState
+  //----------------------------------------------------------
+  //const local_categories_list = useSetState(categories_list);
+
+
+  const [selected_row, set_selected_row] = useState(null);
  
-  const updateTableData = useCallback( 
-    (list, callbak_f) => {
-      marker.blue(`===== CategoriesBrowser updateTableData ======================\n`);
-      marker.obj(list, `updateTableData list input\n`);
 
-      //update_local_categories_list( list => set_categories_list(list));
-     // local_categories_list.setState(list => set_categories_list(list));
-      callbak_f();     
-      marker.obj(local_categories_list, `updateTableData local_categories_list\n`);
-      marker.obj(categories_list, `updateTableData categories_list\n`);
-      marker.blue(`=======================================================\n`);
-    }, 
-    [categories_list]  );
-
- 
-
-marker.red(`===== CategoriesBrowser regular ======================\n`);
-marker.obj(categories_list, `CategoriesBrowser categories_list\n`);
-marker.obj(local_categories_list, `CategoriesBrowser local_categories_list\n`);
-marker.red(`=======================================================\n`);
+    marker.red(`===== CategoriesBrowser render ${selected_row}======================\n`);
+    console.log(`CategoriesBrowser categories_list\n`,categories_list);      
+    console.log(`CategoriesBrowser local_categories_list\n`,local_categories_list);
+    console.log(`CategoriesBrowser selected_row\n`,selected_row);
+    marker.red(`=======================================================\n`);
 
 
   // const history = createBrowserHistory();
 
-  let location = useLocation();
-  marker.obj(location, `CategoriessBrowser location \n`);
+  // const location = useLocation();
+  // marker.obj(location, `CategoriessBrowser location \n`);
 
-  let history = useHistory();
+ // const history = useHistory();
+
+  //const classes = useStyles();
+
+
   
+  // According to:
+  // https://material-ui.com/customization/palette/#example
+  const MainTheme = useMemo(
+    () => createMuiTheme({
+      main_palete_theme}) ,
+      [],
+    );
+
+
+
+    // console.log (`COLORRRRRRRRRRRR 
+    // ============================================================================`,main_palete_theme);
+
+
+  const storeData = async (list_name, list) => {
+      try {
+        await api.storeListLS(list_name, list);
+      
+    } catch (err) {
+      set_error_message(err.message);
+    }
+  }
+
+
+  // need this when using useState()
+  //-----------------------------------
+  useEffect(() => {
+    update_local_categories_list({columns:local_categories_list.columns, data:categories_list});
+  //},  []);  
+  },  [categories_list,  categories_list.length]);
+
   
+
   return (
+   <MuiThemeProvider theme={MainTheme}> 
 
     <MainBox >
 
@@ -192,24 +270,41 @@ marker.red(`=======================================================\n`);
           <ContentBox>   
 
             <MaterialTable
-                title="Categories list"
-                columns={[
-                  { title: 'Category', field: 'name', type: 'string' },
-                  // { title: 'Surname', field: 'surname' },
-                  // { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-                  // {
-                  //   title: 'Birth Place',
-                  //   field: 'birthCity',
-                  //   lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-                  // },
-                ]}
-               data={ categories_list}
-                  // {
-                      // useEffect (() => {
-                      //   resolve();
-                      // }, [categories_list] )
-                   // }
+                //title ="Categories list"
+                title = {
+                //  <h4 className={classes.tableTitleStyle}>Categories list</h4>
+                <TableTitleStyle> Categories list </TableTitleStyle>
+                }
 
+                // when using useState
+                //--------------------------------------
+                columns={ local_categories_list.columns }
+
+                // when using useStateful,useSetState
+                //--------------------------------------
+                // columns={[
+                //   { 
+                //     title: 'Category',                    
+                //     field: 'name', type: 'string',
+                //     cellStyle: {
+                //       //backgroundColor: '#039be5',
+                //       //color: '#FFF',
+                //       fontSize:`1.1rem`,
+                      
+                //     }, 
+                //   },
+
+                // ]}
+
+                // when using useStateful,useSetState
+                //--------------------------------------
+                // data={ categories_list }
+
+                // when using useState
+                //--------------------------------------
+                data={ local_categories_list.data }
+             
+                  
                    //...material-table/dist/material-table.js:278
                    // _this.setState(
                    //   { isLoading: true },
@@ -223,87 +318,288 @@ marker.red(`=======================================================\n`);
                 //  data={[
                 //    { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
                 //    { name: 'Zerya Betül', surname: 'Baran', birthYear: 2017, birthCity: 34 },
-                //  ]}    
+                //  ]}  
+                
+ 
+                components={{
+                  Toolbar: props => (
+                    <MainTableToolBar>
+                      <MTableToolbar {...props} />
+                    </MainTableToolBar>
+
+                    //     <div style={{ backgroundColor: '#e8eaf5' }}>
+                    //     <MTableToolbar {...props} />
+                    // </div>
+
+                  ),                
+
+              }}
+
+
+                onRowClick={((evt, selectedRow) => set_selected_row({ selectedRow }))}
 
                 options={{
-                  sorting: true
+
+                  sorting: true,  
+                  
+                  searchFieldStyle:
+                  {
+                    background: 'white', 
+                    borderRadius: '0.5rem',                 
+                  },
+
+                  headerStyle: 
+                  {  
+                    backgroundColor: `${main_palete_theme.palette.top_menu.main}`,
+                   // backgroundColor: '#01579b',
+                   // backgroundColor: '#039be5',
+                    color: `${main_palete_theme.palette.top_menu.tex}`, //'#FFF',
+                    fontSize:`1.2rem`,
+                 },                //  {
+                //     background: 'lightsalmon',                    
+                //     color: "darkred",
+                //     "&:hover": {
+                //       color: "white"
+                //     },
+                //     fontSize:`1.2rem`,
+                //  },
+                  pageSizeOptions: [5, 10], // more then that look awefull...
+
+                  rowStyle: rowData => ({
+                    backgroundColor: (selected_row && selected_row.selectedRow && selected_row.selectedRow.tableData.id === rowData.tableData.id) ? //'#EEE' : '#FFF'
+                  // 'blue' : //'honeydew':// '#FFF'
+                   `${main_palete_theme.palette.table_row_style.selected}`:
+                    `${main_palete_theme.palette.table_row_style.regular}`,   //'oldlace', //'#FFF',
+                    height: 40,
+                    textAlign: 'left',
+                    //fontFamily: `Roboto Condensed`, 
+                    fontFamily: 'Expletus Sans',
+                    fontSize: `3rem`,//'1.4rem',
+
+                  }),   
+
+                }}
+                
+                icons={{
+                  Add: forwardRef((props, ref) => (
+                    //  Spread the props to the underlying DOM element.
+                    //--------------------------------------------------
+                    <Fab                 
+                       style={{                         
+                        background:  `${main_palete_theme.palette.add_button.main}`, //'#FFF',, 
+                        color: `${main_palete_theme.palette.primary.dark}`, //'#FFF', 
+                        fontSize: 'large', //30, //`2rem`,
+                         }}  
+                        aria-label="Add Category" >
+                        <AddLocationRoundedIcon ref={ref} {...props} style={{ fontSize: 35 }}/>
+                        {/* <AddCircleRoundedIcon ref={ref} {...props} style={{ fontSize: 40 }} /> */}
+
+                      </Fab>
+                    
+                  ))
                 }}
 
+                localization={{
+                  body: {
+                    editRow: {
+                      saveTooltip: "Save",
+                      cancelTooltip: "Cancel",
+                      deleteText: "Are you sure you want to delete this Category?"
+                    },
+                    addTooltip: "Add Category",
+                    deleteTooltip: "Delete",
+                    editTooltip: "Edit"
+                  }
+                }}
+            
                 editable={{
-                  onRowAdd: newData =>
-                    new Promise((resolve, reject) => {
-                      setTimeout(() => {
-                        {
-                          const list = categories_list; //this.state.data;
-                          list.push({name: newData.name});
-                         // this.setState({ list }, () => resolve());   
-                            //set_categories_list(list );
-                            local_categories_list.setState({list}, () => resolve());
-                          //updateTableData({list}, () => resolve());
-                        }
-                        resolve();
-                      }, 1000)
-                    }),
-                  onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve, reject) => {
-                      setTimeout(() => {
-                        {
-                          const list = categories_list; ///this.state.data;
-                          const index = list.map(e => e.name).indexOf(oldData.name);
-                          list[index] = {name: newData.name};
-                          //this.setState({ list }, () => resolve());                       
-                          //set_categories_list(list );
-                          local_categories_list.setState({list}, () => resolve());
-                         // local_categories_list.setState({list});
-                          //updateTableData({list}, () => resolve());
+
+                 // when using useState
+                 //--------------------------------------
+                 onRowAdd: newData =>
+                 new Promise(resolve => {
+                   setTimeout(() => {
+                     resolve();
+                     update_local_categories_list(prevState => {
+                       const list = [...prevState.data];
+                       console.log(`CategoriesBrowser onRowAdd list prevState.data\n`,list);
+
+                       list.push(newData);                        
+                       set_categories_list(list);
+                       storeData('categories_list', list);
+
+                       marker.blue(`===== CategoriesBrowser onRowUpdate  ======================\n ${newData}\n`);   
+                       console.log(`CategoriesBrowser onRowAdd newData\n`,newData);
+                       marker.obj(newData, `CategoriesBrowser onRowAdd newData\n`);
+
+                       console.log(`CategoriesBrowser onRowAdd list\n`,list);
+                       console.log(`CategoriesBrowser onRowAdd local_categories_list\n`,local_categories_list);
+                       console.log(`CategoriesBrowser onRowAdd categories_list\n`,categories_list);
+                       marker.blue(`=======================================================\n`);
+
+                       return ({columns:local_categories_list.columns, data:list});
+                      // return { ...prevState, list };
+                     });
+                   }, 600);
+                 }),
+
+                  // when using useStateful,useSetState
+                  //--------------------------------------
+                  // onRowAdd: newData =>
+                  //   new Promise((resolve, reject) => {
+
+                  //     setTimeout(() => {
+                  //       {
+                  //         const list = categories_list; //this.state.data;
+                  //         list.push({name: newData.name});
+
+
+
+                  //         local_categories_list.setState(list, () => resolve());
+                  //         //local_categories_list.setState({list});
+
+                  //         storeData('categories_list', list);
                           
-                          marker.blue(`===== CategoriesBrowser onRowUpdate  ======================\n ${oldData}\n`);
-                          console.log(`onRowUpdate found index ${index}`);
-                          console.log(`CategoriesBrowser onRowUpdate oldData\n`,oldData);
-                          console.log(`CategoriesBrowser onRowUpdate newData\n`,newData);
-                          marker.obj(oldData, `CategoriesBrowser onRowUpdate oldData\n`);
-                          marker.obj(newData, `CategoriesBrowser onRowUpdate newData\n`);
-                          marker.obj(list, `CategoriesBrowser onRowUpdate list\n`);
-                          console.log(`CategoriesBrowser onRowUpdate list\n`,list);
-                          console.log(`CategoriesBrowser onRowUpdate local_categories_list\n`,local_categories_list);
-                          marker.blue(`=======================================================\n`);
+                  //         marker.blue(`===== CategoriesBrowser onRowUpdate  ======================\n ${newData}\n`);   
+                  //         console.log(`CategoriesBrowser onRowAdd newData\n`,newData);
+                  //         marker.obj(newData, `CategoriesBrowser onRowAdd newData\n`);
+                  //         marker.obj(list, `CategoriesBrowser onRowAdd list\n`);
+                  //         console.log(`CategoriesBrowser onRowAdd list\n`,list);
+                  //         console.log(`CategoriesBrowser onRowAdd local_categories_list\n`,local_categories_list);
+                  //         console.log(`CategoriesBrowser onRowAdd categories_list\n`,categories_list);
+                  //         marker.blue(`=======================================================\n`);
+                  //       }
+                  //       resolve();                  
+                  //     }, 1000)
+                  //   }),
+
+                  // when using usetState
+                  //--------------------------------------
+                  onRowUpdate: (newData, oldData) =>
+                  new Promise(resolve => {
+                    setTimeout(() => {
+                      resolve();
+                      if (oldData) {
+                      update_local_categories_list(prevState => {
+                        const list = [...prevState.data];
+                        console.log(`CategoriesBrowser onRowUpdate list prevState.data\n`,list); 
+                        
+                        list[list.indexOf(oldData)] = newData;                     
+                        set_categories_list(list);
+                        storeData('categories_list', list);
+ 
+                        marker.blue(`===== CategoriesBrowser onRowUpdate  ======================\n ${newData}\n`);   
+                        console.log(`CategoriesBrowser onRowUpdate newData\n`,newData);
+                        marker.obj(newData, `CategoriesBrowser onRowUpdate newData\n`);
+ 
+                        console.log(`CategoriesBrowser onRowUpdate list\n`,list);
+                        console.log(`CategoriesBrowser onRowUpdate local_categories_list\n`,local_categories_list);
+                        console.log(`CategoriesBrowser onRowUpdate categories_list\n`,categories_list);
+                        marker.blue(`=======================================================\n`);
+ 
+                        return ({columns:local_categories_list.columns, data:list});
+                       // return { ...prevState, list };
+                      });
+                     }
+                    }, 600);
+                  }),
+ 
+
+                  // when using useStateful,useSetState
+                  //--------------------------------------
+                  // onRowUpdate: (newData, oldData) =>
+                  //   new Promise((resolve, reject) => {
+                  //     setTimeout(() => {
+                  //       {
+                  //         const list = categories_list; ///this.state.data;
+                  //         const index = list.map(e => e.name).indexOf(oldData.name);
+                  //         list[index] = {name: newData.name};
 
 
-                        }
-                         resolve();
-                      }, 1000)
-                    }),
+                  //         // Only a double callback (setState and an inner function call)
+                  //         // displays the current list
+                  //         // just like any of the 3 functions below would do
+                  //         //this.setState({ list }, () => resolve());
+                  //         local_categories_list.setState(list, () => resolve());
+                  //         //local_categories_list.setState({list});
+                          
+                  //         storeData('categories_list', list);
+                          
+                  //         marker.blue(`===== CategoriesBrowser onRowUpdate  ======================\n ${oldData}\n`);
+                  //         console.log(`onRowUpdate found index ${index}`);
+                  //         console.log(`CategoriesBrowser onRowUpdate oldData\n`,oldData);
+                  //         console.log(`CategoriesBrowser onRowUpdate newData\n`,newData);
+                  //         marker.obj(oldData, `CategoriesBrowser onRowUpdate oldData\n`);
+                  //         marker.obj(newData, `CategoriesBrowser onRowUpdate newData\n`);
+                  //         marker.obj(list, `CategoriesBrowser onRowUpdate list\n`);
+                  //         console.log(`CategoriesBrowser onRowUpdate list\n`,list);
+                  //         console.log(`CategoriesBrowser onRowUpdate local_categories_list\n`,local_categories_list);
+                  //         console.log(`CategoriesBrowser onRowUpdate categories_list\n`,categories_list);
+                  //         marker.blue(`=======================================================\n`);
+
+
+                  //       }
+                  //        resolve();
+                  //     }, 1000)
+                  //   }),
+
+                  
+                  // when using usetState
+                  //--------------------------------------
                   onRowDelete: oldData =>
-                    new Promise((resolve, reject) => {
-                      setTimeout(() => {
-                        {
-                          let list = categories_list; /// this.state.data;
-                          const index = list.map(e => e.name).indexOf(oldData.name);
-                          list.splice(index, 1);
-                          //this.setState({ list }, () => resolve());
-                          //set_categories_list(list );
-                          local_categories_list.setState({list}, () => resolve());
-                          //local_categories_list.setState({list});
-                          //updateTableData({list}, () => resolve());
+                  new Promise(resolve => {
+                    setTimeout(() => {
+                      resolve();
+                      update_local_categories_list(prevState => {
+                        const list = [...prevState.data];
+                        console.log(`CategoriesBrowser onRowDelete list prevState.data\n`,list);
+ 
+                        list.splice(list.indexOf(oldData), 1);                       
+                        set_categories_list(list);
+                        storeData('categories_list', list);
+ 
+                        marker.blue(`===== CategoriesBrowser onRowDelete  ======================\n ${oldData}\n`);   
+                        console.log(`CategoriesBrowser onRowAdd newData\n`,oldData);
+                         
+                        console.log(`CategoriesBrowser onRowDelete list\n`,list);
+                        console.log(`CategoriesBrowser onRowDelete local_categories_list\n`,local_categories_list);
+                        console.log(`CategoriesBrowser onRowDelete categories_list\n`,categories_list);
+                        marker.blue(`=======================================================\n`);
+ 
+                        return ({columns:local_categories_list.columns, data:list});
+                       // return { ...prevState, list }; 
+                      });                    
+                    }, 600);
+                  }),
 
-                        }
-                         resolve();
-                      }, 1000)
-                    }),
+                  // when using useStateful,useSetState
+                  //--------------------------------------
+                  // onRowDelete: oldData =>
+                  //   new Promise((resolve, reject) => {
+                  //     setTimeout(() => {
+                  //       {
+                  //         let list = categories_list; /// this.state.data;
+                  //         const index = list.map(e => e.name).indexOf(oldData.name);
+                  //         list.splice(index, 1);
+                  //         console.log(`onRowDelete list`, list);
+
+                  //         // Only a double callback (setState and an inner function call)
+                  //         // displays the current list
+                  //         // just like any of the 3 functions below would do
+                  //         //this.setState({ list }, () => resolve());
+                  //         local_categories_list.setState(list, () => resolve());
+                  //       //  local_categories_list.setState({list});
+                        
+                  //         storeData('categories_list', list);
+                           
+                  //       }
+                  //        resolve();
+                  //     }, 1000)
+                  //   }),
+
                 }}
 
             />
-
-
-           {/* <MenuContentBox>
-              <MenuBox>                                   
-                <LocationsTopBar>
-                    <LocationsMenu />
-                </LocationsTopBar>  
-              </MenuBox>   
-           </MenuContentBox> */}
-
-            {/* <List /> */}
 
           </ContentBox>
         </div>
@@ -314,10 +610,8 @@ marker.red(`=======================================================\n`);
      
     </MainBox>
 
-   
-    
-    // </Router>
-    
+   </MuiThemeProvider> 
+
   );
 };
 export default CategoriesBrowser;
@@ -326,18 +620,69 @@ export default CategoriesBrowser;
 // local styling
 //===============================================================
 
+
+// const useStyles = makeStyles({
+//   colHeader: {
+//      background: 'lightsalmon',
+//      color: "darkred",
+//      "&:hover": {
+//        color: "blue"
+//      },
+//      fontSize:`1.2rem`,
+//    },
+  
+
+//   tableTitleStyle: {   
+
+//    color: `${main_palete_theme.palette.header.light}`, //'#FFF',
+//    // color: 'white', //"blue",
+//     "&:hover": {
+//       color: `${main_palete_theme.palette.header.dark}`,
+//       //color: 'lightblue',//"darkred",
+//     }
+//   }
+// });
+
+const TableTitleStyle = styled('h4')({
+
+  color: `${main_palete_theme.palette.header.text_color}`,//'#FFF',
+  // color: 'white', //"blue",
+   "&:hover": {
+     color: `${main_palete_theme.palette.header.text_hoover_color}`,
+     //color: 'lightblue',//"darkred",
+   },
+});  
+
+const MainTableToolBar = styled('div')({
+  backgroundColor: `${main_palete_theme.palette.header.main}`,
+  // backgroundColor: '#01579b',
+  // backgroundColor: '#039be5',
+
+   color: `${main_palete_theme.palette.header.text_color}`, //'#FFF',   
+
+});  
+
 const MainBox = styled('div')({
   minWidth: '100rem',
   maxWidth: '100vw',
   width: '100%',
 
-  background: 'Cornsilk',
+ // background: `Cornsilk center / 100% no-repeat url(${Image}) `,
+  background: `Cornsilk center / cover no-repeat url(${Image}) `,
+  //background: 'Cornsilk',
+ // backgroundImage: `url(${Image})`,
+ // backgroundSize: 'cover',
+  //backgroundPosition: 'strech', //'center',
+  //backgroundRepeat: `no-repeat`,
+  //width: `calc(100vw + 48px)`,
+
   borderRadius: '0.4rem',
   display: 'flex',
   flexDirection: 'column',
   boxShadow: '0 0.4rem 1.5rem DimGrey',
   position: 'relative',
-  padding: '7.0rem 1.5rem 1.5rem',
+  //padding: '7.0rem 1.5rem 1.5rem',
+  padding: '1.5rem 1.5rem 1.5rem',
   // marginTop: '3rem',
   fontSize: '1.5rem',
 
@@ -350,6 +695,7 @@ const ContentBox = styled('div')({
  
   //border:red solid 2px;
   borderRadius: '5px',
+  //backgroundImage: `url(${Image})`,
 
   display: 'flex',
   alignItems: 'center', 
@@ -358,86 +704,15 @@ const ContentBox = styled('div')({
   justifyContent: 'space-around',   //'flex-start',
 }); 
 
-
-
-const MenuBox = styled('div')({
-  width: '70rem',
-}); 
-
-
-const MenuContentBox = styled('div')({
-  height: '70vh',
-  // height: 'fit-content',
-  maxHeight: '70rem',
-  minHeight: '70vh',
-
-  width: '70rem',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',   //'flex-start', 
-  justifyContent: 'center',   //'space-around',   //'flex-start',
-}); 
-
-const ManageLocationsBox = styled('div')({
-  // maxHeight: '80vh',
-  // height: '65vh',
-  //height: 'fit-content',
-  // width: 'fit-content',
-  // marginTop: 0,
-  // paddingTop: 0,
-
-     width: '70rem',
-    // width: '60rem',
-
-    // borderRadius: '0.8rem',
-   borderRadius: '0.4rem',
-   overflowX: 'hidden',
-   overflowY: 'scroll',
-   boxShadow: '0 0.2rem 0.8rem DimGrey',
-
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',   //'flex-start', 
-  justifyContent: 'space-around',   //'flex-start',
- 
-  // alignItems: 'space-between',   //'flex-start', 
-  // justifyContent: 'space-between',   //'flex-start',  
-}); 
-
-
-const ModalBox = styled('div')({
-  position: "absolute",
-  background: "#fff",
-  top: 28,
-  left: "10%",
-  right: "10%",
-  padding: 15,
- 
+//const AddCategoryIcon = styled('AddIcon')({ 
+//const AddCategoryIcon = styled('AddCircleOutlinedIcon')({ 
+const AddCategoryIcon = styled('AddLocationRoundedIcon')({ 
+//const AddCategoryIcon = styled('AddCircleRoundedIcon')({ 
+//const AddCategoryIcon = styled('AddBoxRoundedIcon')({ 
   
-  width: '60rem',
-  height: '75vh',
-  // borderRadius: '0.8rem',
-  borderRadius: '0.4rem',
-  overflowX: 'hidden',
-  overflowY: 'scroll',
-  boxShadow: '0 0.2rem 0.8rem DimGrey',
-  //background: 'rgba(0, 0, 0, 0.15)',
+  background: "blue", 
+  color: "white", 
+  fontSize:"medium",
 
-  display: 'flex',
-  flexDirection: 'row',
-  // alignItems: 'center',   
-  alignItems: 'flex-start', 
-  justifyContent: 'space-around',   //'flex-start',
 }); 
 
-/*
-  return (
-    <div className="app">
-      <Filter />
-      <div className="content-box">
-        <Profile />
-        <List />
-      </div>
-    </div>
-  ); 
-  */

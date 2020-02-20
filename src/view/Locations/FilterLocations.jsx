@@ -311,14 +311,18 @@ export default FilterLocations;
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
-    color: 'darkred',
+    //color: 'darkred',
+    color: '#FFF',
+    //backgroundColor: '#01579b',
+    // backgroundColor: '#039be5',
+
   },
 }));
 
 const filterLocatios_theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#8b0000', //'darkred', //'#4caf50',
+      main:  '#FFF',//'#8b0000', //'darkred', //'#4caf50',
     },
     secondary: {
       main: '#ff9100',
@@ -328,7 +332,10 @@ const filterLocatios_theme = createMuiTheme({
 });
 
 const Header = styled('div')({
-  background: 'lightsalmon',
+  //background: 'lightsalmon',
+  backgroundColor: '#01579b',
+  // backgroundColor: '#039be5',
+  color: '#FFF',
   position: 'absolute',
   top: 0,
   left: 0,
@@ -347,7 +354,7 @@ const Title = styled('h4')({
   /* fontSize: '2rem', */
   fontSize: '1.3rem',
   fontWeight: 400,
-  color: 'darkred',
+  color:  '#FFF', //'darkred',
 }); 
 
 const Input =styled('input')({ 
@@ -366,7 +373,10 @@ const Input =styled('input')({
 }); 
 
 const ActionsBar = styled('div')({
-  background: 'lightsalmon',
+  //background: 'lightsalmon',
+  backgroundColor: '#01579b',
+  // backgroundColor: '#039be5',
+  color: '#FFF',
   borderRadius: '0.4rem 0.4rem 0 0',
   height: '5rem',
   width: '16rem',

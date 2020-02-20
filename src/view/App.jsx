@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
@@ -9,6 +9,10 @@ import GlobalStyles from "../style.lib/globalStyles";
 // customize with material-ui
 import settings from '../style.lib/settings';
 import colors from '../style.lib/colors';
+import PalletsStyles from '../style.lib/PalleteStyles';
+import main_palete_theme from '../style.lib/PalleteStyles';
+import Image from '../style.lib/images/table_background_1.jpg';
+
 
 // Material-UI
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
@@ -36,74 +40,108 @@ import TopBar from "./TopBar";
 import MainBottomBar from "./MainBottomBar";
 
 
-let theme = createMuiTheme({
-  palette: {
-    primary: settings.theme.primaryColor.import,
-    secondary: settings.theme.secondaryColor.import,
-    type: settings.theme.type
-  }
-});
+// let theme = createMuiTheme({
+//   palette: {
+//     primary: settings.theme.primaryColor.import,
+//     secondary: settings.theme.secondaryColor.import,
+//     type: settings.theme.type
+//   }
+// });
+
+
+
 
 
 const history = createBrowserHistory();
 
 //import ls from "local-storage";
 
+
+
+
+
+
+
+
 // exact path = "/"
-const App = () => (
-  <Router history={history}>
-    <MuiThemeProvider theme={theme}>
-      <AppBox>
-        {/* <TopBar>
-          <Menu />
-        </TopBar> */}
-
-        <Route exact path="/" component={HomePage} />
-
-        <WrapperDataManager>
-
-            <Switch>
-
-          {/* <Route path="/locations" component={ProfilesBrowser} /> */}
- 
-                 {/* <Route exact path="/categories" children={< AddLocation />} /> */}
-                 <Route exact path="/categories" children={< CategoriesBrowser />} />
-                 
-           
-
-                 <Route exact path="/locations"  children= {<LocationsBrowser />} />
-                 {/* component={LocationsBrowser} /> */}
-
-                  <Route exact path="/locations/view"  
-                        children={  () =>  <LocationsBrowser />  } />
-                  <Route exact path="/locations/add"  
-                        children={  () =>  <LocationsBrowser />  } />
-                  <Route exact path="/locations/edit"  
-                        children={  () =>  <LocationsBrowser />  } />
-                  <Route path="/locations/remove" 
-                        children={  () =>  <LocationsBrowser />  } />
-                  {/* <Route path="/locations" children={<AddLocation />} /> */}
+const App = () => {
 
 
-            </Switch>
+  // According to:
+  // https://material-ui.com/customization/palette/#example
+  const MainTheme = useMemo(
+    () => createMuiTheme({
+      main_palete_theme}) ,
+      [],
+    );
 
 
-        </WrapperDataManager>
+//   console.log (`COLORRRRRRRRRRRR 
+// ============================================================================`,main_palete_theme);
 
-        <MainBottomBar/>
 
 
-        <GlobalStyles />
-      </AppBox>
-   </MuiThemeProvider>
-  </Router>
-);
+ return(
+
+    <Router history={history}>
+      {/* <MuiThemeProvider theme={theme}> */}
+      <MuiThemeProvider theme={MainTheme}> 
+        <AppBox>
+          {/* <TopBar>
+            <Menu />
+          </TopBar> */}
+
+          <Route exact path="/" component={HomePage} />
+
+          <WrapperDataManager>
+
+              <Switch>
+
+            {/* <Route path="/locations" component={ProfilesBrowser} /> */}
+  
+                  {/* <Route exact path="/categories" children={< AddLocation />} /> */}
+                  <Route exact path="/categories" children={< CategoriesBrowser />} />
+                  
+            
+
+                  <Route exact path="/locations"  children= {<LocationsBrowser />} />
+                  {/* component={LocationsBrowser} /> */}
+
+                    <Route exact path="/locations/view"  
+                          children={  () =>  <LocationsBrowser />  } />
+                    <Route exact path="/locations/add"  
+                          children={  () =>  <LocationsBrowser />  } />
+                    <Route exact path="/locations/edit"  
+                          children={  () =>  <LocationsBrowser />  } />
+                    <Route path="/locations/remove" 
+                          children={  () =>  <LocationsBrowser />  } />
+                    {/* <Route path="/locations" children={<AddLocation />} /> */}
+
+
+              </Switch>
+
+
+          </WrapperDataManager>
+
+          <MainBottomBar/>
+
+
+          <GlobalStyles />
+        </AppBox>
+    </MuiThemeProvider>
+    </Router>
+  );
+};
+
 export default App;
+
+
 
 const AppBox = styled('div')({
   maxWidth: '100vw',
   // background: 'lvwightskyblue', 
   // padding: '3rem 7.5rem', 
+
   padding: '2rem 10rem 5rem 10rem',
   borderRadius: '0.8rem',
   display: 'flex',
