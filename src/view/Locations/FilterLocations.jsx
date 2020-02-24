@@ -1,17 +1,31 @@
-import React, { useContext, useState, useEffect} from "react";
+import React, { 
+  useContext, 
+  useState, 
+  useEffect,  
+  useMemo,
+} from "react";
+
 import { StateDataManager } from "../../stateProvider/DataManager";
-import * as api from "../../services/StorageService";
+//import * as api from "../../services/StorageService";
 
-import TableSortLabel from '@material-ui/core/TableSortLabel';
+//import TableSortLabel from '@material-ui/core/TableSortLabel';
 
-import { makeStyles, styled, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import main_palete_theme from '../../style.lib/PalleteStyles';
+import { makeStyles, withStyles, styled, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+//import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-// import SortByAlphaTwoTone from '@material-ui/icons/SortByAlphaTwoTone';
-// import Sort from '@material-ui/icons/Sort';
-import SortRounded from  '@material-ui/icons/SortRounded';
-import CategoryRounded from  '@material-ui/icons/CategoryRounded';
-import Tooltip from '@material-ui/core/Tooltip';
+
+import {
+  SortRounded, 
+  CategoryRounded, 
+  Search,
+  FilterList,
+  //Sort,
+  //SortByAlphaTwoTone,
+} from '@material-ui/icons/';
+
+import { Tooltip, Fab, } from '@material-ui/core';
 
 // import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
@@ -40,8 +54,8 @@ const FilterLocations = () => {
   const [num_elements, set_num_elements] = useState(0);
   // const [filter_text, set_filter_text] = useState("");
 
-  const classes = useStyles();
-
+  //const classes = useStyles();
+  
   let  items_count = filtered_Locations_list.length || original_Locations_list.length;
 
   marker.green(`Filter num_elements 1 ${num_elements}`);
@@ -254,51 +268,98 @@ const FilterLocations = () => {
  // marker.blue(`items_count 2 ${items_count}`);
 
   return (
-    <MuiThemeProvider theme={filterLocatios_theme}>
+   
     <Header>
       <Title>{items_count} items filtered</Title>
-      <Input onChange={updateFilteredList} />
-      {/* <TableSortLabel
-              active={true}
-              direction={order }
-              onClick={handleRequestSort}
-            /> */}
-      {/* <Button variant="contained" color="primary" disableElevation>  </Button>
-      */}
+
+      {/* <ToolbarTooltip title="Filter list"  */}
+      <Tooltip title="Filter list by category" 
+      placement= 'bottom-start' 
+      //placement="top"
+      
+      PopperProps={{
+        popperOptions: {
+          modifiers: {
+            offset: {
+              enabled: true,
+              offset: '9px, 2px',
+              // offset: '9px, 9px',
+            },
+          },
+        },
+      }}
+      >  
+      <SearchBar > 
+        <Search style={{fontSize: 30,}} />          
+        {/* <FilterList style={{fontSize: 30,}} /> */}
+        <Input onChange={updateFilteredList} />
+        {/* <TableSortLabel
+                active={true}
+                direction={order }
+                onClick={handleRequestSort}
+              /> */}
+        {/* <Button variant="contained" color="primary" disableElevation>  </Button>
+        */}          
+      </SearchBar>
+
+      </Tooltip> 
+      {/* </ToolbarTooltip>  */}
+
       <ActionsBar>
-        <Tooltip title="Sort list alphabetically">
-            <IconButton 
-                variant="contained" 
-                // className={classes.button}
-                // color="darkred" 
-                color= "primary"
-                aria-label="sort list"
-                onClick={event => handleRequestSort(event)}
-                size = "small"          
+
+        <Tooltip title="Sort list alphabetically"  >
+          <Fab                         
+              style={{                         
+                background:  'inherit',  
+                color: `${main_palete_theme.palette.header.text_color}`, 
+              }}  
+                             
+              variant="contained" 
+              // className={classes.button}
+              // color="darkred" 
+              //color= "primary"
+              aria-label="sort list"
+              onClick={event => handleRequestSort(event)}
+              size = "small"                          
             >     
+
               <SortRounded />
               {/* Sort */}
-            </IconButton>
+            </Fab>
           </Tooltip>
-        
-          <Tooltip title="Sort list by Category">
-            <IconButton 
+
+
+          <Tooltip title="Sort list by Category"  >
+            {/* <IconButton 
+                style={{ color: `${main_palete_theme.palette.header.text_color}`, }}  */}
+             <Fab                         
+                style={{                         
+                  background:  'inherit',  
+                  color: `${main_palete_theme.palette.header.text_color}`, 
+                }}                 
                 variant="contained" 
                 // className={classes.button}
                 // color="darkred" 
-                color= "primary"
+                //color= "primary"
                 aria-label="By Category"
                 onClick={event => handleRequestGroupByCategory(event)}
-                size = "small"          
+                size = "small"                          
             >     
 
               <CategoryRounded />
               {/* By Category */}
-            </IconButton>
+
+            </Fab>
+            {/* </IconButton> */}
+
           </Tooltip>
+          {/* </ToolbarTooltip> */}
+
+
       </ActionsBar>
+
     </Header>
-    </MuiThemeProvider>
+  
   );
 };
 export default FilterLocations;
@@ -319,23 +380,28 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const filterLocatios_theme = createMuiTheme({
-  palette: {
-    primary: {
-      main:  '#FFF',//'#8b0000', //'darkred', //'#4caf50',
-    },
-    secondary: {
-      main: '#ff9100',
-    },
-  },
+// const filterLocatios_theme = createMuiTheme({
+//   palette: {
+//     primary: {
+//       main:  '#FFF',//'#8b0000', //'darkred', //'#4caf50',
+//     },
+//     secondary: {
+//       main: '#ff9100',
+//     },
+//   },
 
-});
+// });
 
 const Header = styled('div')({
-  //background: 'lightsalmon',
-  backgroundColor: '#01579b',
+  backgroundColor: `${main_palete_theme.palette.header.main}`,
+  // backgroundColor: '#01579b',
   // backgroundColor: '#039be5',
-  color: '#FFF',
+   //background: 'lightsalmon',
+  // backgroundColor: '#039be5',   
+
+   color: `${main_palete_theme.palette.header.text_color}`, 
+  // color: '#FFF',  
+ 
   position: 'absolute',
   top: 0,
   left: 0,
@@ -354,7 +420,8 @@ const Title = styled('h4')({
   /* fontSize: '2rem', */
   fontSize: '1.3rem',
   fontWeight: 400,
-  color:  '#FFF', //'darkred',
+  //color: `${main_palete_theme.palette.header.text_color}`,
+  //color:  '#FFF', //'darkred',
 }); 
 
 const Input =styled('input')({ 
@@ -368,15 +435,20 @@ const Input =styled('input')({
   padding: '1rem',
 
   '&:focus': {
-    border: 'tomato 2px solid',
+    border: `${main_palete_theme.palette.secondary.main} 2px solid`,
   }
 }); 
 
 const ActionsBar = styled('div')({
-  //background: 'lightsalmon',
-  backgroundColor: '#01579b',
+  backgroundColor: `${main_palete_theme.palette.header.main}`,
+  // backgroundColor: '#01579b',
   // backgroundColor: '#039be5',
-  color: '#FFF',
+   //background: 'lightsalmon',
+  // backgroundColor: '#039be5',   
+
+  color: `${main_palete_theme.palette.header.text_color}`, 
+  //color: '#FFF',
+
   borderRadius: '0.4rem 0.4rem 0 0',
   height: '5rem',
   width: '16rem',
@@ -384,8 +456,23 @@ const ActionsBar = styled('div')({
   /* height: '9rem', */
   display: 'flex',
   justifyContent: 'space-around',
-  alignItems: 'space-around',
+  alignItems: 'center',
 }); 
+
+const SearchBar = styled('div')({
+  display: 'flex',  
+  justifyContent: 'space-around',  
+  alignItems: 'center', 
+}); 
+
+const ToolbarTooltip = withStyles({
+  tooltip: {
+    color: `${main_palete_theme.palette.header.text_color}`, 
+    //backgroundColor: "transparent",
+    backgroundColor: `${main_palete_theme.palette.header.main}`,
+    fontSize: `1rem`,
+  }
+})(Tooltip);
 
 /*
 const Header = styled.div`

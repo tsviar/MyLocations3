@@ -5,8 +5,9 @@ import {
   useParams
 } from "react-router-dom";
 
-import styled from "styled-components/macro";
-import { makeStyles } from '@material-ui/core/styles';
+import main_palete_theme from '../../style.lib/PalleteStyles';
+// import styled from "styled-components/macro";
+import { styled, makeStyles } from '@material-ui/core/styles';
 import marker from '@ajar/marker'; 
 
 
@@ -623,7 +624,7 @@ const validateField = field => {
                 </CoordinatesInnerBox>
             </CoordinatesBox>
 
-            <Tooltip title={toolTipText} className={classes.tooltip} >
+            <Tooltip title={toolTipText}  >
             <FormControl margin="normal" fullWidth required>
               <InputLabel htmlFor="category">Category</InputLabel>
               {/* <Input id="category" type="text" /> */}
@@ -866,7 +867,7 @@ const CoordinatesInnerBox = styled(Box)({
     maxWidth:"sm",
     //font-family: "Expletus Sans";
     textAlign: "left",
-    color: "slategray",
+    //color: "slategray",
     // fontWeight: 400,
 
     
@@ -906,7 +907,10 @@ const CoordinatesInput = styled(Input)({
     marginTop: 3,
     //marginLeft: 50,
     paddingTop: 5,
-    color: 'red',
+
+    color: `${main_palete_theme.palette.error.main}`,
+    //color: 'red',
+
     textAlign: 'left',
   });
 
@@ -917,7 +921,10 @@ const CoordinatesInput = styled(Input)({
     marginTop: 3,
     //marginLeft: 50,
     paddingTop: 5,
-    color: 'green',
+
+    // color: 'green',
+    color: `${main_palete_theme.palette.success.main}`,
+
     textAlign: 'left',
   });
 

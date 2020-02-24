@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect, useContext } from "react";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 //import {MAP} from 'react-google-maps/lib/constants';
 
+import main_palete_theme from '../../style.lib/PalleteStyles';
 import { makeStyles, styled } from '@material-ui/core/styles';
 import {  Box } from "@material-ui/core";
 
@@ -618,7 +619,7 @@ const MapDetailsBox = styled('div')({
   //alignItems: 'center',
   // fontFamily: 'Expletus Sans',
  
-  color: 'slategray',
+  //color: 'slategray',
   fontWeight: 400,  
 }); 
 
@@ -626,7 +627,10 @@ const MapDetails = styled('h5')({
   fontSize: '1.1rem',
   // font-size: '2.25rem', 
   fontWeight: 'inherit',
-  color: 'darkslateblue',
+
+  color: `${main_palete_theme.palette.info.main}`,
+ // color: 'darkslateblue',
+
   textAlign: 'left',  
 }); 
 

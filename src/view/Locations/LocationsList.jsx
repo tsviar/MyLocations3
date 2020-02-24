@@ -3,6 +3,9 @@ import { StateDataManager } from "../../stateProvider/DataManager";
 
 import Location from "./Location";
 // import Card from "./Card";
+
+import main_palete_theme from '../../style.lib/PalleteStyles';
+
 // import styled from "styled-components";
 import { makeStyles, styled } from '@material-ui/core/styles';
 import marker from '@ajar/marker'; 
@@ -86,7 +89,10 @@ export default List;
 
 */
 const Box = styled('div')({
-  background: 'oldlace',
+  //background: `${main_palete_theme.palette.table_row_style.regular}`,
+  // background: `${main_palete_theme.palette.surface_background.regular}`,
+  background:  `${main_palete_theme.palette.table_row_style.very_light}`,
+
   height: '70vh',
   // height: 85vh', 
   // minWidth: '60rem',
@@ -107,12 +113,15 @@ const Box = styled('div')({
 });
 
 const CardItem = styled('li')({
-
-  '&:nth-child (even)': {
-    background: 'honeydew',
+  
+  "&:nth-child(even)": {
+   background: `${main_palete_theme.palette.table_row_style.regular}`,
+   //background: `${main_palete_theme.palette.table_row_style.regular_light}`,
   },
-  '&:nth-child (odd)': {
-    background: 'white',
+  "&:nth-child(odd)": {
+    // background: `${main_palete_theme.palette.surface_background.regular}`,
+    // background: `${main_palete_theme.palette.surface_background.regular_light}`,
+     background:  `${main_palete_theme.palette.table_row_style.very_light}`,
   }
 });
 

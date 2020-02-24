@@ -49,6 +49,8 @@ const main_palete_theme = {
         main: '#00e676', //'#2196f3',
         dark: '#00a152', //'#1976d2',  
         text_color: '#FFF',
+        text_color_light: 'mintcream',
+        text_color_dark: '#263238',
         //contrastText: '#ffcc00',
       },
       
@@ -70,21 +72,45 @@ const main_palete_theme = {
 
       table_row_style: {
         //selected: `#b9f6ca`, 
-        selected: '#84ffff', 
-        regular: '#ecfffd', //'#f1f8e9',       
+        selected: '#84ffff',        
+        regular:'#ecfffd', //'#f1f8e9',    
+        regular_light: 'honeydew', 
+        very_light: 'white',    
+      },
+
+      surface_background: {
+        regular: 'oldlace',
+        regular_light: '#fafafa', //...grayish
+        regular_medium: 'Cornsilk',
+        very_light: 'white', 
       },
       
-           
+     
+         
        
       // Used by `getContrastText()` to maximize the contrast between
       // the background and the text.
-      contrastThreshold: 3,
+      //contrastThreshold: 3,
+
       // Used by the functions below to shift a color's luminance by approximately
       // two indexes within its tonal palette.
       // E.g., shift from Red 500 to Red 300 or Red 700.
-      tonalOffset: 0.2,
+     // tonalOffset: 0.2,
       
-    }
+    }, //pallete
+
+    overrides: {
+        MuiTooltip: {
+          tooltip: {
+            fontSize: 12,
+            color: '#673ab7',
+            backgroundColor: '#40c4ff',
+            // color: '#18ffff',
+            // backgroundColor: '#2962ff',
+            //margin: "150px",
+          },
+         },
+      },
   };
 
 

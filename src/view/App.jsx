@@ -11,7 +11,7 @@ import settings from '../style.lib/settings';
 import colors from '../style.lib/colors';
 import PalletsStyles from '../style.lib/PalleteStyles';
 import main_palete_theme from '../style.lib/PalleteStyles';
-import Image from '../style.lib/images/table_background_1.jpg';
+
 
 
 // Material-UI
@@ -69,11 +69,64 @@ const App = () => {
 
   // According to:
   // https://material-ui.com/customization/palette/#example
-  const MainTheme = useMemo(
-    () => createMuiTheme({
-      main_palete_theme}) ,
+
+    const MainTheme = useMemo(
+    () => createMuiTheme(
+      main_palete_theme) ,
       [],
     );
+
+  // According to:
+  // https://material-ui.com/customization/palette/#example
+  // const MainTheme = useMemo(
+  //   () => createMuiTheme({
+  //     palette:  main_palete_theme.palette,
+  //     overrides: main_palete_theme.overrides,  
+
+  //     }) ,
+  //     [],
+  //   );
+
+    // const MainTheme = useMemo(
+      // this creates a new empty object, great interview Q
+    //   () => createMuiTheme({main_palete_theme}) ,
+    //     [],
+    //   );
+    /*
+    const [color, setColor] = React.useState('default');
+
+    const blue_theme = React.useMemo(() => {
+    if (color === 'blue') {
+      return createMuiTheme({
+        palette: {
+          secondary: {
+            main: blue[500],
+            contrastText: '#fff',
+          },
+        },
+      });
+    }
+    return createMuiTheme();
+  }, [color]);
+*/
+
+// const table_theme = createMuiTheme({
+
+//  direction: direction,
+//   palette: {    
+//    type: 'light',
+//   },
+//   overrides: {
+//     MuiTooltip: {
+//       tooltip: {
+//         fontSize: 30,
+//         color: '#18ffff',
+//         backgroundColor: '#2962ff',
+//         margin: "150px",
+//       },
+//      },
+//   }
+// });
 
 
 //   console.log (`COLORRRRRRRRRRRR 

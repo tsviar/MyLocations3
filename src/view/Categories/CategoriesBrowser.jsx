@@ -35,16 +35,38 @@ import main_palete_theme from '../../style.lib/PalleteStyles';
 // import Image from '../../style.lib/images/table_background_1.jpg';
 import Image from '../../style.lib/images/table_background_3.jpg';
 
+
 // Material-UI
-import { makeStyles, styled, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, styled, withStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import AddLocationRoundedIcon from '@material-ui/icons/AddLocationRounded';
 // import AddIcon from "@material-ui/icons/Add";
 // import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
 // import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 // import AddBoxRoundedIcon from '@material-ui/icons/AddBoxRounded';
+// import DeleteOutline from '@material-ui/icons/DeleteOutline';
 
-import { Tooltip, Fab } from '@material-ui/core';
+
+import {
+  AddBox ,
+  ArrowDownward ,
+  Check  ,
+  ChevronLeft ,
+  ChevronRight ,
+  Clear ,
+  DeleteOutline ,
+  Edit ,
+  FilterList,
+  FirstPage ,
+  LastPage ,
+  Remove ,
+  SaveAlt ,
+  Search,
+  ViewColumn,
+} from '@material-ui/icons/';
+
+
+import { Tooltip, Fab, } from '@material-ui/core';
 
 import MaterialTable, {MTableToolbar, } from 'material-table';
 
@@ -223,21 +245,49 @@ const CategoriesBrowser = () => {
  // const history = useHistory();
 
   //const classes = useStyles();
-
-
   
-  // According to:
-  // https://material-ui.com/customization/palette/#example
-  const MainTheme = useMemo(
-    () => createMuiTheme({
-      main_palete_theme}) ,
-      [],
-    );
-
-
 
     // console.log (`COLORRRRRRRRRRRR 
     // ============================================================================`,main_palete_theme);
+
+    
+  const tableIcons = {
+    //Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+    Add:  forwardRef((props, ref) => (                  
+
+        //  Spread the props to the underlying DOM element.
+        //--------------------------------------------------      
+        <Fab                 
+          style={{                         
+              background:  `${main_palete_theme.palette.add_button.main}`,  
+              color: `${main_palete_theme.palette.primary.dark}`, 
+            }}  
+            aria-label="Add Category" >
+            
+            <AddLocationRoundedIcon ref={ref} {...props}  style={{ fontSize: 35, }}  />
+            {/* <AddCircleRoundedIcon ref={ref} {...props} style={{ fontSize: 40 }} /> */}
+          
+          </Fab>                                                        
+      
+      )),    
+
+    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+    DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+    ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+    SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+    ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+  };
 
 
   const storeData = async (list_name, list) => {
@@ -260,7 +310,7 @@ const CategoriesBrowser = () => {
   
 
   return (
-   <MuiThemeProvider theme={MainTheme}> 
+    // <MuiThemeProvider theme={MainTheme}> 
 
     <MainBox >
 
@@ -268,6 +318,8 @@ const CategoriesBrowser = () => {
         <div>
           {/* <Filter /> */}
           <ContentBox>   
+
+          {/* <MuiThemeProvider theme={table_theme}> */}
 
             <MaterialTable
                 //title ="Categories list"
@@ -322,16 +374,12 @@ const CategoriesBrowser = () => {
                 
  
                 components={{
+
                   Toolbar: props => (
                     <MainTableToolBar>
-                      <MTableToolbar {...props} />
+                      <MTableToolbar  {...props} />
                     </MainTableToolBar>
-
-                    //     <div style={{ backgroundColor: '#e8eaf5' }}>
-                    //     <MTableToolbar {...props} />
-                    // </div>
-
-                  ),                
+                    ),      
 
               }}
 
@@ -353,7 +401,7 @@ const CategoriesBrowser = () => {
                     backgroundColor: `${main_palete_theme.palette.top_menu.main}`,
                    // backgroundColor: '#01579b',
                    // backgroundColor: '#039be5',
-                    color: `${main_palete_theme.palette.top_menu.tex}`, //'#FFF',
+                    color: `${main_palete_theme.palette.top_menu.text_color}`, //'#FFF',
                     fontSize:`1.2rem`,
                  },                //  {
                 //     background: 'lightsalmon',                    
@@ -363,6 +411,7 @@ const CategoriesBrowser = () => {
                 //     },
                 //     fontSize:`1.2rem`,
                 //  },
+
                   pageSizeOptions: [5, 10], // more then that look awefull...
 
                   rowStyle: rowData => ({
@@ -378,26 +427,35 @@ const CategoriesBrowser = () => {
 
                   }),   
 
-                }}
-                
-                icons={{
-                  Add: forwardRef((props, ref) => (
-                    //  Spread the props to the underlying DOM element.
-                    //--------------------------------------------------
-                    <Fab                 
-                       style={{                         
-                        background:  `${main_palete_theme.palette.add_button.main}`, //'#FFF',, 
-                        color: `${main_palete_theme.palette.primary.dark}`, //'#FFF', 
-                        fontSize: 'large', //30, //`2rem`,
-                         }}  
-                        aria-label="Add Category" >
-                        <AddLocationRoundedIcon ref={ref} {...props} style={{ fontSize: 35 }}/>
-                        {/* <AddCircleRoundedIcon ref={ref} {...props} style={{ fontSize: 40 }} /> */}
 
-                      </Fab>
+                }} //options
+                
+                icons={  tableIcons }
+
+                // icons={{
+
+                //   Add: forwardRef((props, ref) => (                  
+
+                //     //  Spread the props to the underlying DOM element.
+                //     //--------------------------------------------------
                     
-                  ))
-                }}
+                //     <Fab                 
+                //        style={{                         
+                //           background:  `${main_palete_theme.palette.add_button.main}`,  
+                //           color: `${main_palete_theme.palette.primary.dark}`, 
+                //          }}  
+                //         aria-label="Add Category" >
+                        
+                //         <AddLocationRoundedIcon ref={ref} {...props}  style={{ fontSize: 35, }}  />
+                //         {/* <AddCircleRoundedIcon ref={ref} {...props} style={{ fontSize: 40 }} /> */}
+                       
+                //       </Fab>                                                        
+                   
+                //   )),                    
+ 
+
+                // }}
+
 
                 localization={{
                   body: {
@@ -406,7 +464,7 @@ const CategoriesBrowser = () => {
                       cancelTooltip: "Cancel",
                       deleteText: "Are you sure you want to delete this Category?"
                     },
-                    addTooltip: "Add Category",
+                    addTooltip:"Add Category",
                     deleteTooltip: "Delete",
                     editTooltip: "Edit"
                   }
@@ -601,6 +659,8 @@ const CategoriesBrowser = () => {
 
             />
 
+           {/* </MuiThemeProvider> */}
+
           </ContentBox>
         </div>
 
@@ -610,7 +670,7 @@ const CategoriesBrowser = () => {
      
     </MainBox>
 
-   </MuiThemeProvider> 
+  //  </MuiThemeProvider> 
 
   );
 };
@@ -667,8 +727,12 @@ const MainBox = styled('div')({
   maxWidth: '100vw',
   width: '100%',
 
- // background: `Cornsilk center / 100% no-repeat url(${Image}) `,
-  background: `Cornsilk center / cover no-repeat url(${Image}) `,
+ // background: `${main_palete_theme.palette.surface_background.regular_medium}  center / 100% no-repeat url(${Image}) `,
+
+  // background: `${main_palete_theme.palette.surface_background.regular_medium}  center / cover no-repeat url(${Image}) `,
+
+  background: `${main_palete_theme.palette.surface_background.regular_medium} center / cover no-repeat url(${Image}) `,
+  
   //background: 'Cornsilk',
  // backgroundImage: `url(${Image})`,
  // backgroundSize: 'cover',
@@ -703,16 +767,3 @@ const ContentBox = styled('div')({
   // alignItems: 'flex-start', 
   justifyContent: 'space-around',   //'flex-start',
 }); 
-
-//const AddCategoryIcon = styled('AddIcon')({ 
-//const AddCategoryIcon = styled('AddCircleOutlinedIcon')({ 
-const AddCategoryIcon = styled('AddLocationRoundedIcon')({ 
-//const AddCategoryIcon = styled('AddCircleRoundedIcon')({ 
-//const AddCategoryIcon = styled('AddBoxRoundedIcon')({ 
-  
-  background: "blue", 
-  color: "white", 
-  fontSize:"medium",
-
-}); 
-

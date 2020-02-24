@@ -35,6 +35,8 @@ import List from "./LocationsList";
 import Filter from "./FilterLocations";
 //import Profile from "../Profile";
 
+import main_palete_theme from '../../style.lib/PalleteStyles';
+
 //import "../styles.css";
 //import styled from "styled-components";
 import { makeStyles, styled } from '@material-ui/core/styles';
@@ -195,7 +197,9 @@ const MainBox = styled('div')({
   maxWidth: '100vw',
   width: '100%',
 
-  background: 'Cornsilk',
+  backgroundColor: `${main_palete_theme.palette.surface_background.regular_medium}`,
+  // background: 'Cornsilk',
+
   borderRadius: '0.4rem',
   display: 'flex',
   flexDirection: 'column',
@@ -271,7 +275,9 @@ const ManageLocationsBox = styled('div')({
 
 const ModalBox = styled('div')({
   position: "absolute",
-  background: "#fff",
+
+  backgroundColor: `${main_palete_theme.palette.surface_background.regular_medium}`,
+ // background: "#fff",
   top: 28,
   left: "10%",
   right: "10%",

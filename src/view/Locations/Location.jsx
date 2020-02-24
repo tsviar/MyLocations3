@@ -1,5 +1,8 @@
 import React from "react";
-import Thumb from "../Thumb";
+// import Thumb from "../Thumb";
+
+import main_palete_theme from '../../style.lib/PalleteStyles';
+
 // import styled from "styled-components";
 import { makeStyles, styled } from '@material-ui/core/styles';
 import marker from '@ajar/marker'; 
@@ -37,11 +40,14 @@ const Box = styled('div')({
   alignItems: 'center',
 
   '&:hover': {
-    background: 'paleturquoise',
+    // background: 'paleturquoise',
+    background: `${main_palete_theme.palette.table_row_style.selected}`,
   },
-  '&:active': {
-    background: 'skyblue',
+  '&:active': {   
+    // background: 'skyblue',
+    background: `${main_palete_theme.palette.table_row_style.selected}`,
     color: 'white',
+    color: `${main_palete_theme.palette.secondary.main}`,
   },
 });
 

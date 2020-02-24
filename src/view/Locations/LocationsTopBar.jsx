@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import styled, { keyframes } from "styled-components/macro";
 
+import main_palete_theme from '../../style.lib/PalleteStyles';
 
 // import { makeStyles, styled , keyframes} from '@material-ui/core/styles';
 import { palette, spacing } from '@material-ui/system';
@@ -45,21 +46,27 @@ const spin = keyframes`
     transform: rotate(360deg);
   }
 `;
+
 const Logo = styled.img`
-  ${palette}
+  /* ${palette} */
   ${spacing}
   height: 5rem;
   animation: ${spin} 2s linear infinite;
+  
 `;
 
 const Box = styled.div`
-  ${palette}
-  ${spacing}
-  background: slategray;
+  /* ${palette}*/
+  ${spacing} 
+    background:  ${main_palete_theme.palette.top_menu.main};  
+  /* background: #00e676; */ 
+  /* slategray; */
+
   /* width: 100%; */
-  height: 40px; //70px;
+  height: 40px; 
+  /* 70px; */
   padding: 20px;
-  color: white;
+ 
   /* position: fixed;
   top: 2;
   left: 12; */
@@ -69,13 +76,6 @@ const Box = styled.div`
 `;
 
 const Text = styled.h1`
-  ${palette}
-  ${spacing}
-  // font-size: 3rem; 
-  font-size: 1px;
-  font-weight: normal;
-  font-family: "Griffy", cursive;
-  color: papayawhip;
   cursor: pointer;
   user-select: none;
   position: relative;

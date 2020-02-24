@@ -1,12 +1,19 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { 
+  useState, 
+  useContext, 
+  useEffect,  
+  useMemo, 
+} from "react";
+
 import {
   useHistory,
   useLocation,
-  useParams
+  useParams,
 } from "react-router-dom";
 
 // import styled from "styled-components/macro";
-import { makeStyles, styled } from '@material-ui/core/styles';
+import main_palete_theme from '../../style.lib/PalleteStyles';
+import { makeStyles, styled, withStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import marker from '@ajar/marker'; 
 
 
@@ -99,6 +106,16 @@ const AddLocation = () => {
    // let submitting = 'IDLE';
     
    let history = useHistory();
+
+   
+  
+  // According to:
+  // https://material-ui.com/customization/palette/#example
+  const MainTheme = useMemo(
+    () => createMuiTheme({
+      main_palete_theme}) ,
+      [],
+    );
     
   marker.blue(`AddLocation selected_location 
   id  ${selected_location.id}
@@ -651,7 +668,9 @@ const validateField = field => {
 
 
     return (
-      
+     
+ 
+
       <MainBox>
         <FormBox>
           {/* <form style={{ width: "50%" }} onSubmit={handleSubmit} > */}
@@ -742,7 +761,8 @@ const validateField = field => {
                 </CoordinatesInnerBox>
             </CoordinatesBox>
 
-            <Tooltip title={toolTipText} className={classes.tooltip} >
+            <Tooltip title={toolTipText}  >
+            {/* <ToolbarTooltip title={toolTipText} > */}
             <FormControl margin="normal" fullWidth required>
               <InputLabel htmlFor="category">Category</InputLabel>
               {/* <Input id="category" type="text" /> */}
@@ -775,6 +795,7 @@ const validateField = field => {
                 <FormHelperText>required</FormHelperText>
             </FormControl>                  
             </Tooltip>
+          
 
             {errors.category &&  <ErrorText>{errors.category}</ErrorText>}   
 
@@ -807,7 +828,10 @@ const validateField = field => {
             */}
           </LocationForm>
         </FormBox>
-        </MainBox>
+      </MainBox>
+        
+  
+
         
       );
   
@@ -830,10 +854,11 @@ const useStyles = makeStyles(theme => ({
     maxWidth: "sm",
   },
   tooltip:{
-      fontSize: 10,
-      lineHeight: 16,
-      heigt: 17,
+      fontSize: 15, //10,
+      lineHeight: 25, //16,
+      //height: 23, //17,
       // marginTop: 2,
+     color: 'blue',
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -882,7 +907,7 @@ const MainBox = styled('div')({
   maxHeight: '60rem',
   minHeight: '60vh',
 
-   width: 'fit-content',
+  width: 'fit-content',
 //   width: '35%',
   minWidth: '32rem', //'35rem',
   maxWidth: '40vw', //'35rem',
@@ -980,7 +1005,7 @@ const CoordinatesInnerBox = styled(Box)({
     maxWidth:"sm",
     //font-family: "Expletus Sans";
     textAlign: "left",
-    color: "slategray",
+    //color: "slategray",
     // fontWeight: 400,
 
     
@@ -1023,7 +1048,10 @@ const CoordinatesInput = styled(Input)({
     marginTop: 3,
     //marginLeft: 50,
     paddingTop: 5,
-    color: 'red',
+
+    color: `${main_palete_theme.palette.error.main}`,
+    //color: 'red',
+
     textAlign: 'left',
     wordWrap: 'break-word',
   });
@@ -1035,9 +1063,23 @@ const CoordinatesInput = styled(Input)({
     marginTop: 3,
     //marginLeft: 50,
     paddingTop: 5,
-    color: 'green',
+
+    // color: 'green',
+    color: `${main_palete_theme.palette.success.main}`,
+
     textAlign: 'left',
   });
+
+  // const ToolbarTooltip = withStyles({
+  //   // MuiTooltip: {
+  //   tooltip: {
+  //     color: `${main_palete_theme.palette.header.text_color}`, 
+  //     //backgroundColor: "transparent",
+  //     backgroundColor: `${main_palete_theme.palette.header.main}`,
+  //     fontSize: `0.8rem`,
+  //   // }
+  //  }
+  // })(Tooltip);
 
 //const AddLocation = () => <h1>Create a new Location</h1>;
 
