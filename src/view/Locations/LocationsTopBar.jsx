@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import styled, { keyframes } from "styled-components/macro";
+import styled, { keyframes } from "styled-components";
 
 import main_palete_theme from '../../style.lib/PalleteStyles';
 

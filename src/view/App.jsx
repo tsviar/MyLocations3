@@ -7,9 +7,6 @@ import { createBrowserHistory } from "history";
 //import "./styles.css";
 import GlobalStyles from "../style.lib/globalStyles";
 // customize with material-ui
-import settings from '../style.lib/settings';
-import colors from '../style.lib/colors';
-import PalletsStyles from '../style.lib/PalleteStyles';
 import main_palete_theme from '../style.lib/PalleteStyles';
 
 
@@ -21,16 +18,10 @@ import marker from '@ajar/marker';
 
 import { WrapperDataManager } from "../stateProvider/DataManager";
 import HomePage from "./HomePage";
-// import ProfilesBrowser from "./ProfilesBrowser";
-
 
 import CategoriesBrowser from "./Categories/CategoriesBrowser";
 
 import LocationsBrowser from "./Locations/LocationsBrowser";
-import AddLocation from "./Locations/AddLocation";
-import EditLocation from "./Locations/EditLocation";
-import RemoveLocation from "./Locations/RemoveLocation";
-import ViewLocation from "./Locations/ViewLocation";
 
 
 // since Links is exported as default,
@@ -50,20 +41,9 @@ import MainBottomBar from "./MainBottomBar";
 
 
 
-
-
 const history = createBrowserHistory();
 
-//import ls from "local-storage";
 
-
-
-
-
-
-
-
-// exact path = "/"
 const App = () => {
 
 
@@ -137,8 +117,8 @@ const App = () => {
  return(
 
     <Router history={history}>
-      {/* <MuiThemeProvider theme={theme}> */}
       <MuiThemeProvider theme={MainTheme}> 
+
         <AppBox>
           {/* <TopBar>
             <Menu />
@@ -178,10 +158,9 @@ const App = () => {
 
           <MainBottomBar/>
 
-
-          <GlobalStyles />
         </AppBox>
-    </MuiThemeProvider>
+     <GlobalStyles />   
+     </MuiThemeProvider>
     </Router>
   );
 };
