@@ -80,6 +80,7 @@ const RemoveLocation = () => {
     //const [validation_success, set_validation_success] = useState(true);
    const [submitting, set_submitting] = useState('IDLE');
    const [submit_text, set_submit_text] = useState('');
+   const [tooltip_open, set_tooltip_open] = useState(false);
 
     let validation_success = true;
    // let submitting = 'IDLE';
@@ -600,7 +601,7 @@ const validateField = field => {
                 </CoordinatesInnerBox>
             </CoordinatesBox>
 
-            <Tooltip title={toolTipText}  >
+            <Tooltip title={toolTipText}  open={tooltip_open}   >
             <FormControl margin="normal" fullWidth required>
               <InputLabel htmlFor="category">Category</InputLabel>
               {/* <Input id="category" type="text" /> */}
@@ -615,6 +616,10 @@ const validateField = field => {
                 placeholder="Pick a Category from the list"
                 onChange={handleChange}
 
+                onMouseEnter={() => set_tooltip_open(true)}
+                onMouseLeave={() => set_tooltip_open(false)}
+                onClick = { () => set_tooltip_open(false)}
+                
                 // inputProps={{
                 //     name: 'category',
                 //     id: 'category-simple',
