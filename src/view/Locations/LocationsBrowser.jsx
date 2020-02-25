@@ -21,7 +21,7 @@ import marker from '@ajar/marker';
 import {
   GoogleMapContainer,
   // LocationsMap ,
-}from "../GoogleMapsApi/GoogleMapEmbed";
+} from "../GoogleMapsApi/GoogleMapEmbed";
 
 import AddLocation from "./AddLocation";
 import EditLocation from "./EditLocation";
