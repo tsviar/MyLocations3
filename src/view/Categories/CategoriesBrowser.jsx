@@ -458,6 +458,7 @@ const CategoriesBrowser = () => {
 
 
                 localization={{
+
                   body: {
                     editRow: {
                       saveTooltip: "Save",
@@ -466,8 +467,26 @@ const CategoriesBrowser = () => {
                     },
                     addTooltip:"Add Category",
                     deleteTooltip: "Delete",
-                    editTooltip: "Edit"
-                  }
+                    editTooltip: "Edit",
+
+                    emptyDataSourceMessage: 'No records to display',
+                    filterRow: {
+                        filterTooltip: 'Filter list'
+                    }
+                  },
+
+                  pagination: {
+                    labelDisplayedRows: '{from}-{to} of {count}'
+                  },
+
+                  toolbar: {
+                    nRowsSelected: '{0} row(s) selected'
+                  },
+                  header: {
+                    actions: 'Actions'
+                  },
+
+
                 }}
             
                 editable={{
