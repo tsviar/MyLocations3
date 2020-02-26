@@ -21,20 +21,24 @@
     "react-dom": "latest",
     "react-google-maps": "^9.4.5",
     "react-router-dom": "latest",
-    "react-scripts": "^3.3.1",
+    "react-scripts": "^3.4.0",
     "styled-components": "4.2.0",
     "yup": "^0.27.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.8.4",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.8.0",
-    "eslint-plugin-flowtype": "^4.6.0"
+    "eslint-plugin-flowtype": "^4.6.0",
+    "react-styleguidist": "^10.6.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "browserslist": [
     ">0.2%",
