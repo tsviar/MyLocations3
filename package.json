@@ -4,7 +4,6 @@
   "description": "An application intended to manage my locations using browsers local-storage",
   "keywords": [],
   "main": "src/index.js",
-  "homepage": ".",
   "author": "Tsvia-Hellen Rubin",
   "dependencies": {
     "@ajar/marker": "^1.2.3",
