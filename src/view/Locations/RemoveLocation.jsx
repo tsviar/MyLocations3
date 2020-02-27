@@ -706,10 +706,10 @@ const useStyles = makeStyles(theme => ({
 
 const MainBox = styled('div')({
 
-  // height: '50vh',
+  // height: '60vh',
   height: 'fit-content',
-  maxHeight: '50rem',
-  minHeight: '50vh',
+  // maxHeight: '60rem',
+  // minHeight: '60vh',
 
   width: 'fit-content',
   //   width: '35%',
@@ -718,9 +718,10 @@ const MainBox = styled('div')({
   // minWidth: '30rem', //'35rem',
   // maxWidth: '30rem', //'35rem',
 
-  margin: 0,
+  // margin: 0,
+  margin: 'auto',
   marginLeft: 30,
-  padding: 0,
+  padding: 10,
   paddingLeft: 10,
 
   // borderRadius: '0.4rem',
@@ -735,30 +736,32 @@ const MainBox = styled('div')({
   justifyContent: 'center',   //'flex-start', 
 });
 
-const AppBox = styled('div')({
-  height: '70vh',
-  /* height: 85vh; */
-  minWidth: '60rem', //'35rem',
-  maxWidth: '60rem', //'35rem',
-  marginLeft: 15,
-
-  borderRadius: '0.4rem',
-  overflowX: 'hidden',
-  overflowY: 'scroll',
-  boxShadow: '0 0.2rem 0.8rem DimGrey',
-
-  borderradius: '0.8rem',
+const MainBoxLabel = styled('h1')({
+  height: 'fit-content',
   display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',   //'flex-start', 
-  justifyContent: 'center',   //'flex-start', 
+  margin: 'auto',
+  // margin: 0,
+  padding: 0,
 });
 
 const FormBox = styled(Box)({
   display: "flex",
   justifyContent: "center",
-  margin: 20,
-  padding: 20,
+
+  //margin: 20,
+  margin: 'auto',
+  marginLeft: 20,
+  paddingLeft: 10,
+
+  height: 'fit-content',
+  // height: '50vh',
+  // maxHeight: '50vh',
+  // minHeight: '50vh',
+
+  // height: '50%',
+  // maxHeight: '50vh',
+  // minHeight: '50rem',
+
 });
 
 const LocationForm = styled('form')({

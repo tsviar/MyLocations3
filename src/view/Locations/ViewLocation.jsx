@@ -750,13 +750,11 @@ const ViewLocation = ({ match, history }) => {
               id='category-simple'
               name='category'
               value={new_location.category}
-
+              defaultValue={selected_location.category}
               placeholder="Pick a Category from the list"
               //onChange={handleChange}
               inputProps={{ readOnly: true }}
               autoWidth
-
-              defaultValue={selected_location.category}
 
             // inputProps={{
             //     name: 'category',
@@ -773,7 +771,7 @@ const ViewLocation = ({ match, history }) => {
                 <MenuItem value={30}>Thirty</MenuItem> */}
 
             </Select>
-            {/* <FormHelperText>required</FormHelperText> */}
+
           </FormControl>
 
 
@@ -848,9 +846,10 @@ const ModalBox = styled('div')({
 
 const MainBox = styled('div')({
 
-  height: '60vh',
-  maxHeight: '60rem',
-  minHeight: '60vh',
+  // height: '60vh',
+  height: 'fit-content',
+  // maxHeight: '60rem',
+  // minHeight: '60vh',
 
   width: 'fit-content',
   //   width: '35%',
@@ -859,7 +858,8 @@ const MainBox = styled('div')({
   // minWidth: '30rem', //'35rem',
   // maxWidth: '30rem', //'35rem',
 
-  margin: 0,
+  // margin: 0,
+  margin: 'auto',
   marginLeft: 30,
   padding: 10,
   paddingLeft: 10,
@@ -877,8 +877,10 @@ const MainBox = styled('div')({
 });
 
 const MainBoxLabel = styled('h1')({
+  height: 'fit-content',
   display: 'flex',
-  margin: 0,
+  margin: 'auto',
+  // margin: 0,
   padding: 0,
 });
 
@@ -886,14 +888,15 @@ const FormBox = styled(Box)({
   display: "flex",
   justifyContent: "center",
 
-  // height: 'fit-content', 
   //margin: 20,
+  margin: 'auto',
   marginLeft: 20,
   paddingLeft: 10,
 
-  height: '50vh',
-  maxHeight: '50vh',
-  minHeight: '50vh',
+  height: 'fit-content',
+  // height: '50vh',
+  // maxHeight: '50vh',
+  // minHeight: '50vh',
 
   // height: '50%',
   // maxHeight: '50vh',
@@ -909,6 +912,7 @@ const LocationForm = styled('form')({
   paddingBottom: 5, //20
   // marginTop: '1rem', //10,
   // paddingTop: '1rem', //10,
+  width: 'fit-content',
   // width: "50%",
 });
 

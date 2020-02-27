@@ -5,7 +5,10 @@ const HomePage = () => {
   return (
     <Box>
       <Title>Welcome location seekers!</Title>
-      <Image src="https://robohash.org/etaperiamqui.jpg?size=300x300&set=set1" />
+      <Image src="https://robohash.org/etaperiamqui.jpg?size=300x300&set=set1"
+        srcset="https://robohash.org/etaperiamqui.jpg?size=100x100&set=set1 1x, https://robohash.org/etaperiamqui.jpg?size=200x200&set=set1 2x"
+        alt="Loading..."
+      />
     </Box>
   );
 };

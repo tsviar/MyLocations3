@@ -16,7 +16,7 @@ import { createBrowserHistory } from "history";
 
 import { StateDataManager } from "../../stateProvider/DataManager";
 import * as api from "../../services/StorageService";
-import marker from '@ajar/marker'; 
+import marker from '@ajar/marker';
 
 import {
   GoogleMapContainer,
@@ -48,13 +48,13 @@ import { makeStyles, styled } from '@material-ui/core/styles';
 const LocationsBrowser = () => {
   const { loading_lists } = useContext(StateDataManager);
 
-  const { 
-    selected_map_location, 
-    update_selected_map_location 
+  const {
+    selected_map_location,
+    update_selected_map_location
   } = useContext(StateDataManager);
 
-//console.log(`LocationsBrowser prpos `, props);
-console.log(`LocationsBrowser selected_map_location `, selected_map_location);
+  //console.log(`LocationsBrowser prpos `, props);
+  console.log(`LocationsBrowser selected_map_location `, selected_map_location);
 
   const setUserPickedCoordinates = ({ lat, lng }) => {
     update_selected_map_location({ lat: lat, lng: lng });
@@ -70,7 +70,7 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
   marker.obj(location, `LocationsBrowser location `);
 
   let history = useHistory();
-  
+
   /* 
    TBD:
     Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
@@ -100,17 +100,17 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
         <div>
           <Filter />
 
-          <ContentBox>   
+          <ContentBox>
 
             <MenuContentBox>
 
-              <MenuBox>                                   
+              <MenuBox>
                 <LocationsTopBar>
-                        <LocationsMenu />
-                </LocationsTopBar>  
-              </MenuBox>   
-              
-                
+                  <LocationsMenu />
+                </LocationsTopBar>
+              </MenuBox>
+
+
               {/* <Switch>                    
                   <Route exact path="/locations"  children={  
                     () => <ManageLocationsBox>
@@ -144,46 +144,46 @@ console.log(`LocationsBrowser selected_map_location `, selected_map_location);
                              
                    } />              
                  </Switch> */}
-   
 
-                {/* <ModalBox> */}
-                    {/* <Profile/> */}
-                {/* </ModalBox> */}            
-             
-                  
-            <ManageLocationsBox>   
 
-               {  
-                   ( "/locations/view" === location.pathname
-                   || "/locations" === location.pathname) ? <ViewLocation/> 
-                 : ( "/locations/add" === location.pathname ) ? <AddLocation/>
-                 : ( "/locations/edit" === location.pathname ) ? <EditLocation/>
-                 : ( "/locations/remove" === location.pathname ) ? <RemoveLocation/>
-                 : `location.pathname= ${location.pathname}`
+              {/* <ModalBox> */}
+              {/* <Profile/> */}
+              {/* </ModalBox> */}
 
-                } 
-               
-                <GoogleMapContainer /> 
-                
 
-            </ManageLocationsBox>
+              <ManageLocationsBox>
 
-          </MenuContentBox>
+                {
+                  ("/locations/view" === location.pathname
+                    || "/locations" === location.pathname) ? <ViewLocation />
+                    : ("/locations/add" === location.pathname) ? <AddLocation />
+                      : ("/locations/edit" === location.pathname) ? <EditLocation />
+                        : ("/locations/remove" === location.pathname) ? <RemoveLocation />
+                          : `location.pathname= ${location.pathname}`
+
+                }
+
+                <GoogleMapContainer />
+
+
+              </ManageLocationsBox>
+
+            </MenuContentBox>
 
             <List />
 
           </ContentBox>
         </div>
       ) : (
-        <h1>... Loding ...</h1>
-      )}
-     
+          <h1>... Loding ...</h1>
+        )}
+
     </MainBox>
 
-   
-    
+
+
     // </Router>
-    
+
   );
 };
 export default LocationsBrowser;
@@ -193,9 +193,15 @@ export default LocationsBrowser;
 //===============================================================
 
 const MainBox = styled('div')({
+  height: 'fit-content',
+
+  width: '100%',
   minWidth: '100rem',
   maxWidth: '100vw',
-  width: '100%',
+
+
+  margin: 'auto',
+
 
   backgroundColor: `${main_palete_theme.palette.surface_background.regular_medium}`,
   // background: 'Cornsilk',
@@ -212,25 +218,25 @@ const MainBox = styled('div')({
   // padding: '8.5rem 1.5rem 1.5rem','
   // margin-top: '10rem',' 
   // font-size: '3rem',' 
-}); 
+});
 
 const ContentBox = styled('div')({
- 
+
   //border:red solid 2px;
   borderRadius: '5px',
 
   display: 'flex',
-  alignItems: 'center', 
+  alignItems: 'center',
   // alignItems: 'space-between',   //
   // alignItems: 'flex-start', 
   justifyContent: 'space-around',   //'flex-start',
-}); 
+});
 
 
 
 const MenuBox = styled('div')({
   width: '70rem',
-}); 
+});
 
 
 const MenuContentBox = styled('div')({
@@ -244,46 +250,48 @@ const MenuContentBox = styled('div')({
   flexDirection: 'column',
   alignItems: 'center',   //'flex-start', 
   justifyContent: 'center',   //'space-around',   //'flex-start',
-}); 
+});
 
 const ManageLocationsBox = styled('div')({
+
   // maxHeight: '80vh',
   // height: '65vh',
-  //height: 'fit-content',
+  height: 'fit-content',
   // width: 'fit-content',
+  margin: 'auto',
   // marginTop: 0,
   // paddingTop: 0,
 
-     width: '70rem',
-    // width: '60rem',
+  width: '70rem',
+  // width: '60rem',
 
-    // borderRadius: '0.8rem',
-   borderRadius: '0.4rem',
-   overflowX: 'hidden',
-   overflowY: 'scroll',
-   boxShadow: '0 0.2rem 0.8rem DimGrey',
+  // borderRadius: '0.8rem',
+  borderRadius: '0.4rem',
+  overflowX: 'hidden',
+  overflowY: 'scroll',
+  boxShadow: '0 0.2rem 0.8rem DimGrey',
 
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',   //'flex-start', 
   justifyContent: 'space-around',   //'flex-start',
- 
+
   // alignItems: 'space-between',   //'flex-start', 
   // justifyContent: 'space-between',   //'flex-start',  
-}); 
+});
 
 
 const ModalBox = styled('div')({
   position: "absolute",
 
   backgroundColor: `${main_palete_theme.palette.surface_background.regular_medium}`,
- // background: "#fff",
+  // background: "#fff",
   top: 28,
   left: "10%",
   right: "10%",
   padding: 15,
- 
-  
+
+
   width: '60rem',
   height: '75vh',
   // borderRadius: '0.8rem',
@@ -296,9 +304,9 @@ const ModalBox = styled('div')({
   display: 'flex',
   flexDirection: 'row',
   // alignItems: 'center',   
-  alignItems: 'flex-start', 
+  alignItems: 'flex-start',
   justifyContent: 'space-around',   //'flex-start',
-}); 
+});
 
 /*
   return (
@@ -309,5 +317,5 @@ const ModalBox = styled('div')({
         <List />
       </div>
     </div>
-  ); 
+  );
   */

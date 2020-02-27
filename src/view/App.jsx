@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, { useMemo } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
@@ -14,7 +14,7 @@ import main_palete_theme from '../style.lib/PalleteStyles';
 // Material-UI
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { makeStyles, styled } from '@material-ui/core/styles';
-import marker from '@ajar/marker'; 
+import marker from '@ajar/marker';
 
 import { WrapperDataManager } from "../stateProvider/DataManager";
 import HomePage from "./HomePage";
@@ -50,11 +50,11 @@ const App = () => {
   // According to:
   // https://material-ui.com/customization/palette/#example
 
-    const MainTheme = useMemo(
+  const MainTheme = useMemo(
     () => createMuiTheme(
-      main_palete_theme) ,
-      [],
-    );
+      main_palete_theme),
+    [],
+  );
 
   // According to:
   // https://material-ui.com/customization/palette/#example
@@ -67,57 +67,57 @@ const App = () => {
   //     [],
   //   );
 
-    // const MainTheme = useMemo(
-      // this creates a new empty object, great interview Q
-    //   () => createMuiTheme({main_palete_theme}) ,
-    //     [],
-    //   );
-    /*
-    const [color, setColor] = React.useState('default');
+  // const MainTheme = useMemo(
+  // this creates a new empty object, great interview Q
+  //   () => createMuiTheme({main_palete_theme}) ,
+  //     [],
+  //   );
+  /*
+  const [color, setColor] = React.useState('default');
 
-    const blue_theme = React.useMemo(() => {
-    if (color === 'blue') {
-      return createMuiTheme({
-        palette: {
-          secondary: {
-            main: blue[500],
-            contrastText: '#fff',
-          },
+  const blue_theme = React.useMemo(() => {
+  if (color === 'blue') {
+    return createMuiTheme({
+      palette: {
+        secondary: {
+          main: blue[500],
+          contrastText: '#fff',
         },
-      });
-    }
-    return createMuiTheme();
-  }, [color]);
+      },
+    });
+  }
+  return createMuiTheme();
+}, [color]);
 */
 
-// const table_theme = createMuiTheme({
+  // const table_theme = createMuiTheme({
 
-//  direction: direction,
-//   palette: {    
-//    type: 'light',
-//   },
-//   overrides: {
-//     MuiTooltip: {
-//       tooltip: {
-//         fontSize: 30,
-//         color: '#18ffff',
-//         backgroundColor: '#2962ff',
-//         margin: "150px",
-//       },
-//      },
-//   }
-// });
-
-
-//   console.log (`COLORRRRRRRRRRRR 
-// ============================================================================`,main_palete_theme);
+  //  direction: direction,
+  //   palette: {    
+  //    type: 'light',
+  //   },
+  //   overrides: {
+  //     MuiTooltip: {
+  //       tooltip: {
+  //         fontSize: 30,
+  //         color: '#18ffff',
+  //         backgroundColor: '#2962ff',
+  //         margin: "150px",
+  //       },
+  //      },
+  //   }
+  // });
 
 
+  //   console.log (`COLORRRRRRRRRRRR 
+  // ============================================================================`,main_palete_theme);
 
- return(
+
+
+  return (
 
     <Router history={history}>
-      <MuiThemeProvider theme={MainTheme}> 
+      <MuiThemeProvider theme={MainTheme}>
 
         <AppBox>
           {/* <TopBar>
@@ -128,39 +128,39 @@ const App = () => {
 
           <WrapperDataManager>
 
-              <Switch>
+            <Switch>
 
-            {/* <Route path="/locations" component={ProfilesBrowser} /> */}
-  
-                  {/* <Route exact path="/categories" children={< AddLocation />} /> */}
-                  <Route exact path="/categories" children={< CategoriesBrowser />} />
-                  
-            
+              {/* <Route path="/locations" component={ProfilesBrowser} /> */}
 
-                  <Route exact path="/locations"  children= {<LocationsBrowser />} />
-                  {/* component={LocationsBrowser} /> */}
-
-                    <Route exact path="/locations/view"  
-                          children={  () =>  <LocationsBrowser />  } />
-                    <Route exact path="/locations/add"  
-                          children={  () =>  <LocationsBrowser />  } />
-                    <Route exact path="/locations/edit"  
-                          children={  () =>  <LocationsBrowser />  } />
-                    <Route path="/locations/remove" 
-                          children={  () =>  <LocationsBrowser />  } />
-                    {/* <Route path="/locations" children={<AddLocation />} /> */}
+              {/* <Route exact path="/categories" children={< AddLocation />} /> */}
+              <Route exact path="/categories" children={< CategoriesBrowser />} />
 
 
-              </Switch>
+
+              <Route exact path="/locations" children={<LocationsBrowser />} />
+              {/* component={LocationsBrowser} /> */}
+
+              <Route exact path="/locations/view"
+                children={() => <LocationsBrowser />} />
+              <Route exact path="/locations/add"
+                children={() => <LocationsBrowser />} />
+              <Route exact path="/locations/edit"
+                children={() => <LocationsBrowser />} />
+              <Route path="/locations/remove"
+                children={() => <LocationsBrowser />} />
+              {/* <Route path="/locations" children={<AddLocation />} /> */}
+
+
+            </Switch>
 
 
           </WrapperDataManager>
 
-          <MainBottomBar/>
+          <MainBottomBar />
 
         </AppBox>
-     <GlobalStyles />   
-     </MuiThemeProvider>
+        <GlobalStyles />
+      </MuiThemeProvider>
     </Router>
   );
 };
@@ -170,12 +170,14 @@ export default App;
 
 
 const AppBox = styled('div')({
+  height: 'fit-content',
   maxWidth: '100vw',
-  // background: 'lvwightskyblue', 
-  // padding: '3rem 7.5rem', 
 
+  margin: 'auto',
+  // padding: '3rem 7.5rem', 
   padding: '2rem 10rem 5rem 10rem',
   borderRadius: '0.8rem',
+
   display: 'flex',
   flexDirection: 'column',
 });
